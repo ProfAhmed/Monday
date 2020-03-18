@@ -24,6 +24,12 @@ import butterknife.ButterKnife;
 public class BoardDetailsFragment extends Fragment implements
         HAdapterUsers.OnUserClicked {
 
+    @BindView(R.id.rvAllUseres)
+    RecyclerView rvAllUsers;
+    private BoardDataList boardDataList = new BoardDataList();
+    private Gson gson = new Gson();
+    private HAdapterUsers adapterUsers;
+
     public static BoardDetailsFragment newInstance() {
 
         Bundle args = new Bundle();
@@ -37,12 +43,6 @@ public class BoardDetailsFragment extends Fragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-    @BindView(R.id.rvAllUseres)
-    RecyclerView rvAllUsers;
-    private BoardDataList boardDataList = new BoardDataList();
-    private Gson gson = new Gson();
-    private HAdapterUsers adapterUsers;
 
     @Nullable
     @Override
