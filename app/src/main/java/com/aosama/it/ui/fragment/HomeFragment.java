@@ -1,7 +1,6 @@
 package com.aosama.it.ui.fragment;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,25 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.aosama.it.R;
 import com.aosama.it.models.responses.boards.NestedBoard;
-import com.aosama.it.ui.activities.ChangePasswordActivity;
-import com.aosama.it.ui.activities.HomeActivity;
 import com.aosama.it.ui.adapter.CustomExpandableListAdapter;
 import com.aosama.it.utiles.ExpandableListDataPump;
 import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.MyUtilis;
-import com.aosama.it.utiles.PreferenceProcessor;
 import com.aosama.it.viewmodels.HomeViewModel;
 
 import java.util.ArrayList;
@@ -46,7 +38,7 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         HomeViewModel viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        expandableListView = (ExpandableListView) root.findViewById(R.id.expandableListView);
+        expandableListView = root.findViewById(R.id.expandableListView);
 
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
@@ -82,6 +74,10 @@ public class HomeFragment extends Fragment {
                                     expandableListTitle.get(groupPosition)).get(
                                     childPosition).getName(), Toast.LENGTH_SHORT
                     ).show();
+
+                    ///here
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
