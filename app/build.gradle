@@ -44,8 +44,8 @@ dependencies {
 
     //firebase
     implementation 'com.google.firebase:firebase-core:17.2.3'
-    implementation 'com.google.firebase:firebase-messaging:20.1.2'
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta01'
+    implementation 'com.google.firebase:firebase-messaging:20.1.3'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta02'
 
     //ButterKnife
     //noinspection GradleDependency
@@ -73,4 +73,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+
+
+
+
 }

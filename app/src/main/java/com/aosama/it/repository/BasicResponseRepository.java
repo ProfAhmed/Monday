@@ -23,7 +23,9 @@ import java.util.Locale;
 import java.util.Map;
 
 public class BasicResponseRepository {
+    private static final String TAG = "BasicResponseRepository";
     private Application mContext;
+    private Gson gson = new Gson();
 
     public BasicResponseRepository(Application mContext) {
         this.mContext = mContext;
@@ -79,5 +81,6 @@ public class BasicResponseRepository {
 
         return signInResponseStateLiveData;
     }
+
 
 }
