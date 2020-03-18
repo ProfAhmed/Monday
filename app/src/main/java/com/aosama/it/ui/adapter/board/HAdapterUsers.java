@@ -24,18 +24,14 @@ public class HAdapterUsers extends RecyclerView.Adapter<HAdapterUsers.UserView> 
 
     private Context mContext;
     private List<UserBoard> userBoards = new ArrayList<>();
+    private OnUserClicked onUserClicked = null;
 
-    public HAdapterUsers(Context mContext, List<UserBoard> userItems) {
+    public HAdapterUsers(Context mContext, List<UserBoard> userItems,
+                         OnUserClicked onUserClicked) {
         this.mContext = mContext;
         this.userBoards = userItems;
-    }
+        this.onUserClicked = onUserClicked;
 
-    @NonNull
-    @Override
-    public UserView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_user, parent, false);
-        return new UserView(view);
     }
 
     @Override
@@ -61,10 +57,25 @@ public class HAdapterUsers extends RecyclerView.Adapter<HAdapterUsers.UserView> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (onUserClicked != null) {
+                    onUserClicked.onUserClicked(v, position, userBoard);
+                }
             }
         });
 
+    }
+
+    @NonNull
+    @Override
+    public UserView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.layout_user, parent, false);
+        return new UserView(view);
+    }
+
+    public interface OnUserClicked {
+        //        void onUserClicked(View view, int position);
+        void onUserClicked(View view, int position, UserBoard userBoard);
     }
 
     @Override
