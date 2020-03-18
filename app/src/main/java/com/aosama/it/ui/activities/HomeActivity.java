@@ -1,42 +1,34 @@
 package com.aosama.it.ui.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Menu;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 
 import com.aosama.it.IntroScreenActivity;
 import com.aosama.it.R;
 import com.aosama.it.ui.adapter.NavPanelListAdapter;
+import com.aosama.it.ui.fragment.BoardDetailsFragment;
 import com.aosama.it.ui.fragment.HomeFragment;
 import com.aosama.it.ui.fragment.InboxFragment;
 import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.PreferenceProcessor;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import android.util.DisplayMetrics;
-import android.view.MenuItem;
-import android.view.View;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.view.GravityCompat;
-
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.Picasso;
-
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Locale;
 
@@ -150,5 +142,19 @@ public class HomeActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        //checking if there are items at BackStack or not
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if (count > 0) {
+            getSupportFragmentManager().popBackStack(BoardDetailsFragment.class.getSimpleName(),
+                    FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+
     }
 }

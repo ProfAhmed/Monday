@@ -76,6 +76,7 @@ public class HomeFragment extends Fragment {
                     ).show();
 
                     ///here
+                    fireBoardItemDetails();
 
 
                 } catch (Exception e) {
@@ -115,5 +116,15 @@ public class HomeFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    private void fireBoardItemDetails() {
+        getActivity().
+                getSupportFragmentManager().
+                beginTransaction()
+                .addToBackStack(BoardDetailsFragment.class.getSimpleName())
+                .replace(R.id.nav_host_fragment, new BoardDetailsFragment()).commit();
+
+
     }
 }
