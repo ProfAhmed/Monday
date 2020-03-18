@@ -24,9 +24,5 @@ public class BasicResponsePostViewModel extends AndroidViewModel {
         return repository.basicResponsePostApi(url, jsonBody);
     }
 
-    public StateLiveData<BasicResponse> basicResponseGetBoardDetails(String url, JSONObject jsonBody) {
-        return repository.getBoardDetails(url, jsonBody);
-    }
-
 
 }
