@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="colorPrimary">#10876C</color>
+  <color name="colorPrimaryDark">#10876C</color>
+  <color name="colorAccent">#32B192</color>
+  <color name="baseic_texts_buttons">#209679</color>
+  <color name="silver">#C0C0C0</color>
+  <color name="gray">#808080</color>
+  <color name="gray_light">#D3D3D3</color>
+  <color name="black">#000</color>
+  <color name="colorGreen">#209679</color>
+</resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Monday</string>
+  <string name="create_new_account">إنشاء حساب جديد</string>
+  <string name="english">انجليزى</string>
+  <string name="login">تسجيل الدخول</string>
+
+  <string name="login_in">تسجيل الدخول</string>
+  <string name="enter_your_email">أدخل بريدك الالكترونى</string>
+  <string name="enter_your_password">ادخل كلمة السر</string>
+  <string name="title_activity_home">المهام</string>
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
+  <string name="nav_header_title">Android Studio</string>
+  <string name="nav_header_subtitle">android.studio@android.com</string>
+  <string name="nav_header_desc">Navigation header</string>
+  <string name="action_settings">الاعدادات</string>
+
+  <string name="menu_boards">قائمة المهام</string>
+  <string name="menu_inbox">الرسائل</string>
+  <string name="menu_notifications">الاشعارات</string>
+  <string name="menu_tools">الادوات</string>
+  <string name="menu_share">مشاركة</string>
+  <string name="menu_send">ارسل</string>
+  <string name="contact_us">تواصل معنا</string>
+  <string name="settings">الاعدادات</string>
+  <string name="boards">المهام</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+  <string name="no_connection_msg">لا يوجد اتصال</string>
+  <string name="continu">استمر</string>
+  <string name="change_password">تغير كلمة السر</string>
+  <string name="old_password">كلمة السر القديمه</string>
+  <string name="new_password">كلمة السر الجديدة</string>
+  <string name="confirm_password">تأكيد كلمة السر</string>
+  <string name="confirm_password_msg">تاكيد كلمة السر الخاصى بك</string>
+  <string name="valid_input_msg">ادخل البيانات المطلوبه</string>
+  <string name="sign_out">تسجيل الخروج</string>
+  <string name="arabaic">عربى</string>
+</resources>

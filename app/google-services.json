@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "585720887519",
+    "firebase_url": "https://tmms-ec3a4.firebaseio.com",
+    "project_id": "tmms-ec3a4",
+    "storage_bucket": "tmms-ec3a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585720887519:android:0a14ef0a17e1318ca2916a",
+        "android_client_info": {
+          "package_name": "com.aosama.it"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "585720887519-va7dkstmj8m4qjoun63na3p07no1ns0f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aosama.it",
+            "certificate_hash": "03067340d62811bce2b80805020e6597be938f49"
+          }
+        },
+        {
+          "client_id": "585720887519-7smnadmjjk6c8kilsa6n2h9o0cm9s4s0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOUjYlD97Om6FaE5jMaDazJze0tJ2eSyo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "585720887519-7smnadmjjk6c8kilsa6n2h9o0cm9s4s0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
