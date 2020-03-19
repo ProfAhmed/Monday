@@ -104,8 +104,10 @@ public class HomeFragment extends Fragment {
                         boardDataLists = boardsResponseStateData
                                 .getData()
                                 .getData().getBoardDataList();
-                        expandableListDetail = ExpandableListDataPump.getData(boardDataLists);
-                        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+                        expandableListDetail = ExpandableListDataPump.
+                                getData(boardDataLists);
+                        expandableListTitle = new
+                                ArrayList<>(expandableListDetail.keySet());
                         expandableListAdapter = new CustomExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
                         expandableListView.setAdapter(expandableListAdapter);
                         Log.d("FetchedBoards", boardsResponseStateData.toString());
