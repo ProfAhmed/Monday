@@ -11,6 +11,18 @@ public class DashBoardData {
     @Expose
     private Integer noOfTasks;
 
+    @SerializedName("noOfComments")
+    @Expose
+    private Integer noOfComments;
+
+    public Integer getNoOfComments() {
+        return noOfComments;
+    }
+
+    public void setNoOfComments(Integer noOfComments) {
+        this.noOfComments = noOfComments;
+    }
+
     @SerializedName("taskStatusNo")
     @Expose
     private List<TaskStatusNo> taskStatusNos;

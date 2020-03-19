@@ -112,6 +112,7 @@ public class BoardDetailsFragment extends Fragment implements
                                     if (basicResponseStateData.getData() != null) {
                                         userBoards = basicResponseStateData
                                                 .getData().getData()
+                                                .getBoardData()
                                                 .getNestedBoards()
                                                 .get(0)
                                                 .getUsers();

@@ -48,7 +48,7 @@ public class BoardNestedRepository {
                         if (successful) {
                             Type dataType = new
                                     TypeToken<BasicResponse<BoardData>>() {
-                            }.getType();
+                                    }.getType();
                             BasicResponse<BoardData> data =
                                     gson.fromJson(response.toString(),
                                             dataType);

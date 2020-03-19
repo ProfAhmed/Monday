@@ -1,38 +1,35 @@
 package com.aosama.it.models.responses.nested;
 
-import com.aosama.it.models.responses.boards.NestedBoard;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class BoardData {
 
-    @SerializedName("_id")
+    @SerializedName("BoardData")
     @Expose
-    private String id;
+    private BoardData2 BoardData;
 
-    @SerializedName("nestedBoard")
+    @SerializedName("dashBoardData")
     @Expose
-    private List<NestedBoard> nestedBoards;
+    private DashBoardData dashBoardData;
 
     public BoardData() {
 
     }
 
-    public String getId() {
-        return id;
+    public BoardData2 getBoardData() {
+        return BoardData;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setBoardData(BoardData2 boardData) {
+        BoardData = boardData;
     }
 
-    public List<NestedBoard> getNestedBoards() {
-        return nestedBoards;
+    public DashBoardData getDashBoardData() {
+        return dashBoardData;
     }
 
-    public void setNestedBoards(List<NestedBoard> nestedBoards) {
-        this.nestedBoards = nestedBoards;
+    public void setDashBoardData(DashBoardData dashBoardData) {
+        this.dashBoardData = dashBoardData;
     }
 }
