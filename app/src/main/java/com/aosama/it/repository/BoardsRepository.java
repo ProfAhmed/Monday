@@ -35,7 +35,10 @@ public class BoardsRepository {
     public StateLiveData<BasicResponse<DataBoards>> getBoards(String url) {
 
         StateLiveData<BasicResponse<DataBoards>> boardsResponseStateLiveData = new StateLiveData<>();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+        JsonObjectRequest jsonObjectRequest = new
+                JsonObjectRequest(Request.Method.GET,
+                        url,
+                        null,
                 response -> {
                     try {
                         boolean successful =

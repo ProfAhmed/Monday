@@ -75,6 +75,7 @@ public class BoardNestedRepository {
                 // Basic Authentication
                 //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
                 String token = PreferenceProcessor.getInstance(mContext).getStr(MyConfig.MyPrefs.TOKEN, "");
+                Log.e(TAG, "getHeaders: " + token);
                 headers.put("Authorization", "Bearer " + token);
                 headers.put("lang", PreferenceProcessor.getInstance(mContext).getStr(MyConfig.MyPrefs.LANG, "en"));
                 return headers;
