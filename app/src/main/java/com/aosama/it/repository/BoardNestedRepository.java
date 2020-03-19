@@ -9,7 +9,7 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.aosama.it.models.errors.ErrorsMessages;
 import com.aosama.it.models.responses.BasicResponse;
-import com.aosama.it.models.responses.boards.DataBoards;
+import com.aosama.it.models.responses.nested.BoardData;
 import com.aosama.it.models.wrappers.StateLiveData;
 import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.PreferenceProcessor;
@@ -22,39 +22,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class BoardsRepository {
+public class BoardNestedRepository {
     private Application mContext;
+    private Gson gson = new Gson();
 
-    public BoardsRepository(Application mContext) {
+    public BoardNestedRepository(Application mContext) {
         this.mContext = mContext;
     }
 
+    private static final String TAG = "BoardNestedRepository";
 
-    private Gson gson = new Gson();
+    public StateLiveData<BasicResponse<BoardData>>
+    getBoardDetails(String url,
+                    HashMap<String, String> params) {
 
-    public StateLiveData<BasicResponse<DataBoards>> getBoards(String url) {
-
-        StateLiveData<BasicResponse<DataBoards>> boardsResponseStateLiveData = new StateLiveData<>();
-        JsonObjectRequest jsonObjectRequest = new
-                JsonObjectRequest(Request.Method.GET,
-                        url,
-                        null,
+        StateLiveData<BasicResponse<BoardData>>
+                boardsResponseStateLiveData = new StateLiveData<>();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+//                Request.Method.POST,
+                Request.Method.GET,
+                url, null,
                 response -> {
                     try {
-                        boolean successful =
-                                response.getBoolean("successful");
+                        boolean successful = response.getBoolean("successful");
                         if (successful) {
                             Type dataType = new
-                                    TypeToken<BasicResponse<DataBoards>>() {
-                            }.getType();
-                            BasicResponse<DataBoards> data =
+                                    TypeToken<BasicResponse<BoardData>>() {
+                                    }.getType();
+                            BasicResponse<BoardData> data =
                                     gson.fromJson(response.toString(),
                                             dataType);
                             boardsResponseStateLiveData.postSuccess(data);
-
                         } else {
-                            ErrorsMessages error = new Gson().fromJson(response.toString(), ErrorsMessages.class);
+                            ErrorsMessages error = gson.fromJson(response.toString(), ErrorsMessages.class);
                             boardsResponseStateLiveData.postFail(error);
+                            Log.e(TAG, "getBoardDetails: error");
 
                         }
 
@@ -73,10 +75,16 @@ public class BoardsRepository {
                 // Basic Authentication
                 //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
                 String token = PreferenceProcessor.getInstance(mContext).getStr(MyConfig.MyPrefs.TOKEN, "");
+                Log.e(TAG, "getHeaders: " + token);
                 headers.put("Authorization", "Bearer " + token);
                 headers.put("lang", PreferenceProcessor.getInstance(mContext).getStr(MyConfig.MyPrefs.LANG, "en"));
                 return headers;
 
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return params;
             }
         };
 

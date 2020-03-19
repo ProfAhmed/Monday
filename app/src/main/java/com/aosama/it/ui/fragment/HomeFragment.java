@@ -43,7 +43,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        HomeViewModel viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        HomeViewModel viewModel = ViewModelProviders.
+                of(this).get(HomeViewModel.class);
         expandableListView = root.findViewById(R.id.expandableListView);
 
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -94,33 +95,42 @@ public class HomeFragment extends Fragment {
 
         AlertDialog dialog = MyUtilis.myDialog(getActivity());
         dialog.show();
-        viewModel.boards(MyConfig.BOARDS).observe(this, boardsResponseStateData -> {
-            dialog.dismiss();
-            switch (boardsResponseStateData.getStatus()) {
-                case SUCCESS:
-                    if (boardsResponseStateData.getData() != null) {
-                        boardDataLists = boardsResponseStateData.getData().getData().getBoardDataList();
-                        expandableListDetail = ExpandableListDataPump.getData(boardDataLists);
-                        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-                        expandableListAdapter = new CustomExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
-                        expandableListView.setAdapter(expandableListAdapter);
-                        Log.d("FetchedBoards", boardsResponseStateData.toString());
+        viewModel.boards(MyConfig.BOARDS).observe(this,
+                boardsResponseStateData -> {
+                    dialog.dismiss();
+                    switch (boardsResponseStateData.getStatus()) {
+                        case SUCCESS:
+                            if (boardsResponseStateData.getData() != null) {
+                                boardDataLists = boardsResponseStateData
+                                        .getData()
+                                        .getData()
+                                        .getBoardDataList();
+                                if (boardDataLists != null) {
+                                    expandableListDetail =
+                                            ExpandableListDataPump.
+                                                    getData(boardDataLists);
+                                    expandableListTitle = new
+                                            ArrayList<>(expandableListDetail.keySet());
+                                    expandableListAdapter = new CustomExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
+                                    expandableListView.setAdapter(expandableListAdapter);
+                                    Log.d("FetchedBoards", boardsResponseStateData.toString());
+                                }
+                            }
+                            break;
+                        case FAIL:
+                            Toast.makeText(getActivity(), boardsResponseStateData.getErrorsMessages() != null ? boardsResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
+                            break;
+                        case ERROR:
+                            if (boardsResponseStateData.getError() != null) {
+                                Toast.makeText(getActivity(), getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                                Log.v("Statues", "Error" + boardsResponseStateData.getError().getMessage());
+                            }
+                            break;
+                        case CATCH:
+                            Toast.makeText(getActivity(), getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                            break;
                     }
-                    break;
-                case FAIL:
-                    Toast.makeText(getActivity(), boardsResponseStateData.getErrorsMessages() != null ? boardsResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
-                    break;
-                case ERROR:
-                    if (boardsResponseStateData.getError() != null) {
-                        Toast.makeText(getActivity(), getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
-                        Log.v("Statues", "Error" + boardsResponseStateData.getError().getMessage());
-                    }
-                    break;
-                case CATCH:
-                    Toast.makeText(getActivity(), getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
-                    break;
-            }
-        });
+                });
         return root;
     }
 
@@ -131,13 +141,10 @@ public class HomeFragment extends Fragment {
         b.putString(Constants.SELECTED_BORAD, gson.toJson(boardDataLists.get(childPosition)));
         boardDetailsFragment.setArguments(b);
 
-        getActivity().
-                getSupportFragmentManager().
-                beginTransaction()
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
                 .addToBackStack(BoardDetailsFragment.class.getSimpleName())
                 .replace(R.id.nav_host_fragment, boardDetailsFragment).commit();
-
-
 
 
     }
