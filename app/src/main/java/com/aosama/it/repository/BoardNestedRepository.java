@@ -30,6 +30,8 @@ public class BoardNestedRepository {
         this.mContext = mContext;
     }
 
+    private static final String TAG = "BoardNestedRepository";
+
     public StateLiveData<BasicResponse<BoardData>>
     getBoardDetails(String url,
                     HashMap<String, String> params) {
@@ -37,21 +39,25 @@ public class BoardNestedRepository {
         StateLiveData<BasicResponse<BoardData>>
                 boardsResponseStateLiveData = new StateLiveData<>();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+//                Request.Method.POST,
                 Request.Method.GET,
                 url, null,
                 response -> {
                     try {
                         boolean successful = response.getBoolean("successful");
                         if (successful) {
-                            Type dataType = new TypeToken<BasicResponse<BoardData>>() {
+                            Type dataType = new
+                                    TypeToken<BasicResponse<BoardData>>() {
                             }.getType();
                             BasicResponse<BoardData> data =
                                     gson.fromJson(response.toString(),
                                             dataType);
                             boardsResponseStateLiveData.postSuccess(data);
                         } else {
-                            ErrorsMessages error = new Gson().fromJson(response.toString(), ErrorsMessages.class);
+                            ErrorsMessages error = gson.fromJson(response.toString(), ErrorsMessages.class);
                             boardsResponseStateLiveData.postFail(error);
+                            Log.e(TAG, "getBoardDetails: error");
+
                         }
 
                     } catch (Exception e) {

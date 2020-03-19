@@ -95,9 +95,13 @@ public class BoardDetailsFragment extends Fragment implements
         }
     }
 
+    private static final String TAG = "BoardDetailsFragment";
+
     private void fetchingData() {
+        String id = boardDataList.getNestedBoard().get(0).getId();
         HashMap<String, String> params = new HashMap<>();
-        params.put("id", boardDataList.getNestedBoard().get(0).getId());
+        params.put("id", id);
+        Log.e(TAG, "fetchingData: " + id);
 
         boardDetailViewModel.getBoardDetails(MyConfig.NESTED, params)
                 .observe(this,
@@ -113,8 +117,10 @@ public class BoardDetailsFragment extends Fragment implements
                                                 .getUsers();
                                         adapterUsers.notifyDataSetChanged();
                                     }
+                                    Log.e(TAG, "fetchingData: success");
                                     break;
                                 case FAIL:
+                                    Log.e(TAG, "fetchingData: failed");
                                     Toast.makeText(getActivity(),
                                             basicResponseStateData.getErrorsMessages()
                                                     != null ?
@@ -123,6 +129,7 @@ public class BoardDetailsFragment extends Fragment implements
                                             Toast.LENGTH_SHORT).show();
                                     break;
                                 case ERROR:
+                                    Log.e(TAG, "fetchingData: error");
                                     if (basicResponseStateData.getError() != null) {
                                         Toast.makeText(getActivity(),
                                                 getString(R.string.
