@@ -5,12 +5,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aosama.it.R;
 import com.aosama.it.constants.Constants;
+import com.aosama.it.models.responses.BasicResponse;
 import com.aosama.it.models.responses.boards.BoardDataList;
 import com.aosama.it.models.responses.boards.UserBoard;
+import com.aosama.it.models.responses.nested.BoardData;
 import com.aosama.it.ui.adapter.board.HAdapterUsers;
 import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.MyUtilis;
@@ -34,12 +37,17 @@ import butterknife.ButterKnife;
 public class BoardDetailsFragment extends Fragment implements
         HAdapterUsers.OnUserClicked {
 
+    private static final String TAG = "BoardDetailsFragment";
     @BindView(R.id.rvAllUseres)
     RecyclerView rvAllUsers;
+    @BindView(R.id.tvTeamName)
+    TextView tvTeamName;
     private BoardDataList boardDataList = new BoardDataList();
     private Gson gson = new Gson();
     private HAdapterUsers adapterUsers;
     private List<UserBoard> userBoards = new ArrayList<>();
+    private BoardDetailViewModel boardDetailViewModel = null;
+    private android.app.AlertDialog dialog = null;
 
     public static BoardDetailsFragment newInstance() {
 
@@ -54,9 +62,6 @@ public class BoardDetailsFragment extends Fragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-    private BoardDetailViewModel boardDetailViewModel = null;
-    private android.app.AlertDialog dialog = null;
 
     @Nullable
     @Override
@@ -87,15 +92,17 @@ public class BoardDetailsFragment extends Fragment implements
 //            adapterUsers = new HAdapterUsers(getActivity(),
 //                    boardDataList.getNestedBoard()
 //                            .get(0).getUsers(), this);
-            adapterUsers = new HAdapterUsers(getActivity(),
-                    userBoards,
-                    this);
-            rvAllUsers.setAdapter(adapterUsers);
-            adapterUsers.notifyDataSetChanged();
+            refreshAdapterUsers();
         }
     }
 
-    private static final String TAG = "BoardDetailsFragment";
+    private void refreshAdapterUsers() {
+        adapterUsers = new HAdapterUsers(getActivity(),
+                userBoards,
+                this);
+        rvAllUsers.setAdapter(adapterUsers);
+        adapterUsers.notifyDataSetChanged();
+    }
 
     private void fetchingData() {
         String id = boardDataList.getNestedBoard().get(0).getId();
@@ -103,20 +110,16 @@ public class BoardDetailsFragment extends Fragment implements
         params.put("id", id);
         Log.e(TAG, "fetchingData: " + id);
 
-        boardDetailViewModel.getBoardDetails(MyConfig.NESTED, params)
+        id = "BOR8493277862";
+        String url = MyConfig.NESTED + "?id=" + id;
+        boardDetailViewModel.getBoardDetails(url, params)
                 .observe(this,
                         basicResponseStateData -> {
                             dialog.dismiss();
                             switch (basicResponseStateData.getStatus()) {
                                 case SUCCESS:
                                     if (basicResponseStateData.getData() != null) {
-                                        userBoards = basicResponseStateData
-                                                .getData().getData()
-                                                .getBoardData()
-                                                .getNestedBoards()
-                                                .get(0)
-                                                .getUsers();
-                                        adapterUsers.notifyDataSetChanged();
+                                        fillViewWithData(basicResponseStateData.getData());
                                     }
                                     Log.e(TAG, "fetchingData: success");
                                     break;
@@ -145,6 +148,25 @@ public class BoardDetailsFragment extends Fragment implements
                                     break;
                             }
                         });
+
+    }
+
+    private void fillViewWithData(BasicResponse<BoardData> data) {
+        userBoards = data.getData()
+                .getBoardData()
+                .getNestedBoards()
+                .get(0)
+                .getUsers();
+        refreshAdapterUsers();
+
+
+        //-------------
+        //setting the teamname
+        tvTeamName.setText(data.getData()
+                .getBoardData().getNestedBoards()
+                .get(0).getTeam().getTeamName());
+
+        //
 
     }
 

@@ -1,16 +1,21 @@
 package com.aosama.it.ui.adapter.board;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.aosama.it.R;
 import com.aosama.it.models.responses.boards.UserBoard;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,24 +39,56 @@ public class HAdapterUsers extends RecyclerView.Adapter<HAdapterUsers.UserView> 
 
     }
 
+    private static final String TAG = "HAdapterUsers";
+
     @Override
     public void onBindViewHolder(@NonNull UserView holder, int position) {
 
         UserBoard userBoard = userBoards.get(position);
 
-        holder.userName.setText(userBoard.getShortName());
-        Picasso.get().load(userBoard.getUserImage())
-                .into(holder.userPhoto, new Callback() {
-                    @Override
-                    public void onSuccess() {
 
-                    }
+//        holder.userName.setText(userBoard.getShortName());
+//        holder.userName.setText(userBoard.getFullName());
+//        holder.userName.setText(StringUtils.capitalize(userBoard.getName()));
+        holder.userName
+                .setText(WordUtils.capitalize(userBoard.getName()));
 
-                    @Override
-                    public void onError(Exception e) {
+        String path = userBoard.getUserImage();
+        if (!TextUtils.isEmpty(path) && path != null
+                && path.length() > 0) {
+            Picasso.get().load(path)
+                    .into(holder.userPhoto, new Callback() {
+                        @Override
+                        public void onSuccess() {
 
-                    }
-                });
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+        } else {
+            String firstChar = "";
+            if (userBoard.getShortName().length() > 0) {
+//                String firstChar = userBoard.getShortName().substring(0, 1).toUpperCase();
+//                Log.e(TAG, "onBindViewHolder: " + userBoard.getShortName());
+//                Log.e(TAG, "onBindViewHolder: " + userBoard.getFullName());
+//                Log.e(TAG, "onBindViewHolder: " + userBoard.getName());
+//                String[] names = userBoard.getName().split(" ");
+//                if (names.length >= 2) {
+//                    firstChar = names[0].substring(0, 1).toUpperCase() +
+//                            names[1].substring(0, 1).toUpperCase();
+//                } else {
+//                    if (names.length == 1) {
+//                        firstChar = names[0].substring(0, 1).toUpperCase();
+//                    }
+//                }
+//                TextDrawable drawable2 = createTextDrawable(firstChar);
+                TextDrawable drawable2 = createTextDrawable(userBoard.getShortName());
+                holder.userPhoto.setImageDrawable(drawable2);
+            }
+        }
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +100,23 @@ public class HAdapterUsers extends RecyclerView.Adapter<HAdapterUsers.UserView> 
             }
         });
 
+    }
+
+    private TextDrawable createTextDrawable(String firstChar) {
+//        TextDrawable drawable1 = TextDrawable.builder()
+//                .buildRoundRect(firstChar, Color.RED, 10);
+        int dimWH = (int) mContext.getResources()
+                .getDimension(R.dimen._60sdp);
+        int fonsSize =
+                (int) mContext.getResources()
+                        .getDimension(R.dimen._20ssp);
+        return TextDrawable.builder()
+                .beginConfig()
+                .fontSize(fonsSize)
+                .width(dimWH)  // width in px
+                .height(dimWH) // height in px
+                .endConfig()
+                .buildRect(firstChar, Color.RED);
     }
 
     @NonNull
