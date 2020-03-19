@@ -97,36 +97,40 @@ public class HomeFragment extends Fragment {
         dialog.show();
         viewModel.boards(MyConfig.BOARDS).observe(this,
                 boardsResponseStateData -> {
-            dialog.dismiss();
-            switch (boardsResponseStateData.getStatus()) {
-                case SUCCESS:
-                    if (boardsResponseStateData.getData() != null) {
-                        boardDataLists = boardsResponseStateData
-                                .getData()
-                                .getData().getBoardDataList();
-                        expandableListDetail = ExpandableListDataPump.
-                                getData(boardDataLists);
-                        expandableListTitle = new
-                                ArrayList<>(expandableListDetail.keySet());
-                        expandableListAdapter = new CustomExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
-                        expandableListView.setAdapter(expandableListAdapter);
-                        Log.d("FetchedBoards", boardsResponseStateData.toString());
+                    dialog.dismiss();
+                    switch (boardsResponseStateData.getStatus()) {
+                        case SUCCESS:
+                            if (boardsResponseStateData.getData() != null) {
+                                boardDataLists = boardsResponseStateData
+                                        .getData()
+                                        .getData()
+                                        .getBoardDataList();
+                                if (boardDataLists != null) {
+                                    expandableListDetail =
+                                            ExpandableListDataPump.
+                                                    getData(boardDataLists);
+                                    expandableListTitle = new
+                                            ArrayList<>(expandableListDetail.keySet());
+                                    expandableListAdapter = new CustomExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
+                                    expandableListView.setAdapter(expandableListAdapter);
+                                    Log.d("FetchedBoards", boardsResponseStateData.toString());
+                                }
+                            }
+                            break;
+                        case FAIL:
+                            Toast.makeText(getActivity(), boardsResponseStateData.getErrorsMessages() != null ? boardsResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
+                            break;
+                        case ERROR:
+                            if (boardsResponseStateData.getError() != null) {
+                                Toast.makeText(getActivity(), getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                                Log.v("Statues", "Error" + boardsResponseStateData.getError().getMessage());
+                            }
+                            break;
+                        case CATCH:
+                            Toast.makeText(getActivity(), getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                            break;
                     }
-                    break;
-                case FAIL:
-                    Toast.makeText(getActivity(), boardsResponseStateData.getErrorsMessages() != null ? boardsResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
-                    break;
-                case ERROR:
-                    if (boardsResponseStateData.getError() != null) {
-                        Toast.makeText(getActivity(), getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
-                        Log.v("Statues", "Error" + boardsResponseStateData.getError().getMessage());
-                    }
-                    break;
-                case CATCH:
-                    Toast.makeText(getActivity(), getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
-                    break;
-            }
-        });
+                });
         return root;
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class DataBoards {
 
-    @SerializedName("BoardData")
+    @SerializedName("BoardDataList")
     @Expose
     private List<BoardDataList> boardDataList = null;
 

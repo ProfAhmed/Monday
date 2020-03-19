@@ -16,9 +16,6 @@ import com.aosama.it.utiles.PreferenceProcessor;
 import com.aosama.it.utiles.VolleySingleTone;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.aosama.it.models.*;
-
-import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -32,17 +29,24 @@ public class BoardsRepository {
         this.mContext = mContext;
     }
 
+
+    private Gson gson = new Gson();
+
     public StateLiveData<BasicResponse<DataBoards>> getBoards(String url) {
 
         StateLiveData<BasicResponse<DataBoards>> boardsResponseStateLiveData = new StateLiveData<>();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
-                        boolean successful = response.getBoolean("successful");
+                        boolean successful =
+                                response.getBoolean("successful");
                         if (successful) {
-                            Type dataType = new TypeToken<BasicResponse<DataBoards>>() {
+                            Type dataType = new
+                                    TypeToken<BasicResponse<DataBoards>>() {
                             }.getType();
-                            BasicResponse<DataBoards> data = new Gson().fromJson(response.toString(), dataType);
+                            BasicResponse<DataBoards> data =
+                                    gson.fromJson(response.toString(),
+                                            dataType);
                             boardsResponseStateLiveData.postSuccess(data);
 
                         } else {

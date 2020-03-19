@@ -73,7 +73,10 @@ public class BoardDetailsFragment extends Fragment implements
         super.onViewCreated(view, savedInstanceState);
         init();
         gettingThePassedBoardModel();
+
+        showDialog();
         fetchingData();
+
         //setting an empty list to the adapter
         settingAdapter();
 
