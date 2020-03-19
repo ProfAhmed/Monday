@@ -43,7 +43,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        HomeViewModel viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        HomeViewModel viewModel = ViewModelProviders.
+                of(this).get(HomeViewModel.class);
         expandableListView = root.findViewById(R.id.expandableListView);
 
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -94,14 +95,17 @@ public class HomeFragment extends Fragment {
 
         AlertDialog dialog = MyUtilis.myDialog(getActivity());
         dialog.show();
-        viewModel.boards(MyConfig.BOARDS).observe(this, boardsResponseStateData -> {
+        viewModel.boards(MyConfig.BOARDS).observe(this,
+                boardsResponseStateData -> {
             dialog.dismiss();
             switch (boardsResponseStateData.getStatus()) {
                 case SUCCESS:
                     if (boardsResponseStateData.getData() != null) {
-                        boardDataLists = boardsResponseStateData.getData().getData().getBoardDataList();
+                        boardDataLists = boardsResponseStateData
+                                .getData()
+                                .getData().getBoardDataList();
                         expandableListDetail = ExpandableListDataPump.getData(boardDataLists);
-                        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+                        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
                         expandableListAdapter = new CustomExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
                         expandableListView.setAdapter(expandableListAdapter);
                         Log.d("FetchedBoards", boardsResponseStateData.toString());
@@ -131,13 +135,10 @@ public class HomeFragment extends Fragment {
         b.putString(Constants.SELECTED_BORAD, gson.toJson(boardDataLists.get(childPosition)));
         boardDetailsFragment.setArguments(b);
 
-        getActivity().
-                getSupportFragmentManager().
-                beginTransaction()
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
                 .addToBackStack(BoardDetailsFragment.class.getSimpleName())
                 .replace(R.id.nav_host_fragment, boardDetailsFragment).commit();
-
-
 
 
     }
