@@ -1,7 +1,6 @@
 package com.aosama.it.ui.fragment;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,30 +8,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-
-import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import com.aosama.it.R;
+import com.aosama.it.constants.Constants;
+import com.aosama.it.models.responses.boards.BoardDataList;
 import com.aosama.it.models.responses.boards.NestedBoard;
-import com.aosama.it.ui.activities.ChangePasswordActivity;
-import com.aosama.it.ui.activities.HomeActivity;
 import com.aosama.it.ui.adapter.CustomExpandableListAdapter;
 import com.aosama.it.utiles.ExpandableListDataPump;
 import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.MyUtilis;
-import com.aosama.it.utiles.PreferenceProcessor;
 import com.aosama.it.viewmodels.HomeViewModel;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 
 public class HomeFragment extends Fragment {
@@ -42,11 +37,14 @@ public class HomeFragment extends Fragment {
     private List<String> expandableListTitle;
     private HashMap<String, List<NestedBoard>> expandableListDetail;
 
+    private List<BoardDataList> boardDataLists = new ArrayList<>();
+    private Gson gson = new Gson();
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         HomeViewModel viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        expandableListView = (ExpandableListView) root.findViewById(R.id.expandableListView);
+        expandableListView = root.findViewById(R.id.expandableListView);
 
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
@@ -79,9 +77,14 @@ public class HomeFragment extends Fragment {
                             expandableListTitle.get(groupPosition)
                                     + " -> "
                                     + expandableListDetail.get(
-                                    expandableListTitle.get(groupPosition)).get(
-                                    childPosition).getName(), Toast.LENGTH_SHORT
+                                    expandableListTitle.get(groupPosition))
+                                    .get(childPosition).getName(), Toast.LENGTH_SHORT
                     ).show();
+
+                    ///here
+                    fireBoardItemDetails(childPosition);
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -95,9 +98,9 @@ public class HomeFragment extends Fragment {
             dialog.dismiss();
             switch (boardsResponseStateData.getStatus()) {
                 case SUCCESS:
-
                     if (boardsResponseStateData.getData() != null) {
-                        expandableListDetail = ExpandableListDataPump.getData(boardsResponseStateData.getData().getData().getBoardDataList());
+                        boardDataLists = boardsResponseStateData.getData().getData().getBoardDataList();
+                        expandableListDetail = ExpandableListDataPump.getData(boardDataLists);
                         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
                         expandableListAdapter = new CustomExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
                         expandableListView.setAdapter(expandableListAdapter);
@@ -119,5 +122,23 @@ public class HomeFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    private void fireBoardItemDetails(int childPosition) {
+
+        BoardDetailsFragment boardDetailsFragment = new BoardDetailsFragment();
+        Bundle b = new Bundle();
+        b.putString(Constants.SELECTED_BORAD, gson.toJson(boardDataLists.get(childPosition)));
+        boardDetailsFragment.setArguments(b);
+
+        getActivity().
+                getSupportFragmentManager().
+                beginTransaction()
+                .addToBackStack(BoardDetailsFragment.class.getSimpleName())
+                .replace(R.id.nav_host_fragment, boardDetailsFragment).commit();
+
+
+
+
     }
 }
