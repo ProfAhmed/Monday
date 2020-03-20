@@ -82,10 +82,10 @@ public class BoardNestedRepository {
 
             }
 
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return params;
-            }
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                return params;
+//            }
         };
 
         //handle timeout error

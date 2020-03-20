@@ -1,6 +1,5 @@
 package com.aosama.it.models.responses.boards;
 
-import com.aosama.it.models.responses.sing_in.User;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -45,8 +44,15 @@ public class NestedBoard {
     private List<UserBoard> users = null;
     @SerializedName("team")
     @Expose
-    private Object team = null;
+    private Team team = null;
 
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 
     public boolean isPrivate() {
         return isPrivate;

@@ -6,7 +6,9 @@ public class MyConfig {
     public static final String CHANGE_PASSWORD_URL = BASE_URL +
             "user/change-password";
     public static final String BOARDS = BASE_URL + "board";
+
     public static final String NESTED = BASE_URL + "board/nested";
+//    public static final String NESTED = BASE_URL + "board/nested"+"?id=BOR9139288889";
 
     public class MyPrefs {
         public static final String FIREBASE_TOKEN = "firebase_token";
