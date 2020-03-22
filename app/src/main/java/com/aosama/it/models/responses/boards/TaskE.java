@@ -50,7 +50,12 @@ public class TaskE {
     @SerializedName("comments")
     @Expose
     private List<CommentGroup> comments = null;
-
+    @SerializedName("meetingTime")
+    @Expose
+    private String meetingTime;
+    @SerializedName("meetingUrl")
+    @Expose
+    private String meetingUrl;
     public boolean isPrivate() {
         return isPrivate;
     }
@@ -161,5 +166,21 @@ public class TaskE {
 
     public void setComments(List<CommentGroup> comments) {
         this.comments = comments;
+    }
+
+    public String getMeetingTime() {
+        return meetingTime;
+    }
+
+    public void setMeetingTime(String meetingTime) {
+        this.meetingTime = meetingTime;
+    }
+
+    public String getMeetingUrl() {
+        return meetingUrl;
+    }
+
+    public void setMeetingUrl(String meetingUrl) {
+        this.meetingUrl = meetingUrl;
     }
 }

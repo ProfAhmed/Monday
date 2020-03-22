@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/tbRow"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <ImageView
+    android:id="@+id/ivComments"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:src="@drawable/ic_chat_bubble_black_24dp" />
+
+  <TextView
+    android:id="@+id/tvStatus"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="25dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="25dp"
+    android:paddingBottom="16dp"
+    android:text="Fragment 01"
+    android:textColor="#fff" />
+
+  <TextView
+    android:id="@+id/tvAddDate"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="25dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="25dp"
+    android:paddingBottom="16dp"
+    android:text="Fragment 01" />
+
+  <TextView
+    android:id="@+id/StartDate"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="25dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="25dp"
+    android:paddingBottom="16dp"
+    android:text="Fragment 01" />
+
+  <TextView
+    android:id="@+id/tvDueDate"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="25dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="25dp"
+    android:paddingBottom="16dp"
+    android:text="Fragment 01" />
+
+  <TextView
+    android:id="@+id/tvMeetingUrl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="25dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="25dp"
+    android:paddingBottom="16dp"
+    android:text="Fragment 01" />
+
+  <TextView
+    android:id="@+id/tvMeetingTime"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="25dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="25dp"
+    android:paddingBottom="16dp"
+    android:text="Fragment 01" />
+
+  <TextView
+    android:id="@+id/tvTeam"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:drawableEnd="@drawable/ic_perm_identity_black_24dp"
+    android:gravity="center_vertical"
+    android:paddingStart="25dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="25dp"
+    android:paddingBottom="16dp"
+    android:text="Fragment 01" />
+
+</TableRow>
+
+
+

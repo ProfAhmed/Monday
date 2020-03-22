@@ -37,11 +37,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.LOCAL_LANG, "ar").equals("ar")) {
-            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else {
-            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-        }
+//        if (PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.LOCAL_LANG, "ar").equals("ar")) {
+//            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+//        } else {
+//            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+//        }
         setContentView(R.layout.activity_change_password);
         ButterKnife.bind(this);
         viewModel = ViewModelProviders.of(this).get(BasicResponsePostViewModel.class);

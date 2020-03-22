@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:layout_marginTop="28dp"
+  android:orientation="vertical">
+
+  <TextView
+    android:id="@+id/tvTableName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:gravity="center"
+    android:text="table name"
+    android:textStyle="bold" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:orientation="horizontal">
+
+    <TableLayout
+      android:id="@+id/tbl_header"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+
+      <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_dark">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="start"
+          android:gravity="start"
+          android:paddingStart="16dp"
+          android:paddingTop="16dp"
+          android:paddingBottom="16dp"
+          android:text="@string/name"
+          android:textColor="#fff"
+          android:textStyle="bold" />
+
+      </TableRow>
+
+    </TableLayout>
+
+    <HorizontalScrollView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="2">
+
+      <TableLayout
+        android:id="@+id/tbl_scrolled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal">
+
+        <TableRow
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1">
+
+          <TextView
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_dark" />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/holo_blue_dark"
+            android:paddingStart="25dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="16dp"
+            android:text="@string/status"
+            android:textColor="#fff"
+            android:textStyle="bold" />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/holo_blue_dark"
+            android:paddingStart="25dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="16dp"
+            android:text="@string/add_date"
+            android:textColor="#fff"
+            android:textStyle="bold" />
+
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/holo_blue_dark"
+            android:paddingStart="25dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="16dp"
+            android:text="@string/start_date"
+            android:textColor="#fff"
+            android:textStyle="bold" />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/holo_blue_dark"
+            android:paddingStart="25dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="16dp"
+            android:text="@string/due_date"
+            android:textColor="#fff"
+            android:textStyle="bold" />
+
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/holo_blue_dark"
+            android:paddingStart="25dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="16dp"
+            android:text="@string/meeting_link"
+            android:textColor="#fff"
+            android:textStyle="bold" />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/holo_blue_dark"
+            android:paddingStart="25dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="16dp"
+            android:text="@string/meeting_time"
+            android:textColor="#fff"
+            android:textStyle="bold" />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/holo_blue_dark"
+            android:paddingStart="25dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="16dp"
+            android:text="@string/team"
+            android:textColor="#fff"
+            android:textStyle="bold" />
+
+        </TableRow>
+
+      </TableLayout>
+    </HorizontalScrollView>
+  </LinearLayout>
+</LinearLayout>

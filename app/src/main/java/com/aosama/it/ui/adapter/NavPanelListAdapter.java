@@ -23,16 +23,16 @@ public class NavPanelListAdapter extends BaseAdapter {
             R.drawable.ic_to_do_list,
             R.drawable.ic_inbox,
             R.drawable.ic_notification,
-            R.drawable.ic_question,
-            R.drawable.ic_settings
+//            R.drawable.ic_question,
+//            R.drawable.ic_settings
     };
     private int[] tvColors = {
 
             R.color.colorGreen,
             R.color.colorGreen,
             R.color.colorGreen,
-            R.color.colorGreen,
-            R.color.colorGreen,
+//            R.color.colorGreen,
+//            R.color.colorGreen,
     };
 
     public NavPanelListAdapter(Context con) {
@@ -41,8 +41,9 @@ public class NavPanelListAdapter extends BaseAdapter {
         menus = new String[]{con.getString(R.string.menu_boards),
                 con.getString(R.string.menu_inbox),
                 con.getString(R.string.menu_notifications),
-                con.getString(R.string.contact_us),
-                con.getString(R.string.settings)};
+//                con.getString(R.string.contact_us),
+//                con.getString(R.string.settings)
+        };
     }
 
     public void setOnItemClickListener(OnItemClickListener mListener) {

@@ -22,6 +22,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -71,20 +72,7 @@ public class HAdapterUsers extends RecyclerView.Adapter<HAdapterUsers.UserView> 
         } else {
             String firstChar = "";
             if (userBoard.getShortName().length() > 0) {
-//                String firstChar = userBoard.getShortName().substring(0, 1).toUpperCase();
-//                Log.e(TAG, "onBindViewHolder: " + userBoard.getShortName());
-//                Log.e(TAG, "onBindViewHolder: " + userBoard.getFullName());
-//                Log.e(TAG, "onBindViewHolder: " + userBoard.getName());
-//                String[] names = userBoard.getName().split(" ");
-//                if (names.length >= 2) {
-//                    firstChar = names[0].substring(0, 1).toUpperCase() +
-//                            names[1].substring(0, 1).toUpperCase();
-//                } else {
-//                    if (names.length == 1) {
-//                        firstChar = names[0].substring(0, 1).toUpperCase();
-//                    }
-//                }
-//                TextDrawable drawable2 = createTextDrawable(firstChar);
+
                 TextDrawable drawable2 = createTextDrawable(userBoard.getShortName());
                 holder.userPhoto.setImageDrawable(drawable2);
             }
@@ -110,13 +98,16 @@ public class HAdapterUsers extends RecyclerView.Adapter<HAdapterUsers.UserView> 
         int fonsSize =
                 (int) mContext.getResources()
                         .getDimension(R.dimen._20ssp);
-        return TextDrawable.builder()
-                .beginConfig()
+        return TextDrawable.builder().beginConfig().
+                textColor(Color.BLUE)
+//                .beginConfig()
                 .fontSize(fonsSize)
+                .bold()
                 .width(dimWH)  // width in px
                 .height(dimWH) // height in px
                 .endConfig()
-                .buildRect(firstChar, Color.RED);
+                .buildRect(firstChar, Color.parseColor("#41C5C3C3"));
+
     }
 
     @NonNull

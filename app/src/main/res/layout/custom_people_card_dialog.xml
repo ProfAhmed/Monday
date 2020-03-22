@@ -1,0 +1,55 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  style="@style/Widget.MaterialComponents.CardView"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_marginStart="26dp"
+  android:layout_marginEnd="26dp"
+  android:foregroundGravity="center"
+  app:cardCornerRadius="15dp"
+  app:cardElevation="10dp"
+  app:layout_anchorGravity="center">
+
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="28dp">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+      android:id="@+id/imBtnCancel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="start"
+      android:layout_marginStart="12dp"
+      android:layout_marginTop="8dp"
+      android:background="@android:color/transparent"
+      android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+      android:id="@+id/ivUserImagePhoto"
+      android:layout_width="@dimen/_50sdp"
+      android:layout_height="@dimen/_50sdp"
+      app:layout_constraintBottom_toTopOf="@+id/tvUserName"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+      android:id="@+id/tvUserName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginStart="30dp"
+      android:layout_marginTop="18dp"
+      android:layout_marginEnd="30dp"
+      android:gravity="center"
+      android:textSize="12sp" />
+
+  </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

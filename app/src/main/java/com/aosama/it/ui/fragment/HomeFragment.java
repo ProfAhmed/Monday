@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -43,6 +44,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(getActivity().getString(R.string.boards));
         HomeViewModel viewModel = ViewModelProviders.
                 of(this).get(HomeViewModel.class);
         expandableListView = root.findViewById(R.id.expandableListView);
@@ -81,9 +84,13 @@ public class HomeFragment extends Fragment {
                                     expandableListTitle.get(groupPosition))
                                     .get(childPosition).getName(), Toast.LENGTH_SHORT
                     ).show();
-
+                    toolbar.setTitle(expandableListDetail.get(
+                            expandableListTitle.get(groupPosition))
+                            .get(childPosition).getName());
                     ///here
-                    fireBoardItemDetails(childPosition);
+                    fireBoardItemDetails(expandableListDetail.get(
+                            expandableListTitle.get(groupPosition))
+                            .get(childPosition).getId());
 
 
                 } catch (Exception e) {
@@ -134,11 +141,11 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    private void fireBoardItemDetails(int childPosition) {
+    private void fireBoardItemDetails(String id) {
 
         BoardDetailsFragment boardDetailsFragment = new BoardDetailsFragment();
         Bundle b = new Bundle();
-        b.putString(Constants.SELECTED_BORAD, gson.toJson(boardDataLists.get(childPosition)));
+        b.putString(Constants.SELECTED_BORAD, id);
         boardDetailsFragment.setArguments(b);
 
         getActivity().getSupportFragmentManager()

@@ -37,4 +37,15 @@
   <string name="sign_out">Log Out</string>
   <string name="arabaic">Arabic</string>
   <string name="type_message">Type Message Here</string>
+  <string name="name">Name</string>
+  <string name="status">Status</string>
+  <string name="add_date">Add Date</string>
+  <string name="start_date">Start Date</string>
+  <string name="due_date">Due Date</string>
+  <string name="meeting_link">Meeting Link</string>
+  <string name="meeting_time">Meeting Time</string>
+  <string name="team">Team</string>
+  <string name="comments">Comments</string>
+  <string name="hint1_comment">Write your first update</string>
+  <string name="reply">Reply</string>
 </resources>

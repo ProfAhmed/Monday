@@ -1,24 +1,48 @@
 package com.aosama.it.ui.fragment;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.aosama.it.R;
 import com.aosama.it.constants.Constants;
 import com.aosama.it.models.responses.BasicResponse;
+import com.aosama.it.models.responses.boards.Assignee;
 import com.aosama.it.models.responses.boards.BoardDataList;
+import com.aosama.it.models.responses.boards.NestedBoard;
+import com.aosama.it.models.responses.boards.TaskE;
 import com.aosama.it.models.responses.boards.UserBoard;
 import com.aosama.it.models.responses.nested.BoardData;
+import com.aosama.it.ui.activities.CommentsActivity;
+import com.aosama.it.ui.activities.HomeActivity;
+import com.aosama.it.ui.adapter.CustomListAdapterDialog;
 import com.aosama.it.ui.adapter.board.HAdapterUsers;
 import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.MyUtilis;
 import com.aosama.it.viewmodels.BoardDetailViewModel;
 import com.google.gson.Gson;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,10 +51,14 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -42,12 +70,16 @@ public class BoardDetailsFragment extends Fragment implements
     RecyclerView rvAllUsers;
     @BindView(R.id.tvTeamName)
     TextView tvTeamName;
+    @BindView(R.id.llContainer)
+    LinearLayout llContainer;
+
     private BoardDataList boardDataList = new BoardDataList();
     private Gson gson = new Gson();
     private HAdapterUsers adapterUsers;
     private List<UserBoard> userBoards = new ArrayList<>();
     private BoardDetailViewModel boardDetailViewModel = null;
     private android.app.AlertDialog dialog = null;
+    private String id;
 
     public static BoardDetailsFragment newInstance() {
 
@@ -83,17 +115,8 @@ public class BoardDetailsFragment extends Fragment implements
         fetchingData();
 
         //setting an empty list to the adapter
-        settingAdapter();
+//        settingAdapter();
 
-    }
-
-    private void settingAdapter() {
-        if (!boardDataList.getNestedBoard().isEmpty()) {
-//            adapterUsers = new HAdapterUsers(getActivity(),
-//                    boardDataList.getNestedBoard()
-//                            .get(0).getUsers(), this);
-            refreshAdapterUsers();
-        }
     }
 
     private void refreshAdapterUsers() {
@@ -105,12 +128,10 @@ public class BoardDetailsFragment extends Fragment implements
     }
 
     private void fetchingData() {
-        String id = boardDataList.getNestedBoard().get(0).getId();
         HashMap<String, String> params = new HashMap<>();
         params.put("id", id);
         Log.e(TAG, "fetchingData: " + id);
 
-        id = "BOR8493277862";
         String url = MyConfig.NESTED + "?id=" + id;
         boardDetailViewModel.getBoardDetails(url, params)
                 .observe(this,
@@ -120,6 +141,7 @@ public class BoardDetailsFragment extends Fragment implements
                                 case SUCCESS:
                                     if (basicResponseStateData.getData() != null) {
                                         fillViewWithData(basicResponseStateData.getData());
+                                        fillTable(basicResponseStateData.getData().getData().getBoardData().getNestedBoards().get(0));
                                     }
                                     Log.e(TAG, "fetchingData: success");
                                     break;
@@ -162,19 +184,104 @@ public class BoardDetailsFragment extends Fragment implements
 
         //-------------
         //setting the teamname
-        tvTeamName.setText(data.getData()
-                .getBoardData().getNestedBoards()
-                .get(0).getTeam().getTeamName());
+        try {
+            tvTeamName.setText(data.getData()
+                    .getBoardData().getNestedBoards()
+                    .get(0).getTeam().getTeamName());
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //
+
+    }
+
+    private void fillTable(NestedBoard nestedBoard) {
+        for (int j = 0; j < nestedBoard.getTasksGroup().size(); j++) {
+            LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService
+                    (Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.dynamic_table_layout, null, false);
+            TextView tvTableName = view.findViewById(R.id.tvTableName);
+
+            TableLayout tbl_header = view.findViewById(R.id.tbl_header);
+            TableLayout tbl_scrolled = view.findViewById(R.id.tbl_scrolled);
+            tvTableName.setText(nestedBoard.getTasksGroup().get(j).getName());
+            llContainer.addView(view);
+
+            for (int i = 0; i < nestedBoard.getTasksGroup().get(j).getTasks().size(); i++) {
+                LayoutInflater inflater1 = (LayoutInflater) getActivity().getApplicationContext().getSystemService
+                        (Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater2 = (LayoutInflater) getActivity().getApplicationContext().getSystemService
+                        (Context.LAYOUT_INFLATER_SERVICE);
+
+                View view1 = inflater1.inflate(R.layout.fixed_row_layout, null, false);
+                View view2 = inflater1.inflate(R.layout.dynamic_row_layout, null, false);
+                ImageView ivComments = view2.findViewById(R.id.ivComments);
+
+                int finalI = i;
+                int finalJ = j;
+                ivComments.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getActivity(), nestedBoard.getTasksGroup().get(finalJ).getTasks().get(finalI).getName(), Toast.LENGTH_SHORT).show();
+                        fireTaskItemComments(nestedBoard.getTasksGroup().get(finalJ).getTasks().get(finalI));
+                    }
+                });
+                TextView tvName = view1.findViewById(R.id.tvName);
+                TextView tvStatus = view2.findViewById(R.id.tvStatus);
+                TextView tvAddDate = view2.findViewById(R.id.tvAddDate);
+                TextView tvStartDate = view2.findViewById(R.id.StartDate);
+                TextView tvDueDate = view2.findViewById(R.id.tvDueDate);
+                TextView tvMeetingUrl = view2.findViewById(R.id.tvMeetingUrl);
+                TextView tvMeetingTime = view2.findViewById(R.id.tvMeetingTime);
+                TextView tvTeam = view2.findViewById(R.id.tvTeam);
+
+                tvName.setText(nestedBoard.getTasksGroup().get(j).getTasks().get(i).getName());
+                tvStatus.setText(nestedBoard.getTasksGroup().get(j).getTasks().get(i).getStatus().getName());
+                tvAddDate.setText(MyUtilis.formateDate(nestedBoard.getTasksGroup().get(j).getTasks().get(i).getAddDate()));
+                tvStartDate.setText(MyUtilis.formateDate(nestedBoard.getTasksGroup().get(j).getTasks().get(i).getStartDate()));
+                tvDueDate.setText(MyUtilis.formateDate(nestedBoard.getTasksGroup().get(j).getTasks().get(i).getDueDate()));
+                tvMeetingUrl.setText(nestedBoard.getTasksGroup().get(j).getTasks().get(i).getMeetingUrl());
+                try {
+                    tvMeetingTime.setText(MyUtilis.formateDateTime(nestedBoard.getTasksGroup().get(j).getTasks().get(i).getMeetingTime()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (nestedBoard.getTasksGroup().get(j).getTasks().get(i).getAssignee() != null) {
+                    tvTeam.setText(String.valueOf(nestedBoard.getTasksGroup().get(j).getTasks().get(i).getAssignee().size()));
+
+                    int finalI1 = i;
+                    int finalJ1 = j;
+                    tvTeam.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            showDialogPeople((ArrayList<Assignee>) nestedBoard.getTasksGroup().get(finalJ1).getTasks().get(finalI1).getAssignee());
+                        }
+                    });
+                }
+                tvStatus.setBackgroundColor(Color.parseColor(nestedBoard.getTasksGroup().get(j).getTasks().get(i).getStatus().getColor()));
+                tbl_header.addView(view1);
+                tbl_scrolled.addView(view2);
+
+            }
+        }
+    }
+
+    private void fireTaskItemComments(TaskE taskE) {
+
+        Intent intent = new Intent(getActivity(), CommentsActivity.class);
+        intent.putExtra(Constants.SELECTED_COMMENT, gson.toJson(taskE));
+
+        startActivity(intent);
 
     }
 
     private void gettingThePassedBoardModel() {
         if (getArguments() != null) {
             if (getArguments().containsKey(Constants.SELECTED_BORAD)) {
-                boardDataList = gson.fromJson(
-                        getArguments().getString(Constants.SELECTED_BORAD), BoardDataList.class);
+//                boardDataList = gson.fromJson(
+//                        getArguments().getString(Constants.SELECTED_BORAD), BoardDataList.class);
+                id = getArguments().getString(Constants.SELECTED_BORAD);
             }
         }
     }
@@ -190,20 +297,102 @@ public class BoardDetailsFragment extends Fragment implements
 
     }
 
-
     private void showDialog() {
         dialog = MyUtilis.myDialog(getActivity());
         dialog.show();
     }
 
+    private void showDialogPeople(ArrayList<Assignee> assigneeList) {
+
+        final Dialog dialog = new Dialog(getActivity());
+
+        View view = getLayoutInflater().inflate(R.layout.dialog_people, null);
+
+        ListView lv = (ListView) view.findViewById(R.id.custom_list);
+
+        // Change MyActivity.this and myListOfItems to your own values
+        CustomListAdapterDialog clad = new CustomListAdapterDialog(getActivity(), assigneeList);
+
+        lv.setAdapter(clad);
+        dialog.setContentView(view);
+
+        dialog.show();
+
+    }
+
+    public class ViewDialog {
+        void showDialog(Activity activity, UserBoard userBoard) {
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(true);
+            dialog.setContentView(R.layout.custom_people_card_dialog);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            Window window = dialog.getWindow();
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+
+            ImageButton imBtnCancel = dialog.findViewById(R.id.imBtnCancel);
+            ImageView userPic = dialog.findViewById(R.id.ivUserImagePhoto);
+            TextView tvUserName = dialog.findViewById(R.id.tvUserName);
+            tvUserName.setText(userBoard.getFullName());
+
+            String path = userBoard.getUserImage();
+            if (!TextUtils.isEmpty(path) && path != null
+                    && path.length() > 0) {
+                Picasso.get().load(path)
+                        .into(userPic, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+
+                            }
+                        });
+            } else {
+                String firstChar = "";
+                if (userBoard.getShortName().length() > 0) {
+
+                    TextDrawable drawable2 = createTextDrawable(userBoard.getShortName());
+                    userPic.setImageDrawable(drawable2);
+                }
+                String successMessage = "";
+                imBtnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        }
+    }
+
+    private TextDrawable createTextDrawable(String firstChar) {
+//        TextDrawable drawable1 = TextDrawable.builder()
+//                .buildRoundRect(firstChar, Color.RED, 10);
+        int dimWH = (int) getActivity().getResources()
+                .getDimension(R.dimen._60sdp);
+        int fonsSize =
+                (int) getActivity().getResources()
+                        .getDimension(R.dimen._20ssp);
+        return TextDrawable.builder().beginConfig().
+                textColor(Color.BLUE)
+//                .beginConfig()
+                .fontSize(fonsSize)
+                .bold()
+                .width(dimWH)  // width in px
+                .height(dimWH) // height in px
+                .endConfig()
+                .buildRect(firstChar, Color.parseColor("#41C5C3C3"));
+
+    }
+
     @Override
     public void onUserClicked(View view, int position, UserBoard userBoard) {
-
-        new AlertDialog.Builder(getActivity())
-                .setTitle(userBoard.getShortName())
-                .setMessage(userBoard.getFullName())
-                .setCancelable(true)
-                .show();
+        ViewDialog alert = new ViewDialog();
+        alert.showDialog(getActivity(), userBoard);
 
     }
 }

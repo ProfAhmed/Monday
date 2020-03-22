@@ -45,11 +45,11 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.LOCAL_LANG, "ar").equals("ar")) {
-            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else {
-            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-        }
+//        if (PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.LOCAL_LANG, "ar").equals("ar")) {
+//            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+//        } else {
+//            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+//        }
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -90,13 +90,13 @@ public class HomeActivity extends AppCompatActivity {
                     fab.setVisibility(View.GONE);
                     break;
                 case 2:
-                    Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
-                    Toast.makeText(this, "3", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "3", Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
-                    Toast.makeText(this, "4", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "4", Toast.LENGTH_SHORT).show();
                     break;
 
             }
@@ -106,7 +106,7 @@ public class HomeActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
         }
 
-        setLocale(PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.LOCAL_LANG, "en"));
+//        setLocale(PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.LOCAL_LANG, "en"));
     }
 
     public void setLocale(String lang) {
@@ -137,13 +137,12 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-        return true;
-    }
-
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.home, menu);
+//        return true;
+//    }
 
     @Override
     public void onBackPressed() {

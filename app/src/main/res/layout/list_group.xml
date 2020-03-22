@@ -6,10 +6,12 @@
 
   <TextView
     android:id="@+id/listTitle"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="end"
     android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
+    android:text="Test"
     android:textColor="@android:color/black" />
 </LinearLayout>
