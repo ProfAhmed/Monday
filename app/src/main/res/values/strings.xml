@@ -48,4 +48,10 @@
   <string name="comments">Comments</string>
   <string name="hint1_comment">Write your first update</string>
   <string name="reply">Reply</string>
+  <string name="type_comment">Type Comment</string>
+  <string name="update">Update</string>
+  <string name="attachment_name">Attachment Name</string>
+  <string name="loading_msg">loading...</string>
+  <string name="ef_error_create_image_file">faild uploading</string>
+  <string name="success">Success uploading</string>
 </resources>

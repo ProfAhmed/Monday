@@ -1,24 +1,32 @@
 package com.aosama.it.ui.adapter;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.aosama.it.R;
+import com.aosama.it.models.responses.boards.Attachment;
 import com.aosama.it.models.responses.boards.CommentGroup;
-import com.aosama.it.ui.activities.InboxDetailsActivity;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -28,28 +36,42 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.InboxVH> {
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentVH> {
 
     private Context mContext;
     private List<CommentGroup> commentGroups;
+    private OnAttachClicked onAttachClicked = null;
 
-    public CommentAdapter(Context mContext, List<CommentGroup> commentGroups) {
+    public interface OnAttachClicked {
+        //        void onUserClicked(View view, int position);
+        void onUserClicked(View view, int position, List<Attachment> attachments);
+    }
+
+    public CommentAdapter(Context mContext, List<CommentGroup> commentGroups, OnAttachClicked onAttachClicked) {
         this.mContext = mContext;
         this.commentGroups = commentGroups;
+        this.onAttachClicked = onAttachClicked;
     }
 
     @NonNull
     @Override
-    public InboxVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CommentVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_comment_layout, parent, false);
-        return new InboxVH(view);
+        return new CommentVH(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull InboxVH holder, int position) {
+    public void onBindViewHolder(@NonNull CommentVH holder, int position) {
         CommentGroup commentGroup = commentGroups.get(position);
         holder.tvUserName.setText(commentGroup.getByUserName());
-
+        holder.ivAttachment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 if (onAttachClicked != null) {
+                    onAttachClicked.onUserClicked(holder.itemView, position, commentGroup.getAttachments());
+                }
+            }
+        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             holder.tvCommentData.setText(Html.fromHtml(commentGroup.getCommentData(), Html.FROM_HTML_MODE_COMPACT));
         } else {
@@ -104,7 +126,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.InboxVH>
     }
 
 
-    public class InboxVH extends RecyclerView.ViewHolder {
+    public class CommentVH extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tvDays)
         TextView tvDays;
@@ -116,12 +138,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.InboxVH>
         TextView tvReply;
         @BindView(R.id.ivUserImagePhoto)
         ImageView userPhoto;
+        @BindView(R.id.ivAttachment)
+        ImageView ivAttachment;
 
-        public InboxVH(@NonNull View itemView) {
+        public CommentVH(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
         }
     }
+
 }
+
 

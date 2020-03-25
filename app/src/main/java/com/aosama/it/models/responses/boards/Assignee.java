@@ -1,9 +1,15 @@
 package com.aosama.it.models.responses.boards;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.linkedin.android.spyglass.mentions.Mentionable;
 
-public class Assignee {
+public class Assignee implements Mentionable {
 
     @SerializedName("_id")
     @Expose
@@ -23,6 +29,11 @@ public class Assignee {
     @SerializedName("fullName")
     @Expose
     private String fullName;
+
+    public Assignee(String abcd) {
+        this.shortName = abcd;
+    }
+
 
     public String getId() {
         return id;
@@ -71,4 +82,66 @@ public class Assignee {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
+
+
+
+    // --------------------------------------------------
+    // Mentionable Implementation
+    // --------------------------------------------------
+
+    @NonNull
+    @Override
+    public String getTextForDisplayMode(MentionDisplayMode mode) {
+        switch (mode) {
+            case FULL:
+                return shortName;
+            case PARTIAL:
+            case NONE:
+            default:
+                return "";
+        }
+    }
+
+    @NonNull
+    @Override
+    public MentionDeleteStyle getDeleteStyle() {
+        // Note: Cities do not support partial deletion
+        // i.e. "San Francisco" -> DEL -> ""
+        return MentionDeleteStyle.PARTIAL_NAME_DELETE;
+    }
+
+    @Override
+    public int getSuggestibleId() {
+        return shortName.hashCode();
+    }
+
+    @Override
+    public String getSuggestiblePrimaryText() {
+        return shortName;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(shortName);
+    }
+
+    public Assignee(Parcel in) {
+        shortName = in.readString();
+    }
+
+    public static final Parcelable.Creator<Assignee> CREATOR
+            = new Parcelable.Creator<Assignee>() {
+        public Assignee createFromParcel(Parcel in) {
+            return new Assignee(in);
+        }
+
+        public Assignee[] newArray(int size) {
+            return new Assignee[size];
+        }
+    };
 }

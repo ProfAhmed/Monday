@@ -61,6 +61,11 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.google.code.gson:gson:2.8.6'
 
+    //network
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.2'
+
     // room
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'android.arch.persistence.room:runtime:1.1.1'
@@ -78,6 +83,9 @@ dependencies {
 
     implementation 'org.apache.commons:commons-lang3:3.9'
     implementation 'com.google.guava:guava:27.0.1-android'
+
+    //mention user using @
+    api 'com.linkedin.android.spyglass:spyglass:2.1.0'
 
 
 }

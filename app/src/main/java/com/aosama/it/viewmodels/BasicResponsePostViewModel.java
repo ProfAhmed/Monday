@@ -24,5 +24,4 @@ public class BasicResponsePostViewModel extends AndroidViewModel {
         return repository.basicResponsePostApi(url, jsonBody);
     }
 
-
 }

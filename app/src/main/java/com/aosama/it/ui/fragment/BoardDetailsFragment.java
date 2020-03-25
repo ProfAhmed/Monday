@@ -224,7 +224,7 @@ public class BoardDetailsFragment extends Fragment implements
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(getActivity(), nestedBoard.getTasksGroup().get(finalJ).getTasks().get(finalI).getName(), Toast.LENGTH_SHORT).show();
-                        fireTaskItemComments(nestedBoard.getTasksGroup().get(finalJ).getTasks().get(finalI));
+                        fireTaskItemComments(nestedBoard.getTasksGroup().get(finalJ).getTasks().get(finalI), nestedBoard);
                     }
                 });
                 TextView tvName = view1.findViewById(R.id.tvName);
@@ -267,10 +267,11 @@ public class BoardDetailsFragment extends Fragment implements
         }
     }
 
-    private void fireTaskItemComments(TaskE taskE) {
+    private void fireTaskItemComments(TaskE taskE, NestedBoard nestedBoard) {
 
         Intent intent = new Intent(getActivity(), CommentsActivity.class);
         intent.putExtra(Constants.SELECTED_COMMENT, gson.toJson(taskE));
+        intent.putExtra(Constants.SELECTED_BORAD, gson.toJson(nestedBoard));
 
         startActivity(intent);
 

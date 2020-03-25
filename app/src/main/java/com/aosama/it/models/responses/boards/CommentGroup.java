@@ -41,7 +41,7 @@ public class CommentGroup {
     private String commentData;
     @SerializedName("attachments")
     @Expose
-    private List<Object> attachments = null;
+    private List<Attachment> attachments = null;
     @SerializedName("nestedComments")
     @Expose
     private List<NestedComment> nestedComments = null;
@@ -134,11 +134,11 @@ public class CommentGroup {
         this.commentData = commentData;
     }
 
-    public List<Object> getAttachments() {
+    public List<Attachment> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(List<Object> attachments) {
+    public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
     }
 

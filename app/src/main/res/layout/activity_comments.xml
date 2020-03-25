@@ -86,5 +86,6 @@
     android:src="@drawable/ic_edit"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:tint="@android:color/white" />
+    app:tint="@android:color/white"
+    android:onClick="addComment"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

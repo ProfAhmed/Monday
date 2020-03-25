@@ -8,9 +8,10 @@ public class MyConfig {
     public static final String BOARDS = BASE_URL + "board";
 
     public static final String NESTED = BASE_URL + "board/nested";
+    public static final String ADD_COMMENT = BASE_URL + "task/comment";
 //    public static final String NESTED = BASE_URL + "board/nested"+"?id=BOR9139288889";
 
-    public class MyPrefs {
+    public static class MyPrefs {
         public static final String FIREBASE_TOKEN = "firebase_token";
         public static final String TOKEN = "token";
         public static final String IS_LOGIN = "is_login";
