@@ -4,24 +4,27 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aosama.it.R;
+import com.aosama.it.models.responses.boards.BoardDataList;
 import com.aosama.it.models.responses.boards.NestedBoard;
 
 public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<String> expandableListTitle;
-    private HashMap<String, List<NestedBoard>> expandableListDetail;
+    private List<BoardDataList> expandableListTitle;
+    private HashMap<BoardDataList, List<NestedBoard>> expandableListDetail;
 
-    public CustomExpandableListAdapter(Context context, List<String> expandableListTitle,
-                                       HashMap<String, List<NestedBoard>> expandableListDetail) {
+    public CustomExpandableListAdapter(Context context, List<BoardDataList> expandableListTitle,
+                                       HashMap<BoardDataList, List<NestedBoard>> expandableListDetail) {
         this.context = context;
         this.expandableListTitle = expandableListTitle;
         this.expandableListDetail = expandableListDetail;
@@ -77,7 +80,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int listPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String listTitle = (String) getGroup(listPosition);
+        BoardDataList boardDataList = (BoardDataList) getGroup(listPosition);
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -85,8 +88,16 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         }
         TextView listTitleTextView = (TextView) convertView
                 .findViewById(R.id.listTitle);
+        ImageView ivLock = convertView
+                .findViewById(R.id.ivLock);
+        View view = convertView
+                .findViewById(R.id.view);
         listTitleTextView.setTypeface(null, Typeface.BOLD);
-        listTitleTextView.setText(listTitle);
+        listTitleTextView.setText(boardDataList.getName());
+        if (boardDataList.isPrivate())
+            ivLock.setVisibility(View.VISIBLE);
+        else ivLock.setVisibility(View.GONE);
+        view.setBackgroundColor(Color.parseColor(boardDataList.getColor()));
         return convertView;
     }
 

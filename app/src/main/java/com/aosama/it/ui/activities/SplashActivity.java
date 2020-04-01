@@ -22,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        setLocale(PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.LOCAL_LANG, Locale.getDefault().getLanguage()));
+//        setLocale(PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.LOCAL_LANG, Locale.getDefault().getLanguage()));
         boolean loggedIn = PreferenceProcessor.getInstance(this).getBool(MyConfig.MyPrefs.IS_LOGIN, false);
         Intent i;
         if (loggedIn) {

@@ -3,7 +3,9 @@ package com.aosama.it.viewmodels;
 import android.content.Context;
 import android.util.Log;
 
+import com.aosama.it.models.responses.BasicResponse;
 import com.aosama.it.models.responses.ImageResponse;
+import com.aosama.it.models.responses.file.FileResponse;
 import com.aosama.it.network.ApiUtilise;
 import com.aosama.it.network.IrApiService;
 import com.aosama.it.utiles.MyConfig;
@@ -36,7 +38,7 @@ public class UploadAttachmentViewModel implements ProgressRequestBody.UploadCall
 
         void onError();
 
-        void onFinish(ImageResponse imageResponse);
+        void onFinish(BasicResponse<FileResponse> imageResponse);
 
 
     }
@@ -54,12 +56,12 @@ public class UploadAttachmentViewModel implements ProgressRequestBody.UploadCall
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), fileBody);
         String token = PreferenceProcessor.getInstance(mContext).getStr(MyConfig.MyPrefs.TOKEN, "");
         String auth = "Bearer " + token;
-        Call<ImageResponse> call = uploadAPIs.doUploadProfilePicture(auth, filePart);
-        call.enqueue(new Callback<ImageResponse>() {
+        Call<BasicResponse<FileResponse>> call = uploadAPIs.doUploadProfilePicture(auth, filePart);
+        call.enqueue(new Callback<BasicResponse<FileResponse>>() {
             @Override
-            public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+            public void onResponse(Call<BasicResponse<FileResponse>> call, Response<BasicResponse<FileResponse>> response) {
                 if (response.message().equals("OK")) {
-                    if (Objects.requireNonNull(response.body()).getStatus() != null) {
+                    if (response.body().getSuccessful()) {
                         handler.onFinish(response.body());
                     }
                 } else {
@@ -70,7 +72,7 @@ public class UploadAttachmentViewModel implements ProgressRequestBody.UploadCall
             }
 
             @Override
-            public void onFailure(Call<ImageResponse> call, Throwable t) {
+            public void onFailure(Call<BasicResponse<FileResponse>> call, Throwable t) {
                 Log.v("ResponseUpload", t.getMessage());
                 handler.onError();
 

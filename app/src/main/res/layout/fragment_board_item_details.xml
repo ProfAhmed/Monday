@@ -35,7 +35,18 @@
         android:padding="10dp"
         android:textSize="@dimen/_14ssp" />
 
+      <TextView
+        android:id="@+id/tvNoTasksHere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="60dp"
+        android:text="@string/no_tasks_here"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
     </LinearLayout>
+
+
   </ScrollView>
 
 </RelativeLayout>

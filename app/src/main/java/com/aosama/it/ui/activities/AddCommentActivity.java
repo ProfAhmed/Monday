@@ -23,10 +23,12 @@ import android.widget.Toast;
 
 import com.aosama.it.R;
 import com.aosama.it.constants.Constants;
+import com.aosama.it.models.responses.BasicResponse;
 import com.aosama.it.models.responses.ImageResponse;
 import com.aosama.it.models.responses.boards.Assignee;
 import com.aosama.it.models.responses.boards.NestedBoard;
 import com.aosama.it.models.responses.boards.UserBoard;
+import com.aosama.it.models.responses.file.FileResponse;
 import com.aosama.it.ui.adapter.UserAdapter;
 import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.MyUtilis;
@@ -84,14 +86,14 @@ public class AddCommentActivity extends AppCompatActivity implements QueryTokenR
 
     BasicResponsePostViewModel viewModel;
     private NestedBoard nestedBoard;
-    private Gson gson;
+    private String attachName, attachKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_comment);
         ButterKnife.bind(this);
-        gson = new Gson();
+        Gson gson = new Gson();
 
         nestedBoard = gson.fromJson(
                 getIntent().getStringExtra(Constants.SELECTED_USER), NestedBoard.class);
@@ -119,7 +121,7 @@ public class AddCommentActivity extends AppCompatActivity implements QueryTokenR
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userIds;
+                String userIds = null;
                 if (userStringBuilder.length() > 0) {
                     userIds = userStringBuilder.substring(0, userStringBuilder.lastIndexOf(","));
                     Log.d("UserIds", userIds);
@@ -128,9 +130,11 @@ public class AddCommentActivity extends AppCompatActivity implements QueryTokenR
                 try {
                     jsonBody.put("taskId", getIntent().getStringExtra(Constants.TASK_ID));
                     jsonBody.put("commentData", editor.getText().toString());
-                    jsonBody.put("attachName", "name");
-                    jsonBody.put("attachKey", "key");
+                    jsonBody.put("attachName", attachName);
+                    jsonBody.put("attachKey", attachKey);
                     jsonBody.put("isPrivate", false);
+                    if (userIds != null)
+                        jsonBody.put("mentionUsers", userIds);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -144,6 +148,10 @@ public class AddCommentActivity extends AppCompatActivity implements QueryTokenR
                         case SUCCESS:
                             if (basicResponseStateData.getData() != null) {
                                 Toast.makeText(AddCommentActivity.this, basicResponseStateData.getData().getMessage(), Toast.LENGTH_SHORT).show();
+//                                Intent intent = new Intent(AddCommentActivity.this, CommentsActivity.class);
+//                                intent.putExtra(Constants.TASK_ID, getIntent().getStringExtra(Constants.TASK_ID));
+//                                startActivity(intent);
+                                setResult(RESULT_OK);
                                 finish();
                             }
                             break;
@@ -256,8 +264,8 @@ public class AddCommentActivity extends AppCompatActivity implements QueryTokenR
                         Log.e("File Size", "Size " + file.length());
 
                         if (file.length() > 0) {
-//                            UploadAttachmentViewModel uploadAttachmentViewModel = new UploadAttachmentViewModel(this, this);
-//                            uploadAttachmentViewModel.doUploadAttachment(file);
+                            UploadAttachmentViewModel uploadAttachmentViewModel = new UploadAttachmentViewModel(this, this);
+                            uploadAttachmentViewModel.doUploadAttachment(file);
                         }
 
                     } catch (FileNotFoundException e) {
@@ -341,9 +349,12 @@ public class AddCommentActivity extends AppCompatActivity implements QueryTokenR
     }
 
     @Override
-    public void onFinish(ImageResponse imageResponse) {
+    public void onFinish(BasicResponse<FileResponse> imageResponse) {
         mProgressDialog.setProgress(100);
         mProgressDialog.dismiss();
+        attachName = imageResponse.getData().getAttachName();
+        attachKey = imageResponse.getData().getAttachKey();
+
         Toasty.success(this, getString(R.string.success)).show();
     }
 

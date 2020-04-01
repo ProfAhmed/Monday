@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,8 +33,7 @@ import com.aosama.it.models.responses.boards.TaskE;
 import com.aosama.it.models.responses.boards.UserBoard;
 import com.aosama.it.models.responses.nested.BoardData;
 import com.aosama.it.ui.activities.CommentsActivity;
-import com.aosama.it.ui.activities.HomeActivity;
-import com.aosama.it.ui.adapter.CustomListAdapterDialog;
+import com.aosama.it.ui.adapter.CustomListAdapterAssigneeDialog;
 import com.aosama.it.ui.adapter.board.HAdapterUsers;
 import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.MyUtilis;
@@ -50,10 +48,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -70,6 +64,8 @@ public class BoardDetailsFragment extends Fragment implements
     RecyclerView rvAllUsers;
     @BindView(R.id.tvTeamName)
     TextView tvTeamName;
+    @BindView(R.id.tvNoTasksHere)
+    TextView tvNoTasksHere;
     @BindView(R.id.llContainer)
     LinearLayout llContainer;
 
@@ -188,9 +184,14 @@ public class BoardDetailsFragment extends Fragment implements
             tvTeamName.setText(data.getData()
                     .getBoardData().getNestedBoards()
                     .get(0).getTeam().getTeamName());
+            if (data.getData()
+                    .getBoardData().getNestedBoards()
+                    .get(0).getTeam().getTeamName().length() == 0)
+                tvTeamName.setVisibility(View.GONE);
 
         } catch (Exception e) {
             e.printStackTrace();
+            tvTeamName.setVisibility(View.GONE);
         }
         //
 
@@ -198,6 +199,10 @@ public class BoardDetailsFragment extends Fragment implements
 
     private void fillTable(NestedBoard nestedBoard) {
         for (int j = 0; j < nestedBoard.getTasksGroup().size(); j++) {
+            if (nestedBoard.getTasksGroup().get(j).getTasks().size() == 0) {
+                tvNoTasksHere.setVisibility(View.VISIBLE);
+                continue;
+            }
             LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.dynamic_table_layout, null, false);
@@ -223,7 +228,7 @@ public class BoardDetailsFragment extends Fragment implements
                 ivComments.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getActivity(), nestedBoard.getTasksGroup().get(finalJ).getTasks().get(finalI).getName(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(), nestedBoard.getTasksGroup().get(finalJ).getTasks().get(finalI).getName(), Toast.LENGTH_SHORT).show();
                         fireTaskItemComments(nestedBoard.getTasksGroup().get(finalJ).getTasks().get(finalI), nestedBoard);
                     }
                 });
@@ -312,7 +317,7 @@ public class BoardDetailsFragment extends Fragment implements
         ListView lv = (ListView) view.findViewById(R.id.custom_list);
 
         // Change MyActivity.this and myListOfItems to your own values
-        CustomListAdapterDialog clad = new CustomListAdapterDialog(getActivity(), assigneeList);
+        CustomListAdapterAssigneeDialog clad = new CustomListAdapterAssigneeDialog(getActivity(), assigneeList);
 
         lv.setAdapter(clad);
         dialog.setContentView(view);
@@ -359,14 +364,15 @@ public class BoardDetailsFragment extends Fragment implements
                     userPic.setImageDrawable(drawable2);
                 }
                 String successMessage = "";
-                imBtnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
+
             }
+            imBtnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
         }
     }
 

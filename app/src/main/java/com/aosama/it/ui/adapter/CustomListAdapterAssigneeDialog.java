@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class CustomListAdapterDialog extends BaseAdapter {
+public class CustomListAdapterAssigneeDialog extends BaseAdapter {
 
     private ArrayList<Assignee> listData;
 
@@ -26,7 +26,7 @@ public class CustomListAdapterDialog extends BaseAdapter {
 
     private Context mContext;
 
-    public CustomListAdapterDialog(Context context, ArrayList<Assignee> listData) {
+    public CustomListAdapterAssigneeDialog(Context context, ArrayList<Assignee> listData) {
         this.mContext = context;
         this.listData = listData;
         layoutInflater = LayoutInflater.from(context);

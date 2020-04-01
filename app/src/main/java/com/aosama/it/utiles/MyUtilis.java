@@ -2,12 +2,18 @@ package com.aosama.it.utiles;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.text.format.DateFormat;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.aosama.it.R;
 
 import org.apache.commons.lang3.StringUtils;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import dmax.dialog.SpotsDialog;
 
@@ -49,5 +55,26 @@ public class MyUtilis {
         return formattedDate + "  " + formattedTime;
     }
 
+    public static void parsDateYYMMDD(String input) {
+        SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date date = null;
+        try {
+            date = inFormat.parse(input);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat outFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+
+        ParseDate.dayOfTheWeek = (String) DateFormat.format("EEEE", date); // Thursday
+        ParseDate.day = (String) DateFormat.format("dd", date); // 20
+        ParseDate.monthString = (String) DateFormat.format("MMM", date); // Jun
+        ParseDate.monthNumber = (String) DateFormat.format("MM", date); // 06
+        ParseDate.year = (String) DateFormat.format("yyyy", date); // 2013
+
+    }
+
+    public static class ParseDate {
+        public static String dayOfTheWeek, day, monthString, monthNumber, year;
+    }
 
 }

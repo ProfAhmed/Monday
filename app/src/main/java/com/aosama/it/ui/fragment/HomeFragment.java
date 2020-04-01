@@ -35,8 +35,8 @@ public class HomeFragment extends Fragment {
 
     private ExpandableListView expandableListView;
     private ExpandableListAdapter expandableListAdapter;
-    private List<String> expandableListTitle;
-    private HashMap<String, List<NestedBoard>> expandableListDetail;
+    private List<BoardDataList> expandableListTitle;
+    private HashMap<BoardDataList, List<NestedBoard>> expandableListDetail;
 
     private List<BoardDataList> boardDataLists = new ArrayList<>();
     private Gson gson = new Gson();
@@ -50,54 +50,42 @@ public class HomeFragment extends Fragment {
                 of(this).get(HomeViewModel.class);
         expandableListView = root.findViewById(R.id.expandableListView);
 
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getActivity(),
-                        expandableListTitle.get(groupPosition) + " List Expanded.",
-                        Toast.LENGTH_SHORT).show();
-            }
+        expandableListView.setOnGroupExpandListener(groupPosition -> {
+//                Toast.makeText(getActivity(),
+//                        expandableListTitle.get(groupPosition) + " List Expanded.",
+//                        Toast.LENGTH_SHORT).show();
         });
 
-        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+        expandableListView.setOnGroupCollapseListener(groupPosition -> {
+//                Toast.makeText(getActivity(),
+//                        expandableListTitle.get(groupPosition) + " List Collapsed.",
+//                        Toast.LENGTH_SHORT).show();
 
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getActivity(),
-                        expandableListTitle.get(groupPosition) + " List Collapsed.",
-                        Toast.LENGTH_SHORT).show();
-
-            }
         });
 
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                try {
-                    Toast.makeText(
-                            getActivity(),
-                            expandableListTitle.get(groupPosition)
-                                    + " -> "
-                                    + expandableListDetail.get(
-                                    expandableListTitle.get(groupPosition))
-                                    .get(childPosition).getName(), Toast.LENGTH_SHORT
-                    ).show();
-                    toolbar.setTitle(expandableListDetail.get(
-                            expandableListTitle.get(groupPosition))
-                            .get(childPosition).getName());
-                    ///here
-                    fireBoardItemDetails(expandableListDetail.get(
-                            expandableListTitle.get(groupPosition))
-                            .get(childPosition).getId());
+        expandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            try {
+//                    Toast.makeText(
+//                            getActivity(),
+//                            expandableListTitle.get(groupPosition)
+//                                    + " -> "
+//                                    + expandableListDetail.get(
+//                                    expandableListTitle.get(groupPosition))
+//                                    .get(childPosition).getName(), Toast.LENGTH_SHORT
+//                    ).show();
+                toolbar.setTitle(expandableListDetail.get(
+                        expandableListTitle.get(groupPosition))
+                        .get(childPosition).getName());
+                ///here
+                fireBoardItemDetails(expandableListDetail.get(
+                        expandableListTitle.get(groupPosition))
+                        .get(childPosition).getId());
 
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return false;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            return false;
         });
 
         AlertDialog dialog = MyUtilis.myDialog(getActivity());
@@ -116,8 +104,9 @@ public class HomeFragment extends Fragment {
                                     expandableListDetail =
                                             ExpandableListDataPump.
                                                     getData(boardDataLists);
-                                    expandableListTitle = new
-                                            ArrayList<>(expandableListDetail.keySet());
+//                                    expandableListTitle = new
+//                                            ArrayList(expandableListDetail.keySet());
+                                    expandableListTitle = new ArrayList<BoardDataList>(expandableListDetail.keySet());
                                     expandableListAdapter = new CustomExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
                                     expandableListView.setAdapter(expandableListAdapter);
                                     Log.d("FetchedBoards", boardsResponseStateData.toString());

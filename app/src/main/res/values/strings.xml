@@ -54,4 +54,6 @@
   <string name="loading_msg">loading...</string>
   <string name="ef_error_create_image_file">faild uploading</string>
   <string name="success">Success uploading</string>
+  <string name="no_tasks_here">No Tasks Here</string>
+  <string name="tasks">Tasks</string>
 </resources>

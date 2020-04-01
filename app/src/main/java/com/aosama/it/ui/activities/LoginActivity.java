@@ -133,9 +133,9 @@ public class LoginActivity extends AppCompatActivity {
                         if (signInResponseStateData.getData().getData().getUser().getMustChangePassword()) {
                             startActivity(new Intent(this, ChangePasswordActivity.class));
                         } else {
-//                            PreferenceProcessor.getInstance(this).setStr(MyConfig.MyPrefs.NAME, signInResponseStateData.getData().getData().getUser().getName());
-//                            PreferenceProcessor.getInstance(this).setStr(MyConfig.MyPrefs.IMAGE, signInResponseStateData.getData().getData().getUser().getImage());
-//                            PreferenceProcessor.getInstance(this).setFloat(MyConfig.MyPrefs.RATE, signInResponseStateData.getData().getData().getUser().getRate());
+                            PreferenceProcessor.getInstance(this).setStr(MyConfig.MyPrefs.NAME, signInResponseStateData.getData().getData().getUser().getUserName());
+                            PreferenceProcessor.getInstance(this).setStr(MyConfig.MyPrefs.IMAGE, signInResponseStateData.getData().getData().getUser().getUserImage());
+                            PreferenceProcessor.getInstance(this).setStr(MyConfig.MyPrefs.SHORT_NAME, signInResponseStateData.getData().getData().getUser().getShortName());
                             PreferenceProcessor.getInstance(this).setBool(MyConfig.MyPrefs.IS_LOGIN, true);
 
                             startActivity(new Intent(this, HomeActivity.class));

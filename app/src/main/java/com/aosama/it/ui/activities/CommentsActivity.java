@@ -1,10 +1,13 @@
 package com.aosama.it.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -26,17 +29,26 @@ import android.widget.Toast;
 
 import com.aosama.it.R;
 import com.aosama.it.constants.Constants;
+import com.aosama.it.models.responses.BasicResponse;
 import com.aosama.it.models.responses.ImageResponse;
 import com.aosama.it.models.responses.boards.Attachment;
 import com.aosama.it.models.responses.boards.BoardDataList;
 import com.aosama.it.models.responses.boards.CommentGroup;
 import com.aosama.it.models.responses.boards.NestedBoard;
 import com.aosama.it.models.responses.boards.TaskE;
+import com.aosama.it.models.responses.file.FileResponse;
+import com.aosama.it.models.wrappers.StateData;
 import com.aosama.it.ui.adapter.AttachmentAdapter;
 import com.aosama.it.ui.adapter.CommentAdapter;
 import com.aosama.it.ui.adapter.InboxAdapter;
+import com.aosama.it.utiles.MyConfig;
+import com.aosama.it.utiles.MyUtilis;
+import com.aosama.it.utiles.PreferenceProcessor;
+import com.aosama.it.viewmodels.CommentsViewModel;
 import com.aosama.it.viewmodels.UploadAttachmentViewModel;
 import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,6 +57,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +65,7 @@ import es.dmoral.toasty.Toasty;
 
 public class CommentsActivity extends AppCompatActivity implements UploadAttachmentViewModel.UploadImageHandler, CommentAdapter.OnAttachClicked {
     private static final int PICKFILE_RESULT_CODE = 100;
+    private static final int ADDCOMMENT_RESULT_CODE = 101;
     @BindView(R.id.linearBc)
     LinearLayout linearBc;
     @BindView(R.id.rv)
@@ -61,6 +75,11 @@ public class CommentsActivity extends AppCompatActivity implements UploadAttachm
 
     private ProgressDialog mProgressDialog;
     private TextView tvAttachment;
+    private String attachName, attachKey;
+    private CommentsViewModel viewModel;
+    private String taskId;
+    private String commentId;
+    private ViewDialog alert;//dialog for attachments
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,37 +87,69 @@ public class CommentsActivity extends AppCompatActivity implements UploadAttachm
         setContentView(R.layout.activity_comments);
         ButterKnife.bind(this);
 
+        viewModel = ViewModelProviders.of(this).get(CommentsViewModel.class);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getResources().getString(R.string.loading_msg));
         mProgressDialog.setIndeterminate(false);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMax(100);
-
         Gson gson = new Gson();
         taskE = gson.fromJson(
                 getIntent().getStringExtra(Constants.SELECTED_COMMENT), TaskE.class);
         nestedBoard = gson.fromJson(
                 getIntent().getStringExtra(Constants.SELECTED_BORAD), NestedBoard.class);
-        if (taskE.getComments() == null)
-            return;
-        if (taskE.getComments().isEmpty())
-            return;
 
         linearBc.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
-        List<CommentGroup> commentGroups = new ArrayList<>();
-        for (CommentGroup commentGroup : taskE.getComments()) {
-            if (!commentGroup.isDelete())
-                commentGroups.add(commentGroup);
-        }
-        CommentAdapter adapter = new CommentAdapter(this, commentGroups, this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+
+        taskId = getIntent().getStringExtra(Constants.TASK_ID);
+        if (taskId == null && taskE.getId2() == null)
+            return;
+        else if (taskId == null)
+            taskId = taskE.getId2();
+
+        getComments(taskId);
     }
 
     public void back(View view) {
         onBackPressed();
+    }
+
+    private void getComments(String taskId) {
+        List<CommentGroup> commentGroups = new ArrayList<>();
+
+        AlertDialog dialog = MyUtilis.myDialog(this);
+        dialog.show();
+        viewModel.getComments(MyConfig.COMMENTS_URL + taskId).observe(this, basicResponseStateData -> {
+
+            dialog.dismiss();
+            switch (basicResponseStateData.getStatus()) {
+                case SUCCESS:
+                    for (CommentGroup commentGroup : basicResponseStateData.getData().getData()) {
+                        if (!commentGroup.isDelete())
+                            commentGroups.add(commentGroup);
+                    }
+                    CommentAdapter adapter = new CommentAdapter(this, commentGroups, this);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                    recyclerView.setAdapter(adapter);
+
+                    break;
+                case FAIL:
+                    Toast.makeText(this, basicResponseStateData.getErrorsMessages() != null ? basicResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
+                    break;
+                case ERROR:
+                    if (basicResponseStateData.getError() != null) {
+//                            Toast.makeText(this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                        Log.v("Statues", "Error" + basicResponseStateData.getError().getMessage());
+                    }
+                    break;
+                case CATCH:
+                    Toast.makeText(this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                    break;
+            }
+        });
+
     }
 
     public void addComment(View view) {
@@ -106,7 +157,7 @@ public class CommentsActivity extends AppCompatActivity implements UploadAttachm
         Gson gson = new Gson();
         intent.putExtra(Constants.SELECTED_USER, gson.toJson(nestedBoard));
         intent.putExtra(Constants.TASK_ID, taskE.getId2());
-        startActivity(intent);
+        startActivityForResult(intent, ADDCOMMENT_RESULT_CODE);
     }
 
     private String getFileName(Uri uri) {
@@ -153,8 +204,8 @@ public class CommentsActivity extends AppCompatActivity implements UploadAttachm
                         Log.e("File Size", "Size " + file.length());
 
                         if (file.length() > 0) {
-//                            UploadAttachmentViewModel uploadAttachmentViewModel = new UploadAttachmentViewModel(this, this);
-//                            uploadAttachmentViewModel.doUploadAttachment(file);
+                            UploadAttachmentViewModel uploadAttachmentViewModel = new UploadAttachmentViewModel(this, this);
+                            uploadAttachmentViewModel.doUploadAttachment(file);
                         }
 
                     } catch (FileNotFoundException e) {
@@ -167,7 +218,9 @@ public class CommentsActivity extends AppCompatActivity implements UploadAttachm
                 } else {
                     Toast.makeText(this, "cannot open file picker", Toast.LENGTH_SHORT).show();
                 }
-
+                break;
+            case ADDCOMMENT_RESULT_CODE:
+                getComments(taskId);
                 break;
         }
         super.onActivityResult(requestCode, resultCode, returnIntent);
@@ -188,23 +241,69 @@ public class CommentsActivity extends AppCompatActivity implements UploadAttachm
     }
 
     @Override
-    public void onFinish(ImageResponse imageResponse) {
+    public void onFinish(BasicResponse<FileResponse> imageResponse) {
         mProgressDialog.setProgress(100);
         mProgressDialog.dismiss();
         Toasty.success(this, getString(R.string.success)).show();
+        attachName = imageResponse.getData().getAttachName();
+        attachKey = imageResponse.getData().getAttachKey();
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("attachName", attachName);
+            jsonBody.put("attachKey", attachKey);
+            jsonBody.put("isPrivate", false);
+            jsonBody.put("type", "c");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        AlertDialog dialog = MyUtilis.myDialog(this);
+        dialog.show();
+
+        viewModel.putComment(MyConfig.ADD_ATTACH_GENERAL + commentId, jsonBody).observe(this, basicResponseStateData -> {
+            dialog.dismiss();
+            switch (basicResponseStateData.getStatus()) {
+                case SUCCESS:
+                    if (basicResponseStateData.getData() != null) {
+                        alert.dismiss();
+                        Toast.makeText(this, basicResponseStateData.getData().getMessage(), Toast.LENGTH_SHORT).show();
+                        getComments(taskId);
+//                                Intent intent = new Intent(AddCommentActivity.this, CommentsActivity.class);
+//                                intent.putExtra(Constants.TASK_ID, getIntent().getStringExtra(Constants.TASK_ID));
+//                                startActivity(intent);
+                    }
+                    break;
+                case FAIL:
+                    Toast.makeText(this, basicResponseStateData.getErrorsMessages() != null ? basicResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
+                    break;
+                case ERROR:
+                    if (basicResponseStateData.getError() != null) {
+                        Toast.makeText(this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                        Log.v("Statues", "Error" + basicResponseStateData.getError().getMessage());
+                    }
+                    break;
+                case CATCH:
+                    Toast.makeText(this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                    break;
+            }
+        });
+
     }
 
     @Override
-    public void onUserClicked(View view, int position, List<Attachment> attachments) {
-        ViewDialog alert = new ViewDialog();
+    public void onUserClicked(View view, int position, List<Attachment> attachments, String commentId) {
+        alert = new ViewDialog();
         alert.showDialog(this, attachments);
+        this.commentId = commentId;
     }
 
     public class ViewDialog implements AttachmentAdapter.OnUserClicked {
         private static final int PICKFILE_RESULT_CODE = 100;
+        private Dialog dialog;
 
         void showDialog(Activity activity, List<Attachment> attachments) {
-            final Dialog dialog = new Dialog(activity);
+            dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(true);
             dialog.setContentView(R.layout.custom_attachment_dialog);
@@ -246,6 +345,11 @@ public class CommentsActivity extends AppCompatActivity implements UploadAttachm
                 }
             });
             dialog.show();
+        }
+
+        void dismiss() {
+            if (dialog != null)
+                dialog.dismiss();
         }
 
         @Override

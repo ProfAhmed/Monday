@@ -44,7 +44,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     public interface OnAttachClicked {
         //        void onUserClicked(View view, int position);
-        void onUserClicked(View view, int position, List<Attachment> attachments);
+        void onUserClicked(View view, int position, List<Attachment> attachments, String commentId);
     }
 
     public CommentAdapter(Context mContext, List<CommentGroup> commentGroups, OnAttachClicked onAttachClicked) {
@@ -67,8 +67,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         holder.ivAttachment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 if (onAttachClicked != null) {
-                    onAttachClicked.onUserClicked(holder.itemView, position, commentGroup.getAttachments());
+                if (onAttachClicked != null) {
+                    onAttachClicked.onUserClicked(holder.itemView, position, commentGroup.getAttachments(), commentGroup.getCommentId());
                 }
             }
         });

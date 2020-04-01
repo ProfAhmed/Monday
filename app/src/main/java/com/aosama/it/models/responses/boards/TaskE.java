@@ -56,6 +56,7 @@ public class TaskE {
     @SerializedName("meetingUrl")
     @Expose
     private String meetingUrl;
+
     public boolean isPrivate() {
         return isPrivate;
     }

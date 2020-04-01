@@ -40,11 +40,11 @@ public class IntroScreenActivity extends AppCompatActivity implements PopupMenu.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.LOCAL_LANG, Locale.getDefault().getLanguage()).equals("ar")) {
-            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else {
-            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-        }
+//        if (PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.LOCAL_LANG, Locale.getDefault().getLanguage()).equals("ar")) {
+//            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+//        } else {
+//            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+//        }
         setContentView(R.layout.activity_intro_screen);
         ButterKnife.bind(this);
 

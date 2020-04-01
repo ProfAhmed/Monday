@@ -8,12 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ExpandableListDataPump {
-    public static HashMap<String, List<NestedBoard>>
+    public static HashMap<BoardDataList, List<NestedBoard>>
     getData(List<BoardDataList> boardDataList) {
-        HashMap<String, List<NestedBoard>> expandableListDetail =
+        HashMap<BoardDataList, List<NestedBoard>> expandableListDetail =
                 new HashMap<>();
         for (BoardDataList element : boardDataList) {
-            expandableListDetail.put(element.getName(), element.getNestedBoard());
+            expandableListDetail.put(element, element.getNestedBoard());
         }
         return expandableListDetail;
     }

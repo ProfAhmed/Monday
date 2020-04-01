@@ -3,10 +3,13 @@ package com.aosama.it.ui.activities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,17 +21,22 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.aosama.it.IntroScreenActivity;
 import com.aosama.it.R;
 import com.aosama.it.ui.adapter.NavPanelListAdapter;
 import com.aosama.it.ui.fragment.BoardDetailsFragment;
 import com.aosama.it.ui.fragment.HomeFragment;
 import com.aosama.it.ui.fragment.InboxFragment;
+import com.aosama.it.ui.fragment.NotificationFragment;
+import com.aosama.it.ui.fragment.NotificationsAndTasksFragment;
 import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.PreferenceProcessor;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
 
@@ -39,6 +47,8 @@ public class HomeActivity extends AppCompatActivity {
 
     @BindView(R.id.navList)
     ListView navlist;
+    @BindView(R.id.profile_image)
+    ImageView profile_image;
     @BindView(R.id.tvProfileName)
     TextView tvProfileName;
 
@@ -90,6 +100,10 @@ public class HomeActivity extends AppCompatActivity {
                     fab.setVisibility(View.GONE);
                     break;
                 case 2:
+                    getSupportActionBar().setTitle(getString(R.string.menu_notifications));
+                    getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.nav_host_fragment, new NotificationsAndTasksFragment()).commit();
+                    fab.setVisibility(View.GONE);
+
 //                    Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
@@ -126,7 +140,54 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initDrawerHeader() {
-        tvProfileName.setText("Ahmed Ali");
+        String userName = PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.NAME, "user Name");
+        String shortName = PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.SHORT_NAME, "UN");
+        String path = PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.IMAGE, null);
+        tvProfileName.setText(userName);
+
+        if (!TextUtils.isEmpty(path) && path != null
+                && path.length() > 0) {
+            Picasso.get().load(path)
+                    .into(profile_image, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+        } else {
+            String firstChar = "";
+            if (shortName.length() > 0) {
+
+                TextDrawable drawable2 = createTextDrawable(shortName);
+                profile_image.setImageDrawable(drawable2);
+            }
+        }
+
+    }
+
+    private TextDrawable createTextDrawable(String firstChar) {
+//        TextDrawable drawable1 = TextDrawable.builder()
+//                .buildRoundRect(firstChar, Color.RED, 10);
+        int dimWH = (int) getResources()
+                .getDimension(R.dimen._60sdp);
+        int fonsSize =
+                (int) getResources()
+                        .getDimension(R.dimen._20ssp);
+        return TextDrawable.builder().beginConfig().
+                textColor(Color.BLUE)
+//                .beginConfig()
+                .fontSize(fonsSize)
+                .bold()
+                .width(dimWH)  // width in px
+                .height(dimWH) // height in px
+                .endConfig()
+                .buildRect(firstChar, Color.parseColor("#41C5C3C3"));
+
     }
 
     public void signOut(View view) {
