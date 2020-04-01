@@ -1,32 +1,24 @@
 package com.aosama.it.ui.adapter;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.aosama.it.R;
 import com.aosama.it.models.responses.boards.Attachment;
 import com.aosama.it.models.responses.boards.CommentGroup;
+import com.aosama.it.models.responses.boards.NestedComment;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -35,11 +27,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentVH> {
+public class SubCommentsAdapter extends RecyclerView.Adapter<SubCommentsAdapter.CommentVH> {
 
     private Context mContext;
-    private List<CommentGroup> commentGroups;
+    private List<NestedComment> commentGroups;
     private OnAttachClicked onAttachClicked = null;
 
     public interface OnAttachClicked {
@@ -47,7 +38,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         void onUserClicked(View view, int position, List<Attachment> attachments, String commentId);
     }
 
-    public CommentAdapter(Context mContext, List<CommentGroup> commentGroups, OnAttachClicked onAttachClicked) {
+    public SubCommentsAdapter(Context mContext, List<NestedComment> commentGroups, OnAttachClicked onAttachClicked) {
         this.mContext = mContext;
         this.commentGroups = commentGroups;
         this.onAttachClicked = onAttachClicked;
@@ -55,28 +46,21 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     @NonNull
     @Override
-    public CommentVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_comment_layout, parent, false);
-        return new CommentVH(view);
+    public SubCommentsAdapter.CommentVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_sub_comment, parent, false);
+        return new SubCommentsAdapter.CommentVH(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentVH holder, int position) {
-        CommentGroup commentGroup = commentGroups.get(position);
+    public void onBindViewHolder(@NonNull SubCommentsAdapter.CommentVH holder, int position) {
+        NestedComment commentGroup = commentGroups.get(position);
         holder.tvUserName.setText(commentGroup.getByUserName());
         holder.ivAttachment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (onAttachClicked != null) {
-                    onAttachClicked.onUserClicked(holder.ivAttachment, position, commentGroup.getAttachments(), commentGroup.getCommentId());
+                    onAttachClicked.onUserClicked(holder.itemView, position, commentGroup.getAttachments(), commentGroup.getCommentId());
                 }
-            }
-        });
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onAttachClicked.onUserClicked(holder.tvReply, position, commentGroup.getAttachments(), commentGroup.getCommentId());
-
             }
         });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -141,8 +125,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         TextView tvUserName;
         @BindView(R.id.tvCommentData)
         TextView tvCommentData;
-        @BindView(R.id.tvReply)
-        TextView tvReply;
         @BindView(R.id.ivUserImagePhoto)
         ImageView userPhoto;
         @BindView(R.id.ivAttachment)
@@ -156,5 +138,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     }
 
 }
+
 
 

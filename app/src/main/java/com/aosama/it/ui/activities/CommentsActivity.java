@@ -293,9 +293,19 @@ public class CommentsActivity extends AppCompatActivity implements UploadAttachm
 
     @Override
     public void onUserClicked(View view, int position, List<Attachment> attachments, String commentId) {
-        alert = new ViewDialog();
-        alert.showDialog(this, attachments);
+        if (view.getId() == R.id.ivAttachment) {
+
+            alert = new ViewDialog();
+            alert.showDialog(this, attachments);
+        }
         this.commentId = commentId;
+        if (view.getId() == R.id.tvReply) {
+            Gson gson = new Gson();
+            Intent intent = new Intent(this, SubCommentsActivity.class);
+            intent.putExtra(Constants.SELECTED_COMMENT, commentId);
+            intent.putExtra(Constants.SELECTED_BORAD, gson.toJson(nestedBoard));
+            startActivity(intent);
+        }
     }
 
     public class ViewDialog implements AttachmentAdapter.OnUserClicked {

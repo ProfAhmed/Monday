@@ -41,7 +41,7 @@ public class NestedComment {
     private String commentData;
     @SerializedName("attachments")
     @Expose
-    private List<Object> attachments = null;
+    private List<Attachment> attachments = null;
     @SerializedName("deleteDate")
     @Expose
     private String deleteDate;
@@ -134,11 +134,11 @@ public class NestedComment {
         this.commentData = commentData;
     }
 
-    public List<Object> getAttachments() {
+    public List<Attachment> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(List<Object> attachments) {
+    public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
     }
 

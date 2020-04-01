@@ -12,6 +12,8 @@ public class MyConfig {
     public static final String COMMENTS_URL = BASE_URL + "task/comment/";
     public static final String ADD_ATTACH_GENERAL = BASE_URL + "task/attachgeneral/";
     public static final String NOTIFICATION_URL = BASE_URL + "task/userTaskNotification";
+    public static final String SUBCOMMENTS_URL = BASE_URL + "task/getcommentsub/";
+    public static final String ADD_SUB_COMMENT = BASE_URL + "task/commentsub";
 //    public static final String NESTED = BASE_URL + "board/nested"+"?id=BOR9139288889";
 
     public static class MyPrefs {
