@@ -27,6 +27,8 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.aosama.it.R;
 import com.aosama.it.models.responses.boards.Attachment;
 import com.aosama.it.models.responses.boards.CommentGroup;
+import com.aosama.it.utiles.MyConfig;
+import com.aosama.it.utiles.PreferenceProcessor;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -63,6 +65,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public void onBindViewHolder(@NonNull CommentVH holder, int position) {
         CommentGroup commentGroup = commentGroups.get(position);
+        String userId = PreferenceProcessor.getInstance(mContext).getStr(MyConfig.MyPrefs.USER_ID, "");
+//        if (userId.equals(commentGroup.getById())) {
+//            holder.ivSelection.setVisibility(View.VISIBLE);
+//            holder.ivSelection.setOnClickListener(view -> {
+//                onAttachClicked.onUserClicked(holder.ivSelection, position, null, commentGroup.getCommentId());
+//            });
+//        } else {
+//            holder.ivSelection.setVisibility(View.GONE);
+//        }
         holder.tvUserName.setText(commentGroup.getByUserName());
         holder.ivAttachment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +158,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         ImageView userPhoto;
         @BindView(R.id.ivAttachment)
         ImageView ivAttachment;
+        @BindView(R.id.ivSelection)
+        ImageView ivSelection;
 
         public CommentVH(@NonNull View itemView) {
             super(itemView);

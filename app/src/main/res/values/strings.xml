@@ -56,4 +56,9 @@
   <string name="success">Success uploading</string>
   <string name="no_tasks_here">No Tasks Here</string>
   <string name="tasks">Tasks</string>
+  <string name="delete">Delete</string>
+  <string name="task_name">Task Name:</string>
+  <string name="task_status">Status:</string>
+  <string name="attachments">Attachments</string>
+  <string name="due_date_2">Due date:</string>
 </resources>

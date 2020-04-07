@@ -38,7 +38,7 @@ public class NestedBoard {
     private List<TasksGroup> tasksGroup = null;
     @SerializedName("attachmentsGeneral")
     @Expose
-    private List<Object> attachmentsGeneral = null;
+    private List<Attachment> attachmentsGeneral = null;
     @SerializedName("users")
     @Expose
     private List<UserBoard> users = null;
@@ -134,11 +134,11 @@ public class NestedBoard {
         this.tasksGroup = tasksGroup;
     }
 
-    public List<Object> getAttachmentsGeneral() {
+    public List<Attachment> getAttachmentsGeneral() {
         return attachmentsGeneral;
     }
 
-    public void setAttachmentsGeneral(List<Object> attachmentsGeneral) {
+    public void setAttachmentsGeneral(List<Attachment> attachmentsGeneral) {
         this.attachmentsGeneral = attachmentsGeneral;
     }
 

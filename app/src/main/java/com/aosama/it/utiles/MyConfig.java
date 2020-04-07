@@ -1,7 +1,8 @@
 package com.aosama.it.utiles;
 
 public class MyConfig {
-    public static final String BASE_URL = "http://wayak.org/";
+        public static final String BASE_URL = "http://wayak.org/";
+//    public static final String BASE_URL = "https://tmms2020.herokuapp.com/";
     public static final String SIGNIN_URL = BASE_URL + "user/signin";
     public static final String CHANGE_PASSWORD_URL = BASE_URL +
             "user/change-password";
@@ -24,6 +25,7 @@ public class MyConfig {
         public static final String NAME = "user_name";
         public static final String IMAGE = "user_pic";
         public static final String SHORT_NAME = "short_name";
+        public static final String USER_ID = "user_id";
         static final String PREFS_NAME = "monday";
         public static final String LANG = "lang";
     }

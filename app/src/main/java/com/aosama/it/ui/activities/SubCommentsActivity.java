@@ -2,10 +2,12 @@ package com.aosama.it.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -41,6 +43,7 @@ import com.aosama.it.models.responses.boards.NestedComment;
 import com.aosama.it.models.responses.boards.TaskE;
 import com.aosama.it.models.responses.boards.UserBoard;
 import com.aosama.it.models.responses.file.FileResponse;
+import com.aosama.it.models.wrappers.StateData;
 import com.aosama.it.repository.CommentsRepository;
 import com.aosama.it.repository.SubCommentsRepository;
 import com.aosama.it.ui.adapter.AttachmentAdapter;
@@ -49,6 +52,7 @@ import com.aosama.it.ui.adapter.SubCommentsAdapter;
 import com.aosama.it.ui.adapter.UserAdapter;
 import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.MyUtilis;
+import com.aosama.it.utiles.PreferenceProcessor;
 import com.aosama.it.viewmodels.BasicResponsePostViewModel;
 import com.aosama.it.viewmodels.CommentsViewModel;
 import com.aosama.it.viewmodels.SubCommentsViewModel;
@@ -63,6 +67,10 @@ import com.linkedin.android.spyglass.tokenization.impl.WordTokenizer;
 import com.linkedin.android.spyglass.tokenization.impl.WordTokenizerConfig;
 import com.linkedin.android.spyglass.tokenization.interfaces.QueryTokenReceiver;
 import com.linkedin.android.spyglass.ui.MentionsEditText;
+import com.skydoves.powermenu.MenuAnimation;
+import com.skydoves.powermenu.OnMenuItemClickListener;
+import com.skydoves.powermenu.PowerMenu;
+import com.skydoves.powermenu.PowerMenuItem;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -93,6 +101,8 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
     ImageView userPhoto;
     @BindView(R.id.ivAttachment)
     ImageView ivAttachment;
+    @BindView(R.id.ivSelection)
+    ImageView ivSelection;
     @BindView(R.id.ivSend)
     ImageView ivSend;
     @BindView(R.id.rv)
@@ -119,6 +129,8 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
     private UserAdapter adapter;
     NestedBoard nestedBoard;
     StringBuilder userStringBuilder = new StringBuilder();
+    private CommentGroup commentGroup;
+    PowerMenu powerMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,7 +226,10 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
             dialog.dismiss();
             switch (basicResponseStateData.getStatus()) {
                 case SUCCESS:
-                    CommentGroup commentGroup = basicResponseStateData.getData().getData();
+                    commentGroup = basicResponseStateData.getData().getData();
+                    String userId = PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.USER_ID, "");
+                    if (userId.equals(commentGroup.getById()))
+                        ivSelection.setVisibility(View.VISIBLE);
                     ivAttachment.setOnClickListener(view -> {
                         alert = new ViewDialog();
                         alert.showDialog(this, commentGroup.getAttachments());
@@ -536,4 +551,73 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
         }
     }
 
+
+    @SuppressLint("ResourceType")
+    public void popmenu(View view) {
+        String information = getString(R.string.update);
+        String logout = getString(R.string.delete);
+        List<PowerMenuItem> list = new ArrayList<>();
+        list.add(new PowerMenuItem(information));
+        list.add(new PowerMenuItem(logout));
+        OnMenuItemClickListener<PowerMenuItem> onMenuItemClickListener = (position, item) -> {
+            Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+            powerMenu.dismiss();
+            switch (position) {
+                case 0:
+                    break;
+                case 1:
+                    AlertDialog dialog = MyUtilis.myDialog(SubCommentsActivity.this);
+
+                    dialog.show();
+                    viewModel.deleteComment(MyConfig.COMMENTS_URL + commentId, null).observe(this, new Observer<StateData<BasicResponse>>() {
+                        @Override
+                        public void onChanged(StateData<BasicResponse> basicResponseStateData) {
+                            dialog.dismiss();
+                            switch (basicResponseStateData.getStatus()) {
+                                case SUCCESS:
+                                    if (basicResponseStateData.getData() != null) {
+                                        Toast.makeText(SubCommentsActivity.this, basicResponseStateData.getData().getMessage(), Toast.LENGTH_SHORT).show();
+//                                Intent intent = new Intent(AddCommentActivity.this, CommentsActivity.class);
+//                                intent.putExtra(Constants.TASK_ID, getIntent().getStringExtra(Constants.TASK_ID));
+//                                startActivity(intent);
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }
+                                    break;
+                                case FAIL:
+                                    Toast.makeText(SubCommentsActivity.this, basicResponseStateData.getErrorsMessages() != null ? basicResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
+                                    break;
+                                case ERROR:
+                                    if (basicResponseStateData.getError() != null) {
+                                        Toast.makeText(SubCommentsActivity.this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                                        Log.v("Statues", "Error" + basicResponseStateData.getError().getMessage());
+                                    }
+                                    break;
+                                case CATCH:
+                                    Toast.makeText(SubCommentsActivity.this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                                    break;
+                            }
+                        }
+                    });
+                    break;
+            }
+        };
+        powerMenu = new PowerMenu.Builder(this)
+                .addItemList(list)
+                .setAnimation(MenuAnimation.SHOWUP_BOTTOM_LEFT) // Animation start point (TOP | LEFT)
+                .setMenuRadius(10f)
+                .setMenuShadow(10f)
+                .setTextColor(getResources().getColor(R.color.black))
+                .setSelectedTextColor(Color.WHITE)
+                .setMenuColor(Color.WHITE)
+                .setSelectedMenuColor(getResources().getColor(R.color.colorPrimary))
+                .setOnMenuItemClickListener(onMenuItemClickListener)
+                .build();
+//        powerMenu.showAsDropDown(view); // view is an anchor
+        powerMenu.showAsDropDown(view, 0, 0);
+//        powerMenu.showAsAnchorLeftBottom(view); // showing the menu by left-bottom align about the anchor view.
+        powerMenu.showAsAnchorLeftTop(view);// showing the menu by left-top align about the anchor view.
+//        powerMenu.showAsAnchorRightTop(view); // showing the menu by rgiht-bottom align about the anchor view.
+//        powerMenu.showAsAnchorRightBottom(view); // showing the menu by rgiht-top align about the anchor view.
+    }
 }

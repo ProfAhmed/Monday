@@ -136,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
                             PreferenceProcessor.getInstance(this).setStr(MyConfig.MyPrefs.NAME, signInResponseStateData.getData().getData().getUser().getUserName());
                             PreferenceProcessor.getInstance(this).setStr(MyConfig.MyPrefs.IMAGE, signInResponseStateData.getData().getData().getUser().getUserImage());
                             PreferenceProcessor.getInstance(this).setStr(MyConfig.MyPrefs.SHORT_NAME, signInResponseStateData.getData().getData().getUser().getShortName());
+                            PreferenceProcessor.getInstance(this).setStr(MyConfig.MyPrefs.USER_ID, signInResponseStateData.getData().getData().getUser().getId());
                             PreferenceProcessor.getInstance(this).setBool(MyConfig.MyPrefs.IS_LOGIN, true);
 
                             startActivity(new Intent(this, HomeActivity.class));

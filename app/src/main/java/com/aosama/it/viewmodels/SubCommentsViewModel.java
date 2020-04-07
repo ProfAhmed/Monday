@@ -11,6 +11,8 @@ import com.aosama.it.models.wrappers.StateLiveData;
 import com.aosama.it.repository.CommentsRepository;
 import com.aosama.it.repository.SubCommentsRepository;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 public class SubCommentsViewModel extends AndroidViewModel {
@@ -23,6 +25,10 @@ public class SubCommentsViewModel extends AndroidViewModel {
 
     public StateLiveData<BasicResponse<CommentGroup>> getSubComments(String url) {
         return repository.getSubComments(url);
+    }
+
+    public StateLiveData<BasicResponse> deleteComment(String url, JSONObject jsonBody) {
+        return repository.deleteComment(url, jsonBody);
     }
 
 }

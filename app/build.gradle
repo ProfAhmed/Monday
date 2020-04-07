@@ -75,10 +75,6 @@ dependencies {
 
     implementation 'me.saket:inboxrecyclerview:2.0.0-beta3'
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 
     implementation 'org.apache.commons:commons-lang3:3.9'
@@ -86,6 +82,13 @@ dependencies {
 
     //mention user using @
     api 'com.linkedin.android.spyglass:spyglass:2.1.0'
+
+    //popup menu
+    implementation "com.github.skydoves:powermenu:2.0.6"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
 
 }

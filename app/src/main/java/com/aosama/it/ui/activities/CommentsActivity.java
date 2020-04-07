@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -47,6 +48,10 @@ import com.aosama.it.utiles.PreferenceProcessor;
 import com.aosama.it.viewmodels.CommentsViewModel;
 import com.aosama.it.viewmodels.UploadAttachmentViewModel;
 import com.google.gson.Gson;
+import com.skydoves.powermenu.MenuAnimation;
+import com.skydoves.powermenu.OnMenuItemClickListener;
+import com.skydoves.powermenu.PowerMenu;
+import com.skydoves.powermenu.PowerMenuItem;
 
 import org.json.JSONObject;
 
@@ -304,8 +309,11 @@ public class CommentsActivity extends AppCompatActivity implements UploadAttachm
             Intent intent = new Intent(this, SubCommentsActivity.class);
             intent.putExtra(Constants.SELECTED_COMMENT, commentId);
             intent.putExtra(Constants.SELECTED_BORAD, gson.toJson(nestedBoard));
-            startActivity(intent);
+//            startActivity(intent);
+            startActivityForResult(intent, ADDCOMMENT_RESULT_CODE);
+
         }
+
     }
 
     public class ViewDialog implements AttachmentAdapter.OnUserClicked {
@@ -367,5 +375,6 @@ public class CommentsActivity extends AppCompatActivity implements UploadAttachm
 
         }
     }
+
 
 }

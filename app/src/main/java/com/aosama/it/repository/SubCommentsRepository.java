@@ -17,9 +17,12 @@ import com.aosama.it.utiles.VolleySingleTone;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONObject;
+
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class SubCommentsRepository {
@@ -90,6 +93,58 @@ public class SubCommentsRepository {
         VolleySingleTone.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
 
         return boardsResponseStateLiveData;
+    }
+
+    public StateLiveData<BasicResponse> deleteComment(String url, JSONObject jsonBody) {
+
+        StateLiveData<BasicResponse> signInResponseStateLiveData = new StateLiveData<>();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, url, jsonBody,
+                response -> {
+                    try {
+                        boolean successful = response.getBoolean("successful");
+                        if (successful) {
+                            Type dataType = new TypeToken<BasicResponse>() {
+                            }.getType();
+                            BasicResponse data = new Gson().fromJson(response.toString(), dataType);
+                            signInResponseStateLiveData.postSuccess(data);
+
+                        } else {
+                            ErrorsMessages error = new Gson().fromJson(response.toString(), ErrorsMessages.class);
+                            signInResponseStateLiveData.postFail(error);
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        signInResponseStateLiveData.postCatch();
+                    }
+                }, error -> {
+            Log.v("volley_error", error.toString());
+            error.printStackTrace();
+            signInResponseStateLiveData.postError(error);
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // Basic Authentication
+                //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
+
+                headers.put("Authorization", "Bearer " + PreferenceProcessor.getInstance(mContext).getStr(MyConfig.MyPrefs.TOKEN, ""));
+//                headers.put("lang", PreferenceProcessor.getInstance(mContext).getStr(MyConfig.MyPrefs.LANG, "en"));
+                headers.put("lang", Locale.getDefault().getLanguage());
+                return headers;
+            }
+        };
+
+        //handle timeout error
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+// Add the request to the RequestQueue.
+        VolleySingleTone.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
+
+        return signInResponseStateLiveData;
     }
 
 }

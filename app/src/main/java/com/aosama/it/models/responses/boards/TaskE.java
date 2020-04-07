@@ -50,12 +50,33 @@ public class TaskE {
     @SerializedName("comments")
     @Expose
     private List<CommentGroup> comments = null;
+    @SerializedName("attachments")
+    @Expose
+    private List<Attachment> attachments = null;
     @SerializedName("meetingTime")
     @Expose
     private String meetingTime;
     @SerializedName("meetingUrl")
     @Expose
     private String meetingUrl;
+
+    private String tableName;
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
 
     public boolean isPrivate() {
         return isPrivate;

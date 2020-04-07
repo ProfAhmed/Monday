@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent"
-  android:orientation="vertical">
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  style="@style/Widget.MaterialComponents.CardView"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_marginStart="26dp"
+  android:layout_marginEnd="26dp"
+  android:foregroundGravity="center"
+  app:cardCornerRadius="15dp"
+  app:cardElevation="10dp"
+  app:layout_anchorGravity="center">
 
-  <ListView
-    android:id="@+id/custom_list"
+  <LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:dividerHeight="1dp" />
+    android:orientation="vertical"
+    android:padding="16dp">
 
-</LinearLayout>
+    <ListView
+      android:id="@+id/custom_list"
+      android:layout_width="fill_parent"
+      android:layout_height="match_parent"
+      android:dividerHeight="1dp" />
+
+  </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
