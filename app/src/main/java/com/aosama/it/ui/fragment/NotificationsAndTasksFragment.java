@@ -73,5 +73,4 @@ public class NotificationsAndTasksFragment extends Fragment {
 
         return v;
     }
-
 }

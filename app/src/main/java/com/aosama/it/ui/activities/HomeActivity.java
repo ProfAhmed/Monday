@@ -31,6 +31,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.aosama.it.IntroScreenActivity;
 import com.aosama.it.R;
+import com.aosama.it.constants.Constants;
 import com.aosama.it.models.responses.BasicResponse;
 import com.aosama.it.models.responses.file.FileResponse;
 import com.aosama.it.ui.adapter.NavPanelListAdapter;
@@ -74,6 +75,20 @@ public class HomeActivity extends AppCompatActivity implements UploadAttachmentV
     TextView tvProfileName;
     private String type;
 
+    private void fireBoardItemDetails(String id) {
+
+        BoardDetailsFragment boardDetailsFragment = new BoardDetailsFragment();
+        Bundle b = new Bundle();
+        b.putString(Constants.SELECTED_BORAD, id);
+        boardDetailsFragment.setArguments(b);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(BoardDetailsFragment.class.getSimpleName())
+                .replace(R.id.nav_host_fragment, boardDetailsFragment).commit();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +100,7 @@ public class HomeActivity extends AppCompatActivity implements UploadAttachmentV
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -137,11 +153,15 @@ public class HomeActivity extends AppCompatActivity implements UploadAttachmentV
 
             }
         });
-        if (savedInstanceState == null) {
+        String id = getIntent().getStringExtra("id");
+        if (savedInstanceState == null && id == null) {
             getSupportActionBar().setTitle(getString(R.string.boards));
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
         }
 
+        if (id != null) {
+            fireBoardItemDetails(id);
+        }
 //        setLocale(PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.LOCAL_LANG, "en"));
     }
 

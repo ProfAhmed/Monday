@@ -1,8 +1,12 @@
 package com.aosama.it.utiles;
 
+import com.aosama.it.models.responses.boards.UserBoard;
+
+import java.util.List;
+
 public class MyConfig {
-        public static final String BASE_URL = "http://wayak.org/";
-//    public static final String BASE_URL = "https://tmms2020.herokuapp.com/";
+    public static final String BASE_URL = "http://wayak.org/";
+    //    public static final String BASE_URL = "https://tmms2020.herokuapp.com/";
     public static final String SIGNIN_URL = BASE_URL + "user/signin";
     public static final String CHANGE_PASSWORD_URL = BASE_URL +
             "user/change-password";
@@ -15,7 +19,12 @@ public class MyConfig {
     public static final String NOTIFICATION_URL = BASE_URL + "task/userTaskNotification";
     public static final String SUBCOMMENTS_URL = BASE_URL + "task/getcommentsub/";
     public static final String ADD_SUB_COMMENT = BASE_URL + "task/commentsub";
-//    public static final String NESTED = BASE_URL + "board/nested"+"?id=BOR9139288889";
+    public static final String GET_FILE = BASE_URL + "file/file/";
+    public static final String MAILS = BASE_URL + "mail";
+    public static final String ADD_MAIL = BASE_URL + "mail";
+    //    public static final String NESTED = BASE_URL + "board/nested"+"?id=BOR9139288889";
+    public static List<UserBoard> userBoards = null;
+    public static String GET_users_URL = BASE_URL + "user/allusers";
 
     public static class MyPrefs {
         public static final String FIREBASE_TOKEN = "firebase_token";

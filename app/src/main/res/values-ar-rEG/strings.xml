@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Monday</string>
+  <string name="app_name">susftask</string>
   <string name="create_new_account">إنشاء حساب جديد</string>
   <string name="english">انجليزى</string>
   <string name="login">تسجيل الدخول</string>
@@ -38,4 +38,35 @@
   <string name="valid_input_msg">ادخل البيانات المطلوبه</string>
   <string name="sign_out">تسجيل الخروج</string>
   <string name="arabaic">عربى</string>
+
+
+  <string name="type_message">اكتب رسالتك هنا</string>
+  <string name="name">الاسم</string>
+  <string name="status">الحاله</string>
+  <string name="add_date">تاريخ الاضافة</string>
+  <string name="start_date">تاريخ البداية</string>
+  <string name="due_date">تاريخ النهاية</string>
+  <string name="meeting_link">رابط الاجتماع</string>
+  <string name="meeting_time">وقت الاجتماع</string>
+  <string name="team">الفريق</string>
+  <string name="comments">التعليقات</string>
+  <string name="hint1_comment">اكتب اول تعليق </string>
+  <string name="reply">الرد</string>
+  <string name="type_comment">اكتب تعليق</string>
+  <string name="update">تعديل</string>
+  <string name="attachment_name">اسم الملف</string>
+  <string name="loading_msg">تحميل...</string>
+  <string name="ef_error_create_image_file">فشل التحميل</string>
+  <string name="success">التحميل بنجاح</string>
+  <string name="no_tasks_here">لا يوجد مهمات</string>
+  <string name="tasks">المهمات</string>
+  <string name="delete">حذف</string>
+  <string name="task_name">اسم المهمة:</string>
+  <string name="task_status">الحالة:</string>
+  <string name="attachments">الملفات</string>
+  <string name="due_date_2">تاريخ الانتهاء:</string>
+  <string name="pattern">%.2f</string>
+  <string name="date">التاريخ</string>
+  <string name="info">المعلومات</string>
+  <string name="no_users_here">لا يوجد مستخدمين هنا</string>
 </resources>

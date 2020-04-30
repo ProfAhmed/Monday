@@ -10,7 +10,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -155,6 +157,32 @@ public class CommentsActivity extends AppCompatActivity implements UploadAttachm
             }
         });
 
+        if (MyConfig.userBoards == null) {
+            AlertDialog dialog2 = MyUtilis.myDialog(this);
+            dialog2.show();
+            viewModel.getUsers(MyConfig.GET_users_URL).observe(this, basicResponseStateData -> {
+
+                dialog2.dismiss();
+                switch (basicResponseStateData.getStatus()) {
+                    case SUCCESS:
+                        if (basicResponseStateData.getData().getData() != null)
+                            MyConfig.userBoards = basicResponseStateData.getData().getData();
+                        break;
+                    case FAIL:
+                        Toast.makeText(this, basicResponseStateData.getErrorsMessages() != null ? basicResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
+                        break;
+                    case ERROR:
+                        if (basicResponseStateData.getError() != null) {
+//                            Toast.makeText(this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                            Log.v("Statues", "Error" + basicResponseStateData.getError().getMessage());
+                        }
+                        break;
+                    case CATCH:
+                        Toast.makeText(this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                        break;
+                }
+            });
+        }
     }
 
     public void addComment(View view) {
@@ -372,7 +400,12 @@ public class CommentsActivity extends AppCompatActivity implements UploadAttachm
 
         @Override
         public void onUserClicked(View view, int position, Attachment attachment) {
-
+            DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+            Uri uri = Uri.parse(MyConfig.GET_FILE + "/" + attachment.getAttachId());
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.addRequestHeader("Authorization", "Bearer " + PreferenceProcessor.getInstance(CommentsActivity.this).getStr(MyConfig.MyPrefs.TOKEN, ""));
+            Long ref = downloadManager.enqueue(request);
         }
     }
 

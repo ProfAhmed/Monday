@@ -13,7 +13,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="26 days ago"
-    android:visibility="gone"/>
+    android:visibility="gone" />
 
   <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
@@ -48,7 +48,7 @@
           android:id="@+id/tvUserName"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_gravity="center"
+          android:layout_gravity="center|top"
           android:layout_marginStart="8dp"
           android:text="Ahmed ALi"
           android:textColor="#000"
@@ -68,7 +68,7 @@
           android:layout_gravity="center"
           android:background="?attr/selectableItemBackground"
           android:padding="8dp"
-          android:src="@drawable/ic_attachment_black_24dp" />
+          android:src="@drawable/ic_attach_file_24px" />
 
         <ImageView
           android:id="@+id/ivSelection"
@@ -87,6 +87,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:text="test test test" />
 
       <View

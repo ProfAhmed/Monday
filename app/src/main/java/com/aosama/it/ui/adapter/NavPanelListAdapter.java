@@ -20,17 +20,17 @@ public class NavPanelListAdapter extends BaseAdapter {
     private String[] menus;
     private int[] menuImg = {
 
-            R.drawable.ic_to_do_list,
-            R.drawable.ic_inbox,
+            R.drawable.ic_list_alt_24px,
+            R.drawable.ic_markunread_24px,
             R.drawable.ic_notification,
 //            R.drawable.ic_question,
 //            R.drawable.ic_settings
     };
     private int[] tvColors = {
 
-            R.color.colorGreen,
-            R.color.colorGreen,
-            R.color.colorGreen,
+            R.color.colorWhite,
+            R.color.colorWhite,
+            R.color.colorWhite,
 //            R.color.colorGreen,
 //            R.color.colorGreen,
     };

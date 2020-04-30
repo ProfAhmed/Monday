@@ -47,7 +47,7 @@ public class AttachmentAdapter extends RecyclerView.Adapter<AttachmentAdapter.At
         holder.tvAttachmentName
                 .setText(WordUtils.capitalize(attachment.getAttachName()));
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.ivFileDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onUserClicked != null) {

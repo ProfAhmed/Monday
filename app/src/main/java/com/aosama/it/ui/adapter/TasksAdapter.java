@@ -26,7 +26,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskView> {
     private List<TaskN> taskNList;
 
     public TasksAdapter(Context mContext, List<TaskN> taskNList,
-                               OnUserClicked onUserClicked) {
+                        OnUserClicked onUserClicked) {
         this.mContext = mContext;
         this.taskNList = taskNList;
         this.onUserClicked = onUserClicked;
@@ -49,6 +49,10 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskView> {
 
         holder.tvDate.setText(dateRes);
 
+        holder.itemView.setOnClickListener(view -> {
+            if (onUserClicked != null)
+                onUserClicked.onUserClicked(view, position, taskN);
+        });
     }
 
 
@@ -62,7 +66,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskView> {
 
     public interface OnUserClicked {
         //        void onUserClicked(View view, int position);
-        void onUserClicked(View view, int position, UserBoard userBoard);
+        void onUserClicked(View view, int position, TaskN taskN);
     }
 
     @Override

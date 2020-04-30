@@ -2,6 +2,7 @@ package com.aosama.it.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,9 @@ import com.squareup.picasso.Picasso;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,12 +36,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserView> {
     private Context mContext;
     private OnUserClicked onUserClicked = null;
     private List<? extends Suggestible> suggestions;
+    private List<Suggestible> suggestionsFilter;
 
     public UserAdapter(Context mContext, List<? extends Suggestible> userItems,
                        OnUserClicked onUserClicked) {
         this.mContext = mContext;
         this.suggestions = userItems;
         this.onUserClicked = onUserClicked;
+        suggestionsFilter = new ArrayList<>();
 
     }
 
@@ -52,8 +57,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserView> {
             return;
         }
         UserBoard userBoard = (UserBoard) suggestion;
-
-        holder.userName.setText(WordUtils.capitalize(userBoard.getName()));
+        if (userBoard.getName() != null)
+            holder.userName.setText(WordUtils.capitalize(userBoard.getName()));
+        else
+            holder.userName.setText(WordUtils.capitalize(userBoard.getUserName()));
 
         String path = userBoard.getUserImage();
         if (!TextUtils.isEmpty(path) && path != null
@@ -118,6 +125,31 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserView> {
                 .inflate(R.layout.layout_user_item, parent, false);
         return new UserAdapter.UserView(view);
     }
+
+    public void setSuggestions(List<? extends Suggestible> suggestions) {
+        this.suggestions = suggestions;
+//        this.suggestionsFilter.addAll(suggestions);
+
+    }
+
+//    public void filter(String charText) {
+//        charText = charText.toUpperCase(Locale.getDefault());
+//        if (suggestions != null) {
+//            suggestions.clear();
+//        }
+//        if (charText.length() == 0 && (suggestions != null)) {
+//            suggestions.addAll(suggestionsFilter);
+//        } else {
+//            for (Suggestible countryModel : suggestionsFilter) {
+//                UserBoard userBoard = (UserBoard) countryModel;
+//                String country = countryModel.getSuggestiblePrimaryText().toUpperCase();
+//                if (country.charAt(0) == charText.charAt(0) && country.contains(charText)) {
+//                    suggestions.add(userBoard);
+//                }
+//            }
+//        }
+//        notifyDataSetChanged();
+//    }
 
     public interface OnUserClicked {
         //        void onUserClicked(View view, int position);

@@ -1,6 +1,7 @@
 package com.aosama.it.ui.fragment;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,7 +21,9 @@ import com.aosama.it.models.responses.BasicResponse;
 import com.aosama.it.models.responses.boards.CommentGroup;
 import com.aosama.it.models.responses.boards.UserBoard;
 import com.aosama.it.models.responses.notifications.NotificationData;
+import com.aosama.it.models.responses.notifications.NotificationModel;
 import com.aosama.it.models.wrappers.StateData;
+import com.aosama.it.ui.activities.HomeActivity;
 import com.aosama.it.ui.adapter.CommentAdapter;
 import com.aosama.it.ui.adapter.NotificationAdapter;
 import com.aosama.it.utiles.MyConfig;
@@ -79,7 +82,9 @@ public class NotificationFragment extends Fragment implements NotificationAdapte
     }
 
     @Override
-    public void onUserClicked(View view, int position, UserBoard userBoard) {
-
+    public void onUserClicked(View view, int position, NotificationModel notificationModel) {
+        Intent intent = new Intent(getActivity(), HomeActivity.class);
+        intent.putExtra("id", notificationModel.getParamStr().get(0));
+        startActivity(intent);
     }
 }

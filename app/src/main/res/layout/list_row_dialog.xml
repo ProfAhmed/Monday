@@ -11,8 +11,6 @@
     android:layout_width="@dimen/_40sdp"
     android:layout_height="@dimen/_40sdp"
     android:src="@drawable/ic_perm_identity_black_24dp"
-    app:border_color="#FF000000"
-    app:border_width="2dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent" />
 

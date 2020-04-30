@@ -51,7 +51,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         String dateRes = daynum + monthName + year;
 
         holder.tvDate.setText(dateRes);
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onUserClicked != null)
+                    onUserClicked.onUserClicked(view, position, notificationModel);
+            }
+        });
     }
 
     private TextDrawable createTextDrawable(String firstChar) {
@@ -84,7 +90,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public interface OnUserClicked {
         //        void onUserClicked(View view, int position);
-        void onUserClicked(View view, int position, UserBoard userBoard);
+        void onUserClicked(View view, int position, NotificationModel notificationModel);
     }
 
     @Override

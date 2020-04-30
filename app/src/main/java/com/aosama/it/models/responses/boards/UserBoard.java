@@ -21,6 +21,9 @@ public class UserBoard implements Mentionable {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("userName")
+    @Expose
+    private String userName;
     @SerializedName("shortName")
     @Expose
     private String shortName;
@@ -30,6 +33,14 @@ public class UserBoard implements Mentionable {
     @SerializedName("fullName")
     @Expose
     private String fullName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getId() {
         return id;
@@ -88,7 +99,7 @@ public class UserBoard implements Mentionable {
     public String getTextForDisplayMode(MentionDisplayMode mode) {
         switch (mode) {
             case FULL:
-                return name;
+                return userName;
             case PARTIAL:
             case NONE:
             default:
@@ -106,12 +117,12 @@ public class UserBoard implements Mentionable {
 
     @Override
     public int getSuggestibleId() {
-        return name.hashCode();
+        return userName.hashCode();
     }
 
     @Override
     public String getSuggestiblePrimaryText() {
-        return name;
+        return userName;
     }
 
     @Override
@@ -121,11 +132,11 @@ public class UserBoard implements Mentionable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
+        dest.writeString(userName);
     }
 
     public UserBoard(Parcel in) {
-        name = in.readString();
+        userName = in.readString();
     }
 
     public static final Parcelable.Creator<Assignee> CREATOR

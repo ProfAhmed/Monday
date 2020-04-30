@@ -11,7 +11,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -26,6 +28,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -74,6 +77,7 @@ import com.skydoves.powermenu.PowerMenuItem;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -131,6 +135,8 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
     StringBuilder userStringBuilder = new StringBuilder();
     private CommentGroup commentGroup;
     PowerMenu powerMenu;
+    private String commentData;
+    private boolean isUpdateComment = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +159,6 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
         commentId = getIntent().getStringExtra(Constants.SELECTED_COMMENT);
         getSubComments(commentId);
 
-
         recyclerView = findViewById(R.id.mentions_grid);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new UserAdapter(this, new ArrayList<Assignee>(), this);
@@ -174,7 +179,6 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
                 }
                 JSONObject jsonBody = new JSONObject();
                 try {
-                    jsonBody.put("commentId", commentId);
                     jsonBody.put("commentData", editor.getText().toString());
                     if (userIds != null)
                         jsonBody.put("mentionUsers", userIds);
@@ -185,33 +189,75 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
                 AlertDialog dialog = MyUtilis.myDialog(SubCommentsActivity.this);
                 dialog.show();
                 BasicResponsePostViewModel viewModel = ViewModelProviders.of(SubCommentsActivity.this).get(BasicResponsePostViewModel.class);
-                viewModel.basicResponseStateLiveData(MyConfig.ADD_SUB_COMMENT, jsonBody).observe(SubCommentsActivity.this, basicResponseStateData -> {
-                    dialog.dismiss();
-                    switch (basicResponseStateData.getStatus()) {
-                        case SUCCESS:
-                            if (basicResponseStateData.getData() != null) {
-                                Toast.makeText(SubCommentsActivity.this, basicResponseStateData.getData().getMessage(), Toast.LENGTH_SHORT).show();
+                if (isUpdateComment) {
+                    isUpdateComment = false;
+                    SubCommentsViewModel viewModel1 = ViewModelProviders.of(SubCommentsActivity.this).get(SubCommentsViewModel.class);
+                    viewModel1.puComment(MyConfig.ADD_COMMENT + "/" + commentId, jsonBody).observe(SubCommentsActivity.this, basicResponseStateData -> {
+                        dialog.dismiss();
+                        switch (basicResponseStateData.getStatus()) {
+                            case SUCCESS:
+                                if (basicResponseStateData.getData() != null) {
+                                    Toast.makeText(SubCommentsActivity.this, basicResponseStateData.getData().getMessage(), Toast.LENGTH_SHORT).show();
 //                                Intent intent = new Intent(AddCommentActivity.this, CommentsActivity.class);
 //                                intent.putExtra(Constants.TASK_ID, getIntent().getStringExtra(Constants.TASK_ID));
 //                                startActivity(intent);
+                                    tvCommentData.setText(editor.getText().toString());
+                                    editor.setText("");
+//                                    getSubComments(commentId);
+                                }
+                                break;
+                            case FAIL:
+                                Toast.makeText(SubCommentsActivity.this, basicResponseStateData.getErrorsMessages() != null ? basicResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
                                 editor.setText("");
-                                getSubComments(commentId);
-                            }
-                            break;
-                        case FAIL:
-                            Toast.makeText(SubCommentsActivity.this, basicResponseStateData.getErrorsMessages() != null ? basicResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
-                            break;
-                        case ERROR:
-                            if (basicResponseStateData.getError() != null) {
+                                break;
+                            case ERROR:
+                                if (basicResponseStateData.getError() != null) {
+                                    editor.setText("");
+                                    Toast.makeText(SubCommentsActivity.this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                                    Log.v("Statues", "Error" + basicResponseStateData.getError().getMessage());
+                                }
+                                break;
+                            case CATCH:
+                                editor.setText("");
                                 Toast.makeText(SubCommentsActivity.this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
-                                Log.v("Statues", "Error" + basicResponseStateData.getError().getMessage());
-                            }
-                            break;
-                        case CATCH:
-                            Toast.makeText(SubCommentsActivity.this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
-                            break;
+                                break;
+                        }
+                    });
+                } else {
+                    try {
+                        jsonBody.put("commentId", commentId);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                });
+
+                    viewModel.basicResponseStateLiveData(MyConfig.ADD_SUB_COMMENT, jsonBody).observe(SubCommentsActivity.this, basicResponseStateData -> {
+                        dialog.dismiss();
+                        switch (basicResponseStateData.getStatus()) {
+                            case SUCCESS:
+                                if (basicResponseStateData.getData() != null) {
+                                    Toast.makeText(SubCommentsActivity.this, basicResponseStateData.getData().getMessage(), Toast.LENGTH_SHORT).show();
+//                                Intent intent = new Intent(AddCommentActivity.this, CommentsActivity.class);
+//                                intent.putExtra(Constants.TASK_ID, getIntent().getStringExtra(Constants.TASK_ID));
+//                                startActivity(intent);
+                                    editor.setText("");
+                                    getSubComments(commentId);
+                                }
+                                break;
+                            case FAIL:
+                                Toast.makeText(SubCommentsActivity.this, basicResponseStateData.getErrorsMessages() != null ? basicResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
+                                break;
+                            case ERROR:
+                                if (basicResponseStateData.getError() != null) {
+                                    Toast.makeText(SubCommentsActivity.this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                                    Log.v("Statues", "Error" + basicResponseStateData.getError().getMessage());
+                                }
+                                break;
+                            case CATCH:
+                                Toast.makeText(SubCommentsActivity.this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+                                break;
+                        }
+                    });
+                }
             }
         });
     }
@@ -238,6 +284,7 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
                         if (!nestedComment.isDelete())
                             commentGroups.add(nestedComment);
                     }
+                    commentData = commentGroup.getCommentData();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         tvCommentData.setText(Html.fromHtml(commentGroup.getCommentData(), Html.FROM_HTML_MODE_COMPACT));
                     } else {
@@ -446,7 +493,7 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
         recyclerView.swapAdapter(new UserAdapter(this, new ArrayList<Assignee>(), this), true);
         displaySuggestions(false);
         editor.requestFocus();
-        userStringBuilder.append(userBoard.getId()).append(",");
+        userStringBuilder.append(userBoard.getId2()).append(",");
 
     }
 
@@ -454,7 +501,7 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
     public List<String> onQueryReceived(@NonNull QueryToken queryToken) {
         List<String> buckets = Collections.singletonList(BUCKET);
 
-        SuggestionsResult result = new SuggestionsResult(queryToken, nestedBoard.getUsers());
+        SuggestionsResult result = new SuggestionsResult(queryToken, MyConfig.userBoards);
         // Have suggestions, now call the listener (which is this activity)
         onReceiveSuggestionsResult(result, BUCKET);
         return buckets;
@@ -547,7 +594,12 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
 
         @Override
         public void onUserClicked(View view, int position, Attachment attachment) {
-
+            DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+            Uri uri = Uri.parse(MyConfig.GET_FILE + "/" + attachment.getAttachId());
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.addRequestHeader("Authorization", "Bearer " + PreferenceProcessor.getInstance(SubCommentsActivity.this).getStr(MyConfig.MyPrefs.TOKEN, ""));
+            Long ref = downloadManager.enqueue(request);
         }
     }
 
@@ -564,6 +616,13 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
             powerMenu.dismiss();
             switch (position) {
                 case 0:
+                    if (commentData != null) {
+                        editor.requestFocus();
+                        editor.setText(Html.fromHtml(commentData));
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(editor, InputMethodManager.SHOW_IMPLICIT);
+                        isUpdateComment = true;
+                    }
                     break;
                 case 1:
                     AlertDialog dialog = MyUtilis.myDialog(SubCommentsActivity.this);

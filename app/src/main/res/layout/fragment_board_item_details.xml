@@ -14,17 +14,10 @@
       android:layout_height="wrap_content"
       android:orientation="vertical">
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvAllUseres"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/_10sdp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         android:orientation="horizontal">
 
@@ -52,14 +45,36 @@
           android:layout_weight="1" />
 
         <ImageView
+          android:id="@+id/ivPeople"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:layout_marginEnd="1dp"
+          android:background="?attr/selectableItemBackground"
+          android:padding="8dp"
+          android:src="@drawable/ic_people_alt_24px"
+          android:visibility="visible" />
+
+        <ImageView
           android:id="@+id/ivAttachment"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
           android:layout_marginEnd="8dp"
+          android:background="?attr/selectableItemBackground"
           android:padding="8dp"
-          android:src="@drawable/ic_attachment_black_24dp" />
+          android:src="@drawable/ic_attach_file_24px" />
       </LinearLayout>
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAllUseres"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/_10sdp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
 
       <TextView
         android:id="@+id/tvNoTasksHere"
@@ -74,7 +89,8 @@
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp" />
     </LinearLayout>
 
   </androidx.core.widget.NestedScrollView>

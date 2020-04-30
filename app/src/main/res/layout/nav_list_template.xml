@@ -23,4 +23,18 @@
     android:gravity="center"
     android:textColor="@color/colorGreen"
     android:textStyle="bold" />
+
+  <Space
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1" />
+
+
+  <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="@dimen/_21sdp"
+    android:layout_marginEnd="@dimen/_16sdp"
+    android:src="@drawable/ic_keyboard_arrow_right" />
 </LinearLayout>

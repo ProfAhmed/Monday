@@ -289,7 +289,7 @@ public class AddCommentActivity extends AppCompatActivity implements QueryTokenR
     public List<String> onQueryReceived(@NonNull QueryToken queryToken) {
         List<String> buckets = Collections.singletonList(BUCKET);
 
-        SuggestionsResult result = new SuggestionsResult(queryToken, nestedBoard.getUsers());
+        SuggestionsResult result = new SuggestionsResult(queryToken,MyConfig.userBoards);
         // Have suggestions, now call the listener (which is this activity)
         onReceiveSuggestionsResult(result, BUCKET);
         return buckets;
@@ -332,7 +332,7 @@ public class AddCommentActivity extends AppCompatActivity implements QueryTokenR
         recyclerView.swapAdapter(new UserAdapter(this, new ArrayList<Assignee>(), this), true);
         displaySuggestions(false);
         editor.requestFocus();
-        userStringBuilder.append(userBoard.getId()).append(",");
+        userStringBuilder.append(userBoard.getId2()).append(",");
     }
 
     @Override

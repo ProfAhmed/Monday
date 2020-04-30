@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import com.aosama.it.models.responses.BasicResponse;
 import com.aosama.it.models.responses.boards.CommentGroup;
+import com.aosama.it.models.responses.boards.UserBoard;
 import com.aosama.it.models.responses.nested.BoardData;
 import com.aosama.it.models.wrappers.StateLiveData;
 import com.aosama.it.repository.BoardNestedRepository;
@@ -27,6 +28,10 @@ public class CommentsViewModel extends AndroidViewModel {
 
     public StateLiveData<BasicResponse<List<CommentGroup>>> getComments(String url) {
         return repository.getComments(url);
+    }
+
+    public StateLiveData<BasicResponse<List<UserBoard>>> getUsers(String url) {
+        return repository.getUsers(url);
     }
 
     public StateLiveData<BasicResponse> putComment(String url, JSONObject jsonBody) {

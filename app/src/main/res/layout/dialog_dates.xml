@@ -22,7 +22,7 @@
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/start_date"
+      android:text="@string/task_name"
       android:textColor="#BA000000" />
 
     <TextView
@@ -32,19 +32,7 @@
       android:layout_marginStart="8dp"
       android:layout_marginTop="2dp" />
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:text="@string/add_date"
-      android:textColor="#BA000000" />
 
-    <TextView
-      android:id="@+id/tvAddedDate"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="8dp"
-      android:layout_marginTop="2dp" />
 
   </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

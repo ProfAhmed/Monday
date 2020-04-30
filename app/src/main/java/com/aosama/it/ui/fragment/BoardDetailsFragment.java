@@ -38,6 +38,7 @@ import com.aosama.it.ui.activities.CommentsActivity;
 import com.aosama.it.ui.adapter.AttachmentAdapter;
 import com.aosama.it.ui.adapter.BoardsAdapter;
 import com.aosama.it.ui.adapter.CustomListAdapterAssigneeDialog;
+import com.aosama.it.ui.adapter.CustomListAdapterUsersDialog;
 import com.aosama.it.ui.adapter.board.HAdapterUsers;
 import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.MyUtilis;
@@ -78,6 +79,8 @@ public class BoardDetailsFragment extends Fragment implements
     RecyclerView recyclerView;
     @BindView(R.id.ivAttachment)
     ImageView ivAttachment;
+    @BindView(R.id.ivPeople)
+    ImageView ivPeople;
 
     private BoardDataList boardDataList = new BoardDataList();
     private Gson gson = new Gson();
@@ -125,7 +128,6 @@ public class BoardDetailsFragment extends Fragment implements
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMax(100);
 
-
         return viewRoot;
     }
 
@@ -146,6 +148,14 @@ public class BoardDetailsFragment extends Fragment implements
         //setting an empty list to the adapter
 //        settingAdapter();
 
+        ivPeople.setOnClickListener(view12 -> {
+            if (userBoards != null && userBoards.size() > 0)
+                showDialogUsers((ArrayList<UserBoard>) userBoards);
+            else {
+                Toast.makeText(getActivity(), getString(R.string.no_users_here), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void refreshAdapterUsers() {
@@ -154,6 +164,29 @@ public class BoardDetailsFragment extends Fragment implements
                 this);
         rvAllUsers.setAdapter(adapterUsers);
         adapterUsers.notifyDataSetChanged();
+    }
+
+    private void showDialogUsers(ArrayList<UserBoard> assigneeList) {
+
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        Window window = dialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        View view = getLayoutInflater().inflate(R.layout.dialog_people, null);
+
+        ListView lv = view.findViewById(R.id.custom_list);
+
+        // Change MyActivity.this and myListOfItems to your own values
+        CustomListAdapterUsersDialog clad = new CustomListAdapterUsersDialog(getActivity(), assigneeList);
+
+        lv.setAdapter(clad);
+        dialog.setContentView(view);
+
+        dialog.show();
+
     }
 
     private void fetchingData() {
@@ -309,7 +342,7 @@ public class BoardDetailsFragment extends Fragment implements
 
     private void fillTable(NestedBoard nestedBoard) {
         ArrayList<TaskE> taskES = new ArrayList<>();
-        final BoardsAdapter adapter = new BoardsAdapter(this);
+        final BoardsAdapter adapter = new BoardsAdapter(this, getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         for (int j = 0; j < nestedBoard.getTasksGroup().size(); j++) {
@@ -383,6 +416,7 @@ public class BoardDetailsFragment extends Fragment implements
 
     }
 
+
     private void showDialogDates(TaskE taskE) {
 
         final Dialog dialog = new Dialog(getActivity());
@@ -395,9 +429,7 @@ public class BoardDetailsFragment extends Fragment implements
         View view = getLayoutInflater().inflate(R.layout.dialog_dates, null);
 
         TextView tvStartDate = view.findViewById(R.id.tvStartDate);
-        TextView tvAddedDate = view.findViewById(R.id.tvAddedDate);
 
-        tvAddedDate.setText(MyUtilis.formateDate(taskE.getAddDate()));
         tvStartDate.setText(MyUtilis.formateDate(taskE.getStartDate()));
         dialog.setContentView(view);
 
@@ -434,23 +466,18 @@ public class BoardDetailsFragment extends Fragment implements
     @Override
     public void setOnBoardItemClick(View v, TaskE taskE) {
         switch (v.getId()) {
-            case R.id.btnComments:
+            case R.id.ivComments:
                 fireTaskItemComments(taskE, nestedBoard);
                 break;
-            case R.id.btnAttachments:
+            case R.id.ivAttachment:
                 taskId = taskE.getId2();
                 alert = new ViewDialogAttachments();
                 alert.showDialog(getActivity(), taskE.getAttachments());
                 break;
 
-            case R.id.ivTeamData:
+            case R.id.ivPeople:
                 showDialogPeople((ArrayList<Assignee>) taskE.getAssignee());
-                break;
-            case R.id.ivDates:
-                showDialogDates(taskE);
-                break;
-            case R.id.ivMeetingData:
-                showDialogMeeting(taskE);
+
         }
     }
 

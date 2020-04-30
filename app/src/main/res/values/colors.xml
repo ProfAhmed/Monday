@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorPrimary">#10876C</color>
-  <color name="colorPrimaryDark">#10876C</color>
-  <color name="colorAccent">#32B192</color>
+  <color name="colorPrimary">#19AC89</color>
+  <color name="colorPrimaryDark">#00000000</color>
+  <color name="colorAccent">#19AC89</color>
   <color name="baseic_texts_buttons">#209679</color>
   <color name="silver">#C0C0C0</color>
   <color name="gray">#808080</color>
   <color name="gray_light">#8DD3D3D3</color>
   <color name="black">#000</color>
-  <color name="colorGreen">#209679</color>
+  <color name="colorGreen">#19AC89</color>
+  <color name="colorYellow">#F8C42D</color>
+  <color name="colorWhite">#FFF</color>
 </resources>

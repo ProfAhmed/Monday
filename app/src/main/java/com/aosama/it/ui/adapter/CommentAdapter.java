@@ -83,7 +83,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                 }
             }
         });
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.tvReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onAttachClicked.onUserClicked(holder.tvReply, position, commentGroup.getAttachments(), commentGroup.getCommentId());
@@ -127,13 +127,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         int fonsSize =
                 (int) mContext.getResources()
                         .getDimension(R.dimen._20ssp);
-        return TextDrawable.builder()
-                .beginConfig()
+        return TextDrawable.builder().beginConfig().
+                textColor(Color.BLUE)
+//                .beginConfig()
                 .fontSize(fonsSize)
+                .bold()
                 .width(dimWH)  // width in px
                 .height(dimWH) // height in px
                 .endConfig()
-                .buildRect(firstChar, Color.RED);
+                .buildRect(firstChar, Color.parseColor("#41C5C3C3"));
+
     }
 
 

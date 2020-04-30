@@ -1,6 +1,7 @@
 package com.aosama.it.ui.fragment;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.aosama.it.R;
 import com.aosama.it.constants.Constants;
 import com.aosama.it.models.responses.boards.BoardDataList;
 import com.aosama.it.models.responses.boards.NestedBoard;
+import com.aosama.it.ui.activities.TasksActivity;
 import com.aosama.it.ui.adapter.CustomExpandableListAdapter;
 import com.aosama.it.utiles.ExpandableListDataPump;
 import com.aosama.it.utiles.MyConfig;
@@ -79,7 +81,9 @@ public class HomeFragment extends Fragment {
                 ///here
                 fireBoardItemDetails(expandableListDetail.get(
                         expandableListTitle.get(groupPosition))
-                        .get(childPosition).getId());
+                        .get(childPosition).getId(), expandableListDetail.get(
+                        expandableListTitle.get(groupPosition))
+                        .get(childPosition).getName());
 
 
             } catch (Exception e) {
@@ -130,17 +134,21 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    private void fireBoardItemDetails(String id) {
+    private void fireBoardItemDetails(String id, String name) {
 
-        BoardDetailsFragment boardDetailsFragment = new BoardDetailsFragment();
-        Bundle b = new Bundle();
-        b.putString(Constants.SELECTED_BORAD, id);
-        boardDetailsFragment.setArguments(b);
-
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .addToBackStack(BoardDetailsFragment.class.getSimpleName())
-                .replace(R.id.nav_host_fragment, boardDetailsFragment).commit();
+        Intent intent = new Intent(getActivity(), TasksActivity.class);
+        intent.putExtra(Constants.SELECTED_BORAD, id);
+        intent.putExtra("name", name);
+        startActivity(intent);
+//        BoardDetailsFragment boardDetailsFragment = new BoardDetailsFragment();
+//        Bundle b = new Bundle();
+//        b.putString(Constants.SELECTED_BORAD, id);
+//        boardDetailsFragment.setArguments(b);
+//
+//        getActivity().getSupportFragmentManager()
+//                .beginTransaction()
+//                .addToBackStack(BoardDetailsFragment.class.getSimpleName())
+//                .replace(R.id.nav_host_fragment, boardDetailsFragment).commit();
 
 
     }

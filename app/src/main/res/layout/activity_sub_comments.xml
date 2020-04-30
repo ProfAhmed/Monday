@@ -101,7 +101,7 @@
               android:layout_gravity="center"
               android:background="?attr/selectableItemBackground"
               android:padding="8dp"
-              android:src="@drawable/ic_attachment_black_24dp" />
+              android:src="@drawable/ic_attach_file_24px" />
 
             <ImageView
               android:id="@+id/ivSelection"
@@ -113,7 +113,7 @@
               android:onClick="popmenu"
               android:padding="8dp"
               android:src="@drawable/ic_selection"
-              android:visibility="gone" />
+              android:visibility="visible" />
           </LinearLayout>
 
           <TextView

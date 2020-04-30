@@ -10,17 +10,19 @@
   <application
     android:allowBackup="true"
     android:fullBackupContent="false"
-    android:hardwareAccelerated="false"
+    android:hardwareAccelerated="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
-    android:usesCleartextTraffic="true"
     android:largeHeap="true"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
+    android:usesCleartextTraffic="true"
     tools:ignore="GoogleAppIndexingWarning"
     tools:targetApi="m">
-    <activity android:name=".ui.activities.SubCommentsActivity"></activity>
+    <activity android:name=".ui.activities.MailFormActivity"></activity>
+    <activity android:name=".ui.activities.TasksActivity" />
+    <activity android:name=".ui.activities.SubCommentsActivity" />
     <activity android:name=".ui.activities.AddCommentActivity" />
     <activity android:name=".ui.activities.CommentsActivity" />
     <activity android:name=".ui.activities.InboxDetailsActivity" />

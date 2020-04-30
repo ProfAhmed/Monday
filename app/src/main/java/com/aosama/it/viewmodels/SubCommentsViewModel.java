@@ -31,4 +31,8 @@ public class SubCommentsViewModel extends AndroidViewModel {
         return repository.deleteComment(url, jsonBody);
     }
 
+    public StateLiveData<BasicResponse> puComment(String url, JSONObject jsonBody) {
+        return repository.putComment(url, jsonBody);
+    }
+
 }

@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Monday</string>
+  <string name="app_name">susftask</string>
   <string name="english">English</string>
   <string name="create_new_account">Create new account</string>
   <string name="login">Login</string>
@@ -50,7 +50,7 @@
   <string name="reply">Reply</string>
   <string name="type_comment">Type Comment</string>
   <string name="update">Update</string>
-  <string name="attachment_name">Attachment Name</string>
+  <string name="attachment_name">Attach Name</string>
   <string name="loading_msg">loading...</string>
   <string name="ef_error_create_image_file">faild uploading</string>
   <string name="success">Success uploading</string>
@@ -61,4 +61,13 @@
   <string name="task_status">Status:</string>
   <string name="attachments">Attachments</string>
   <string name="due_date_2">Due date:</string>
+  <string name="pattern">%.2f</string>
+  <string name="date">Date</string>
+  <string name="info">Info</string>
+  <string name="no_users_here">no users here</string>
+  <string name="inbox">INBOX</string>
+  <string name="send">SEND</string>
+  <string name="to">To</string>
+  <string name="subject">Subject</string>
+  <string name="write_message">Write your Message</string>
 </resources>

@@ -108,13 +108,16 @@ public class CustomListAdapterAssigneeDialog extends BaseAdapter {
         int fonsSize =
                 (int) mContext.getResources()
                         .getDimension(R.dimen._20ssp);
-        return TextDrawable.builder()
-                .beginConfig()
+        return TextDrawable.builder().beginConfig().
+                textColor(Color.BLUE)
+//                .beginConfig()
                 .fontSize(fonsSize)
+                .bold()
                 .width(dimWH)  // width in px
                 .height(dimWH) // height in px
                 .endConfig()
-                .buildRect(firstChar, Color.RED);
+                .buildRect(firstChar, Color.parseColor("#41C5C3C3"));
+
     }
 
     static class ViewHolder {

@@ -1,5 +1,6 @@
 package com.aosama.it.ui.adapter;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,20 +20,26 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
+import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 
 public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
     private ArrayList<TaskE> tasksGroups;
     private ArrayList<String> tableName;
     OnItemClick onItemClicklistener;
+    Context mcContext;
+
+    private static final CircularProgressIndicator.ProgressTextAdapter TIME_TEXT_ADAPTER = currentProgress -> (int) currentProgress + " " + "%";
 
     public interface OnItemClick {
         void setOnBoardItemClick(View v, TaskE taskE);
     }
 
-    public BoardsAdapter(OnItemClick onItemClicklistener) {
+    public BoardsAdapter(OnItemClick onItemClicklistener, Context context) {
         this.onItemClicklistener = onItemClicklistener;
+        this.mcContext = context;
     }
 
     @NonNull
@@ -51,46 +58,120 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
             holder.tvTableName.setVisibility(View.VISIBLE);
             holder.tvTableName.setText(taskE.getTableName());
         } else holder.tvTableName.setVisibility(View.GONE);
-        String date = MyUtilis.formateDate(taskE.getDueDate().substring(0, taskE.getDueDate().indexOf("T")));
-        holder.viewStatusColor.setBackgroundColor(Color.parseColor(taskE.getStatus().getColor()));
-        holder.tvTaskName.setText(taskE.getName());
+        String date = MyUtilis.formateDate(taskE.getAddDate().substring(0, taskE.getDueDate().indexOf("T")));
+//        holder.viewStatusColor.setBackgroundColor(Color.parseColor(taskE.getStatus().getColor()));
+        holder.tvTaskName.setText("   " + taskE.getName());
         holder.tvStatus.setText(taskE.getStatus().getName());
-        holder.tvEndDate.setText(date);
-        holder.progress_horizontal.setProgress(taskE.getProgressValue());
-        holder.btnComments.setOnClickListener(new View.OnClickListener() {
+        holder.tvStatus.setBackgroundColor(Color.parseColor(taskE.getStatus().getColor()));
+        holder.tvEndDate.setText(":   " + date);
+//        holder.progress_horizontal.setProgress(taskE.getProgressValue());
+        holder.ivComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (onItemClicklistener != null)
-                    onItemClicklistener.setOnBoardItemClick(holder.btnComments, taskE);
+                    onItemClicklistener.setOnBoardItemClick(holder.ivComments, taskE);
             }
         });
-        holder.btnAttachments.setOnClickListener(new View.OnClickListener() {
+        holder.ivAttachment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (onItemClicklistener != null)
-                    onItemClicklistener.setOnBoardItemClick(holder.btnAttachments, taskE);
+                    onItemClicklistener.setOnBoardItemClick(holder.ivAttachment, taskE);
+            }
+        });
+        holder.ivPeople.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onItemClicklistener != null)
+                    onItemClicklistener.setOnBoardItemClick(holder.ivPeople, taskE);
             }
         });
 
-        holder.ivTeamData.setOnClickListener(new View.OnClickListener() {
+
+        holder.tvTaskName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onItemClicklistener.setOnBoardItemClick(holder.ivTeamData, taskE);
-
+                if (onItemClicklistener != null)
+                    onItemClicklistener.setOnBoardItemClick(holder.tvTaskName, taskE);
             }
         });
-        holder.ivDates.setOnClickListener(new View.OnClickListener() {
+
+
+        holder.circular_progress.setMaxProgress(100);
+        holder.circular_progress.setCurrentProgress(taskE.getProgressValue());
+        holder.circular_progress.setProgressColor(Color.parseColor(taskE.getStatus().getColor()));
+        holder.circular_progress.setProgressTextAdapter(TIME_TEXT_ADAPTER);
+        String add_date = MyUtilis.formateDate(taskE.getAddDate().substring(0, taskE.getDueDate().indexOf("T")));
+
+        holder.ivAddDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onItemClicklistener.setOnBoardItemClick(holder.ivDates, taskE);
+                try {
+                    holder.tvInfo.setText(mcContext.getString(R.string.add_date) + ":  ");
+                    holder.tvInfoValue.setText(add_date);
+                    holder.tvInfoValue.setTextColor(Color.BLACK);
 
+                } catch (NullPointerException e) {
+
+                }
             }
         });
-        holder.ivMeetingData.setOnClickListener(new View.OnClickListener() {
+        String due_date = MyUtilis.formateDate(taskE.getDueDate().substring(0, taskE.getDueDate().indexOf("T")));
+
+        holder.ivDueDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onItemClicklistener.setOnBoardItemClick(holder.ivMeetingData, taskE);
+                try {
+                    holder.tvInfo.setText(mcContext.getString(R.string.due_date) + ":  ");
+                    holder.tvInfoValue.setText(due_date);
+                    holder.tvInfoValue.setTextColor(Color.BLACK);
 
+                } catch (NullPointerException e) {
+
+                }
+            }
+        });
+        String start_date = MyUtilis.formateDate(taskE.getStartDate().substring(0, taskE.getDueDate().indexOf("T")));
+
+        holder.ivStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    holder.tvInfo.setText(mcContext.getString(R.string.add_date) + ":  ");
+                    holder.tvInfoValue.setText(start_date);
+                    holder.tvInfoValue.setTextColor(Color.BLACK);
+
+                } catch (NullPointerException e) {
+
+                }
+            }
+        });
+
+        holder.ivMeetingTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    holder.tvInfo.setText(mcContext.getString(R.string.meeting_time) + ":  ");
+                    holder.tvInfoValue.setText(MyUtilis.formateDateTime(taskE.getMeetingTime()));
+                    holder.tvInfoValue.setTextColor(Color.BLACK);
+
+                } catch (NullPointerException e) {
+
+                }
+            }
+        });
+
+        holder.ivMeetingLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    holder.tvInfo.setText(mcContext.getString(R.string.meeting_link) + ":  ");
+                    holder.tvInfoValue.setText(taskE.getMeetingUrl());
+                    holder.tvInfoValue.setTextColor(Color.BLUE);
+
+                } catch (NullPointerException e) {
+
+                }
             }
         });
     }
@@ -109,8 +190,8 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
     }
 
     public class BoardVH extends RecyclerView.ViewHolder {
-        @BindView(R.id.progress_horizontal)
-        ProgressBar progress_horizontal;
+        //        @BindView(R.id.progress_horizontal)
+//        ProgressBar progress_horizontal;
         @BindView(R.id.tvTableName)
         TextView tvTableName;
         @BindView(R.id.tvTaskName)
@@ -119,20 +200,28 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
         TextView tvStatus;
         @BindView(R.id.tvEndDate)
         TextView tvEndDate;
-        @BindView(R.id.ivDates)
-        ImageView ivDates;
-        @BindView(R.id.ivMeetingData)
-        ImageView ivMeetingData;
-        @BindView(R.id.ivTeamData)
-        ImageView ivTeamData;
-        @BindView(R.id.ivMoreData)
-        ImageView ivMoreData;
-        @BindView(R.id.viewStatusColor)
-        View viewStatusColor;
-        @BindView(R.id.btnComments)
-        MaterialButton btnComments;
-        @BindView(R.id.btnAttachments)
-        MaterialButton btnAttachments;
+        @BindView(R.id.tvInfo)
+        TextView tvInfo;
+        @BindView(R.id.tvInfoValue)
+        TextView tvInfoValue;
+        @BindView(R.id.ivMeetingTime)
+        ImageView ivMeetingTime;
+        @BindView(R.id.ivAddDate)
+        ImageView ivAddDate;
+        @BindView(R.id.ivDueDate)
+        ImageView ivDueDate;
+        @BindView(R.id.ivMeetingLink)
+        ImageView ivMeetingLink;
+        @BindView(R.id.ivStartDate)
+        ImageView ivStartDate;
+        @BindView(R.id.ivComments)
+        ImageView ivComments;
+        @BindView(R.id.ivAttachment)
+        ImageView ivAttachment;
+        @BindView(R.id.ivPeople)
+        ImageView ivPeople;
+        @BindView(R.id.circular_progress)
+        CircularProgressIndicator circular_progress;
 
         public BoardVH(@NonNull View itemView) {
             super(itemView);
