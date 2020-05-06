@@ -31,9 +31,18 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxVH> {
 
     private Context mContext;
     List<DataMail> mails;
+    private onInboxClick onInboxClick;
+
+    public interface onInboxClick {
+        void onInboxItemClicked(DataMail dataMail);
+    }
 
     public InboxAdapter(Context mContext) {
         this.mContext = mContext;
+    }
+
+    public void setOnInboxClick(InboxAdapter.onInboxClick onInboxClick) {
+        this.onInboxClick = onInboxClick;
     }
 
     @NonNull
@@ -99,7 +108,10 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxVH> {
                 holder.profile_image.setImageDrawable(drawable2);
             }
         }
-
+        holder.itemView.setOnClickListener(view -> {
+            if (onInboxClick != null)
+                onInboxClick.onInboxItemClicked(mail);
+        });
     }
 
     @Override
@@ -128,12 +140,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxVH> {
         public InboxVH(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mContext.startActivity(new Intent(mContext, InboxDetailsActivity.class));
-                }
-            });
+
         }
     }
 }

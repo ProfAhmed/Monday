@@ -114,7 +114,6 @@ public class MailFormActivity extends AppCompatActivity implements QueryTokenRec
                     jsonBody.put("body", etMessage.getText().toString());
 //                    jsonBody.put("attachName", attachName);
 //                    jsonBody.put("attachKey", attachKey);
-                    jsonBody.put("isPrivate", false);
                     if (userIds != null)
                         jsonBody.put("users", userIds);
                 } catch (Exception e) {
@@ -133,7 +132,6 @@ public class MailFormActivity extends AppCompatActivity implements QueryTokenRec
 //                                Intent intent = new Intent(AddCommentActivity.this, CommentsActivity.class);
 //                                intent.putExtra(Constants.TASK_ID, getIntent().getStringExtra(Constants.TASK_ID));
 //                                startActivity(intent);
-                                setResult(RESULT_OK);
                                 finish();
                             }
                             break;

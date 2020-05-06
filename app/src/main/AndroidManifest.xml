@@ -20,7 +20,9 @@
     android:usesCleartextTraffic="true"
     tools:ignore="GoogleAppIndexingWarning"
     tools:targetApi="m">
-    <activity android:name=".ui.activities.MailFormActivity"></activity>
+    <activity
+      android:name=".ui.activities.MailFormActivity"
+      android:windowSoftInputMode="stateVisible|adjustResize" />
     <activity android:name=".ui.activities.TasksActivity" />
     <activity android:name=".ui.activities.SubCommentsActivity" />
     <activity android:name=".ui.activities.AddCommentActivity" />

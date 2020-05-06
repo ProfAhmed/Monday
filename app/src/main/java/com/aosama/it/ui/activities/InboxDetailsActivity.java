@@ -27,6 +27,7 @@ public class InboxDetailsActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
     }
 
     public void reply(View v) {

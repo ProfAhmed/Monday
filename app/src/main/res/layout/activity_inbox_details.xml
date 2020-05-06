@@ -76,7 +76,8 @@
           android:layout_gravity="center"
           android:background="?attr/selectableItemBackground"
           android:onClick="reply"
-          android:src="@drawable/ic_reply_black_24dp" />
+          android:src="@drawable/ic_reply_black_24dp"
+          android:visibility="gone" />
       </LinearLayout>
 
       <TextView

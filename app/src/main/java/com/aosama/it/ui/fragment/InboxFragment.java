@@ -26,6 +26,7 @@ import com.aosama.it.R;
 import com.aosama.it.models.responses.BasicResponse;
 import com.aosama.it.models.responses.mail.DataMail;
 import com.aosama.it.models.wrappers.StateData;
+import com.aosama.it.ui.activities.InboxDetailsActivity;
 import com.aosama.it.ui.activities.MailFormActivity;
 import com.aosama.it.ui.adapter.InboxAdapter;
 import com.aosama.it.ui.adapter.NotificationAdapter;
@@ -40,7 +41,7 @@ import butterknife.ButterKnife;
 import me.saket.inboxrecyclerview.InboxRecyclerView;
 
 
-public class InboxFragment extends Fragment implements View.OnClickListener {
+public class InboxFragment extends Fragment implements View.OnClickListener, InboxAdapter.onInboxClick {
 
     @BindView(R.id.rv)
     RecyclerView recyclerView;
@@ -69,6 +70,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener {
         recyclerView.setAdapter(adapter);
         tvInbox.setOnClickListener(this);
         tvSend.setOnClickListener(this);
+        adapter.setOnInboxClick(this);
         ivSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,5 +127,15 @@ public class InboxFragment extends Fragment implements View.OnClickListener {
                     break;
             }
         });
+    }
+
+    @Override
+    public void onInboxItemClicked(DataMail dataMail) {
+        Intent intent = new Intent(getActivity(), InboxDetailsActivity.class);
+        intent.putExtra("image", dataMail.getFromUser().getUserImage());
+        intent.putExtra("name", dataMail.getFromUser().getName());
+        intent.putExtra("short_name", dataMail.getFromUser().getShortName());
+        intent.putExtra("body", dataMail.getBody());
+        startActivity(intent);
     }
 }
