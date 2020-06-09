@@ -21,6 +21,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class BasicResponseRepository {
     private static final String TAG = "BasicResponseRepository";
@@ -51,7 +52,8 @@ public class BasicResponseRepository {
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        signInResponseStateLiveData.postCatch();     }
+                        signInResponseStateLiveData.postCatch();
+                    }
                 }, error -> {
             Log.v("volley_error", error.toString());
             error.printStackTrace();
@@ -65,7 +67,8 @@ public class BasicResponseRepository {
 
                 headers.put("Authorization", "Bearer " + PreferenceProcessor.getInstance(mContext).getStr(MyConfig.MyPrefs.TOKEN, ""));
 //                headers.put("lang", PreferenceProcessor.getInstance(mContext).getStr(MyConfig.MyPrefs.LANG, "en"));
-                headers.put("lang", Locale.getDefault().getLanguage());
+                headers.put("Language", Locale.getDefault().getLanguage());
+                headers.put("tz", MyConfig.TIME_ZONE);
                 return headers;
             }
         };

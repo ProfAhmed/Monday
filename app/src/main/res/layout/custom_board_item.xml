@@ -87,7 +87,7 @@
 
             <TextView
               android:id="@+id/tvTaskName"
-              android:layout_width="@dimen/_60sdp"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:ellipsize="end"
               android:maxLines="1"
@@ -130,15 +130,14 @@
               android:id="@+id/tvInfo"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="@string/info"
+              android:text="@string/start_date"
               android:textColor="#BFBEBE" />
 
             <TextView
               android:id="@+id/tvInfoValue"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginStart="6dp"
-              android:text=": 25-03-2003" />
+              android:layout_marginStart="6dp" />
 
           </LinearLayout>
 
@@ -153,7 +152,7 @@
               android:layout_weight="1" />
 
             <ImageView
-              android:id="@+id/ivMeetingTime"
+              android:id="@+id/ivAddDate"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/ic_meeting_time" />
@@ -164,7 +163,7 @@
               android:layout_weight="1" />
 
             <ImageView
-              android:id="@+id/ivAddDate"
+              android:id="@+id/ivStartDate"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/ic_add_date" />
@@ -197,7 +196,7 @@
               android:layout_weight="1" />
 
             <ImageView
-              android:id="@+id/ivStartDate"
+              android:id="@+id/ivMeetingTime"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/ic_start_date" />

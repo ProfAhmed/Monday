@@ -13,12 +13,12 @@
     android:id="@+id/profile_image"
     android:layout_width="@dimen/_30sdp"
     android:layout_height="@dimen/_30sdp"
-    android:layout_gravity="center"
+    android:layout_gravity="center|top"
     android:src="@drawable/ic_avatar" />
 
   <LinearLayout
     android:layout_width="0dp"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_weight="1"
     android:orientation="vertical"
@@ -63,7 +63,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/_4sdp"
-    android:text="6 Feb"
     android:textColor="#D3000000"
     android:textSize="10sp"
     android:textStyle="bold" />

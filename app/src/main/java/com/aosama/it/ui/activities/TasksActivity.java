@@ -95,6 +95,8 @@ public class TasksActivity extends AppCompatActivity implements
     ImageView ivAttachment;
     @BindView(R.id.ivPeople)
     ImageView ivPeople;
+    @BindView(R.id.ivPrivate)
+    ImageView ivLock;
 
     private BoardDataList boardDataList = new BoardDataList();
     private Gson gson = new Gson();
@@ -142,7 +144,6 @@ public class TasksActivity extends AppCompatActivity implements
             alertBoard.showDialog(this, nestedBoard.getAttachmentsGeneral());
 
         });
-
 
         ivPeople.setOnClickListener(view12 -> {
             if (userBoards != null && userBoards.size() > 0)
@@ -295,6 +296,9 @@ public class TasksActivity extends AppCompatActivity implements
 //                        getArguments().getString(Constants.SELECTED_BORAD), BoardDataList.class);
             id = getIntent().getStringExtra(Constants.SELECTED_BORAD);
             tvName.setText(getIntent().getStringExtra("name"));
+            if (getIntent().getBooleanExtra("is_private", false))
+                ivLock.setVisibility(View.VISIBLE);
+            else ivLock.setVisibility(View.GONE);
         }
     }
 

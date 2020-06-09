@@ -16,9 +16,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.aosama.it.R;
+import com.aosama.it.constants.Constants;
 import com.aosama.it.models.responses.boards.UserBoard;
 import com.aosama.it.models.responses.notifications.TaskN;
 import com.aosama.it.ui.activities.HomeActivity;
+import com.aosama.it.ui.activities.TasksActivity;
 import com.aosama.it.ui.adapter.NotificationAdapter;
 import com.aosama.it.ui.adapter.TasksAdapter;
 import com.aosama.it.utiles.MyConfig;
@@ -79,8 +81,10 @@ public class TasksFragment extends Fragment implements TasksAdapter.OnUserClicke
 
     @Override
     public void onUserClicked(View view, int position, TaskN taskN) {
-        Intent intent = new Intent(getActivity(), HomeActivity.class);
-        intent.putExtra("id", taskN.getBoardId());
+        Intent intent = new Intent(getActivity(), TasksActivity.class);
+        intent.putExtra(Constants.SELECTED_BORAD, taskN.getBoardId());
+        intent.putExtra("name", "Board Name");
+
         startActivity(intent);
     }
 }

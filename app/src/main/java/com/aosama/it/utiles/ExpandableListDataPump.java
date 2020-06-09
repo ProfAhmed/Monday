@@ -7,15 +7,17 @@ import com.aosama.it.models.responses.boards.BoardDataList;
 import com.aosama.it.models.responses.boards.NestedBoard;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ExpandableListDataPump {
     public static HashMap<BoardDataList, List<NestedBoard>>
     getData(List<BoardDataList> boardDataList) {
-        HashMap<BoardDataList, List<NestedBoard>> expandableListDetail =
-                new HashMap<>();
+        LinkedHashMap<BoardDataList, List<NestedBoard>> expandableListDetail =
+                new LinkedHashMap<>();
 //        for (BoardDataList element : boardDataList) {
 //            expandableListDetail.put(element, element.getNestedBoard());
 //        }

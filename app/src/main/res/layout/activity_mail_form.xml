@@ -13,6 +13,12 @@
     android:padding="@dimen/_16sdp"
     tools:context=".ui.activities.MailFormActivity">
 
+    <ImageView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="?attr/selectableItemBackground"
+      android:onClick="back"
+      android:src="@drawable/ic_close_24px" />
 
     <com.linkedin.android.spyglass.ui.MentionsEditText
       android:id="@+id/editor"
@@ -22,7 +28,19 @@
       android:background="@drawable/rounded"
       android:hint="@string/to"
       android:imeOptions="flagNoExtractUi"
-      android:padding="@dimen/_18sdp" />
+      android:padding="@dimen/_18sdp"
+      android:visibility="gone" />
+
+    <com.tylersuehr.chips.ChipsInputLayout
+      android:id="@+id/chips_input"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:background="@drawable/rounded"
+      android:hint="@string/to "
+      android:textColor="#212121"
+      android:textColorHint="#757575"
+      app:chip_showDetails="true" />
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/mentions_grid"

@@ -3,6 +3,7 @@ package com.aosama.it.utiles;
 import com.aosama.it.models.responses.boards.UserBoard;
 
 import java.util.List;
+import java.util.TimeZone;
 
 public class MyConfig {
     public static final String BASE_URL = "http://wayak.org/";
@@ -25,6 +26,8 @@ public class MyConfig {
     //    public static final String NESTED = BASE_URL + "board/nested"+"?id=BOR9139288889";
     public static List<UserBoard> userBoards = null;
     public static String GET_users_URL = BASE_URL + "user/allusers";
+    private static TimeZone tz = TimeZone.getDefault();
+    public static final String TIME_ZONE = tz.getID();
 
     public static class MyPrefs {
         public static final String FIREBASE_TOKEN = "firebase_token";

@@ -77,7 +77,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
                 startActivity(new Intent(getActivity(), MailFormActivity.class));
             }
         });
-        getInbox(MyConfig.MAILS);
+        getInbox(MyConfig.MAILS, false);
         return v;
     }
 
@@ -89,7 +89,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
                 tvInbox.setBackground(getActivity().getDrawable(R.drawable.layout_bg_green));
                 tvSend.setTextColor(Color.BLACK);
                 tvSend.setBackground(getActivity().getDrawable(R.drawable.layout_bg_white));
-                getInbox(MyConfig.MAILS);
+                getInbox(MyConfig.MAILS, false);
                 break;
             case R.id.tvSend:
 
@@ -97,12 +97,12 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
                 tvSend.setBackground(getActivity().getDrawable(R.drawable.layout_bg_green));
                 tvInbox.setTextColor(Color.BLACK);
                 tvInbox.setBackground(getActivity().getDrawable(R.drawable.layout_bg_white));
-                getInbox(MyConfig.MAILS + "/sent");
+                getInbox(MyConfig.MAILS + "/sent", true);
                 break;
         }
     }
 
-    void getInbox(String url) {
+    void getInbox(String url, boolean isSend) {
         MailViewModel viewModel = ViewModelProviders.of(this).get(MailViewModel.class);
         AlertDialog dialog = MyUtilis.myDialog(getActivity());
         dialog.show();
@@ -111,7 +111,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
             dialog.dismiss();
             switch (basicResponseStateData.getStatus()) {
                 case SUCCESS:
-                    adapter.setMails(basicResponseStateData.getData().getData());
+                    adapter.setMails(basicResponseStateData.getData().getData(), isSend);
                     break;
                 case FAIL:
                     Toast.makeText(getActivity(), basicResponseStateData.getErrorsMessages() != null ? basicResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
@@ -136,6 +136,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
         intent.putExtra("name", dataMail.getFromUser().getName());
         intent.putExtra("short_name", dataMail.getFromUser().getShortName());
         intent.putExtra("body", dataMail.getBody());
+
         startActivity(intent);
     }
 }

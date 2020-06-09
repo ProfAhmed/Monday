@@ -58,12 +58,11 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
             holder.tvTableName.setVisibility(View.VISIBLE);
             holder.tvTableName.setText(taskE.getTableName());
         } else holder.tvTableName.setVisibility(View.GONE);
-        String date = MyUtilis.formateDate(taskE.getAddDate().substring(0, taskE.getDueDate().indexOf("T")));
 //        holder.viewStatusColor.setBackgroundColor(Color.parseColor(taskE.getStatus().getColor()));
         holder.tvTaskName.setText("   " + taskE.getName());
         holder.tvStatus.setText(taskE.getStatus().getName());
         holder.tvStatus.setBackgroundColor(Color.parseColor(taskE.getStatus().getColor()));
-        holder.tvEndDate.setText(":   " + date);
+        holder.tvEndDate.setText(MyUtilis.parseDate(taskE.getDueDate()));
 //        holder.progress_horizontal.setProgress(taskE.getProgressValue());
         holder.ivComments.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,16 +101,20 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
         holder.circular_progress.setProgressColor(Color.parseColor(taskE.getStatus().getColor()));
         holder.circular_progress.setProgressTextAdapter(TIME_TEXT_ADAPTER);
         String add_date = MyUtilis.formateDate(taskE.getAddDate().substring(0, taskE.getDueDate().indexOf("T")));
+        holder.tvInfo.setText(mcContext.getString(R.string.start_date) + ":  ");
+        holder.tvInfoValue.setText(MyUtilis.parseDate(taskE.getStartDate()));
+        holder.tvInfoValue.setTextColor(Color.BLACK);
 
         holder.ivAddDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
                     holder.tvInfo.setText(mcContext.getString(R.string.add_date) + ":  ");
-                    holder.tvInfoValue.setText(add_date);
+                    holder.tvInfoValue.setText(MyUtilis.parseDate(taskE.getAddDate()));
                     holder.tvInfoValue.setTextColor(Color.BLACK);
 
                 } catch (NullPointerException e) {
+                    holder.tvInfoValue.setText(" ");
 
                 }
             }
@@ -123,10 +126,11 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
             public void onClick(View view) {
                 try {
                     holder.tvInfo.setText(mcContext.getString(R.string.due_date) + ":  ");
-                    holder.tvInfoValue.setText(due_date);
+                    holder.tvInfoValue.setText(MyUtilis.parseDate(taskE.getDueDate()));
                     holder.tvInfoValue.setTextColor(Color.BLACK);
 
                 } catch (NullPointerException e) {
+                    holder.tvInfoValue.setText(" ");
 
                 }
             }
@@ -137,11 +141,12 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
             @Override
             public void onClick(View view) {
                 try {
-                    holder.tvInfo.setText(mcContext.getString(R.string.add_date) + ":  ");
-                    holder.tvInfoValue.setText(start_date);
+                    holder.tvInfo.setText(mcContext.getString(R.string.start_date) + ":  ");
+                    holder.tvInfoValue.setText(MyUtilis.parseDate(taskE.getStartDate()));
                     holder.tvInfoValue.setTextColor(Color.BLACK);
 
                 } catch (NullPointerException e) {
+                    holder.tvInfoValue.setText(" ");
 
                 }
             }
@@ -152,11 +157,11 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
             public void onClick(View view) {
                 try {
                     holder.tvInfo.setText(mcContext.getString(R.string.meeting_time) + ":  ");
-                    holder.tvInfoValue.setText(MyUtilis.formateDateTime(taskE.getMeetingTime()));
+                    holder.tvInfoValue.setText(MyUtilis.parseDate(taskE.getMeetingTime()));
                     holder.tvInfoValue.setTextColor(Color.BLACK);
 
                 } catch (NullPointerException e) {
-
+                    holder.tvInfoValue.setText(" ");
                 }
             }
         });
@@ -170,6 +175,7 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
                     holder.tvInfoValue.setTextColor(Color.BLUE);
 
                 } catch (NullPointerException e) {
+                    holder.tvInfoValue.setText(" ");
 
                 }
             }

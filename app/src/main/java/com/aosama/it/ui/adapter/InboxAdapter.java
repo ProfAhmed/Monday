@@ -1,7 +1,6 @@
 package com.aosama.it.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.text.Html;
 import android.text.TextUtils;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.aosama.it.R;
 import com.aosama.it.models.responses.mail.DataMail;
-import com.aosama.it.ui.activities.InboxDetailsActivity;
 import com.aosama.it.utiles.MyUtilis;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -32,6 +30,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxVH> {
     private Context mContext;
     List<DataMail> mails;
     private onInboxClick onInboxClick;
+    private boolean isSent;
 
     public interface onInboxClick {
         void onInboxItemClicked(DataMail dataMail);
@@ -75,15 +74,34 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxVH> {
     @Override
     public void onBindViewHolder(@NonNull InboxVH holder, int position) {
         DataMail mail = mails.get(position);
-        holder.tvUserName.setText(mail.getFromUser().getName());
-        holder.tvContent.setText(Html.fromHtml(mail.getBody()));
+        StringBuilder usersStringBuilder = new StringBuilder();
+        if (mail.getToUsers() != null) {
+
+            for (int i = 0; i < mail.getToUsers().size(); i++) {
+                usersStringBuilder.append(mail.getToUsers().get(i).getName());
+                if (i != mail.getToUsers().size() - 1)
+                    usersStringBuilder.append(", ");
+            }
+        }
+
+        if (!isSent)
+            holder.tvUserName.setText(mail.getFromUser().getName());
+        else
+            holder.tvUserName.setText(usersStringBuilder.toString());
+
+        holder.tvContent.setText(Html.fromHtml(mail.getTitle()));
         String date = mail.getCreatedAt().substring(0, mail.getCreatedAt().indexOf("T"));
         MyUtilis.parsDateYYMMDD(date);
         String daynum = MyUtilis.ParseDate.day + " ";
         String monthName = MyUtilis.ParseDate.monthString + " ";
         String year = MyUtilis.ParseDate.year;
         String dateRes = daynum + monthName + year;
-        holder.tvDate.setText(dateRes);
+        try {
+            holder.tvDate.setText(MyUtilis.parseDateWithAmPm(mail.getCreatedAt()));
+
+        } catch (NullPointerException s) {
+            s.printStackTrace();
+        }
 
         String path = mail.getFromUser().getUserImage();
         if (!TextUtils.isEmpty(path) && path != null
@@ -122,8 +140,9 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxVH> {
             return mails.size();
     }
 
-    public void setMails(List<DataMail> mails) {
+    public void setMails(List<DataMail> mails, boolean isSent) {
         this.mails = mails;
+        this.isSent = isSent;
         notifyDataSetChanged();
     }
 

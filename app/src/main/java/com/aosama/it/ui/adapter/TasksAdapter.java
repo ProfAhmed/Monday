@@ -47,7 +47,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskView> {
         String year = MyUtilis.ParseDate.year;
         String dateRes = daynum + monthName + year;
 
-        holder.tvDate.setText(dateRes);
+        holder.tvDate.setText(MyUtilis.parseDateWithAmPm(taskN.getDueDate()));
 
         holder.itemView.setOnClickListener(view -> {
             if (onUserClicked != null)

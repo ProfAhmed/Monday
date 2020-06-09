@@ -50,7 +50,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         String year = MyUtilis.ParseDate.year;
         String dateRes = daynum + monthName + year;
 
-        holder.tvDate.setText(dateRes);
+        holder.tvDate.setText(MyUtilis.parseDateWithAmPm(notificationModel.getTime()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -10,14 +10,15 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.aosama.it.R;
-import com.aosama.it.constants.Constants;
 import com.aosama.it.models.responses.boards.Assignee;
 import com.aosama.it.models.responses.boards.NestedBoard;
 import com.aosama.it.models.responses.boards.UserBoard;
@@ -26,7 +27,6 @@ import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.MyUtilis;
 import com.aosama.it.viewmodels.BasicResponsePostViewModel;
 import com.aosama.it.viewmodels.CommentsViewModel;
-import com.aosama.it.viewmodels.UploadAttachmentViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.linkedin.android.spyglass.suggestions.SuggestionsResult;
 import com.linkedin.android.spyglass.suggestions.interfaces.Suggestible;
@@ -37,6 +37,12 @@ import com.linkedin.android.spyglass.tokenization.impl.WordTokenizer;
 import com.linkedin.android.spyglass.tokenization.impl.WordTokenizerConfig;
 import com.linkedin.android.spyglass.tokenization.interfaces.QueryTokenReceiver;
 import com.linkedin.android.spyglass.ui.MentionsEditText;
+import com.squareup.picasso.Picasso;
+import com.tylersuehr.chips.Chip;
+import com.tylersuehr.chips.ChipDataSource;
+import com.tylersuehr.chips.ChipImageRenderer;
+import com.tylersuehr.chips.ChipsInputLayout;
+import com.tylersuehr.chips.LetterTileProvider;
 
 import org.json.JSONObject;
 
@@ -46,8 +52,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 
-public class MailFormActivity extends AppCompatActivity implements QueryTokenReceiver, SuggestionsResultListener, UserAdapter.OnUserClicked, SuggestionsVisibilityManager {
+public class MailFormActivity extends AppCompatActivity implements ChipDataSource.SelectionObserver, QueryTokenReceiver, SuggestionsResultListener, UserAdapter.OnUserClicked, SuggestionsVisibilityManager {
 
     @BindView(R.id.etTitle)
     EditText etTitle;
@@ -74,13 +81,50 @@ public class MailFormActivity extends AppCompatActivity implements QueryTokenRec
     BasicResponsePostViewModel viewModel;
     private NestedBoard nestedBoard;
     private String attachName, attachKey;
+    private List<String> userIdsList = new ArrayList<>();
 
+    public void back(View v) {
+        onBackPressed();
+    }
+
+
+    @Override
+    public void onChipSelected(Chip chip) {
+        userIdsList.add(((UserBoard) chip).getId2());
+    }
+
+    @Override
+    public void onChipDeselected(Chip chip) {
+        userIdsList.remove(((UserBoard) chip).getId2());
+    }
+
+    public class GlideRenderer implements ChipImageRenderer {
+        @Override
+        public void renderAvatar(ImageView imageView, Chip chip) {
+            if (chip.getAvatarUri() != null && chip.getAvatarUri().toString().length() > 0) {
+                // Use Glide to load URL (provided in avatar uri)
+                Picasso.get()
+                        .load(chip.getAvatarUri())
+                        .into(imageView);
+            } else {
+                // Default to circular tile if no uri exists
+//                imageView.setImageDrawable(createTextDrawable(chip.getSubtitle()));
+                imageView.setImageBitmap(LetterTileProvider
+                        .getInstance(imageView.getContext())
+                        .getLetterTile(chip.getTitle()));
+            }
+
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mail_form);
         ButterKnife.bind(this);
+        ChipsInputLayout chipsInput = (ChipsInputLayout) findViewById(R.id.chips_input);
+        chipsInput.setImageRenderer(new GlideRenderer());
+        chipsInput.addSelectionObserver(this);
 
         viewModel = ViewModelProviders.of(this).get(BasicResponsePostViewModel.class);
         mProgressDialog = new ProgressDialog(this);
@@ -104,6 +148,18 @@ public class MailFormActivity extends AppCompatActivity implements QueryTokenRec
             @Override
             public void onClick(View view) {
                 String userIds = null;
+                if (userIdsList.size() > 0) {
+                    for (int i = 0; i < userIdsList.size(); i++) {
+                        userStringBuilder.append(userIdsList.get(i)).append(",");
+                    }
+                } else {
+                    Toasty.error(MailFormActivity.this, getString(R.string.enter_receiver_names), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(etTitle.getText().toString()) || TextUtils.isEmpty(etMessage.getText().toString())) {
+                    Toasty.error(MailFormActivity.this, getString(R.string.valid_input_msg), Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (userStringBuilder.length() > 0) {
                     userIds = userStringBuilder.substring(0, userStringBuilder.lastIndexOf(","));
                     Log.d("UserIds", userIds);
@@ -157,10 +213,10 @@ public class MailFormActivity extends AppCompatActivity implements QueryTokenRec
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (!charSequence.equals("@"))
                     recyclerView.setVisibility(View.GONE);
-                if (charSequence.length() > 0)
-                    btnSend.setEnabled(true);
-                else
-                    btnSend.setEnabled(false);
+//                if (charSequence.length() > 0)
+//                    btnSend.setEnabled(true);
+//                else
+//                    btnSend.setEnabled(false);
             }
 
             @Override
@@ -170,14 +226,17 @@ public class MailFormActivity extends AppCompatActivity implements QueryTokenRec
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.length() > 0)
-                    btnSend.setEnabled(true);
-                else
-                    btnSend.setEnabled(false);
+//                if (editable.length() > 0)
+//                    btnSend.setEnabled(true);
+//                else
+//                    btnSend.setEnabled(false);
             }
         });
 
-        if (MyConfig.userBoards == null) {
+        if (MyConfig.userBoards != null)
+            chipsInput.setFilterableChipList(MyConfig.userBoards);
+
+        else if (MyConfig.userBoards == null) {
             AlertDialog dialog2 = MyUtilis.myDialog(this);
             dialog2.show();
             CommentsViewModel viewModel2 = ViewModelProviders.of(this).get(CommentsViewModel.class);
@@ -187,8 +246,10 @@ public class MailFormActivity extends AppCompatActivity implements QueryTokenRec
                 dialog2.dismiss();
                 switch (basicResponseStateData.getStatus()) {
                     case SUCCESS:
-                        if (basicResponseStateData.getData().getData() != null)
+                        if (basicResponseStateData.getData().getData() != null) {
                             MyConfig.userBoards = basicResponseStateData.getData().getData();
+                            chipsInput.setFilterableChipList(MyConfig.userBoards);
+                        }
                         break;
                     case FAIL:
                         Toast.makeText(this, basicResponseStateData.getErrorsMessages() != null ? basicResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
@@ -257,5 +318,6 @@ public class MailFormActivity extends AppCompatActivity implements QueryTokenRec
         editor.requestFocus();
         userStringBuilder.append(userBoard.getId2()).append(",");
     }
+
 
 }

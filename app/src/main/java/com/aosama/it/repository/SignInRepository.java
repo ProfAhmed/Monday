@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -66,7 +67,8 @@ public class SignInRepository {
                 //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
 
 //                    headers.put("Authorization", "Bearer " + Constants.TOKEN);
-                headers.put("lang", PreferenceProcessor.getInstance(mContext).getStr(MyConfig.MyPrefs.LANG, "en"));
+                headers.put("Language", Locale.getDefault().getLanguage());
+                headers.put("tz", MyConfig.TIME_ZONE);
                 return headers;
 
             }

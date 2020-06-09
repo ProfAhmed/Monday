@@ -83,7 +83,9 @@ public class HomeFragment extends Fragment {
                         expandableListTitle.get(groupPosition))
                         .get(childPosition).getId(), expandableListDetail.get(
                         expandableListTitle.get(groupPosition))
-                        .get(childPosition).getName());
+                        .get(childPosition).getName(), expandableListDetail.get(
+                        expandableListTitle.get(groupPosition))
+                        .get(childPosition).isPrivate());
 
 
             } catch (Exception e) {
@@ -134,11 +136,12 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    private void fireBoardItemDetails(String id, String name) {
+    private void fireBoardItemDetails(String id, String name, boolean isPrivate) {
 
         Intent intent = new Intent(getActivity(), TasksActivity.class);
         intent.putExtra(Constants.SELECTED_BORAD, id);
         intent.putExtra("name", name);
+        intent.putExtra("is_private", isPrivate);
         startActivity(intent);
 //        BoardDetailsFragment boardDetailsFragment = new BoardDetailsFragment();
 //        Bundle b = new Bundle();

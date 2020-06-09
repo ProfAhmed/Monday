@@ -14,6 +14,7 @@ import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.PreferenceProcessor;
 
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class SplashActivity extends AppCompatActivity {
 

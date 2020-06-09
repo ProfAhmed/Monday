@@ -19,6 +19,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -77,7 +78,8 @@ public class BoardNestedRepository {
                 String token = PreferenceProcessor.getInstance(mContext).getStr(MyConfig.MyPrefs.TOKEN, "");
                 Log.e(TAG, "getHeaders: " + token);
                 headers.put("Authorization", "Bearer " + token);
-                headers.put("lang", PreferenceProcessor.getInstance(mContext).getStr(MyConfig.MyPrefs.LANG, "en"));
+                headers.put("Language", Locale.getDefault().getLanguage());
+                headers.put("tz", MyConfig.TIME_ZONE);
                 return headers;
 
             }

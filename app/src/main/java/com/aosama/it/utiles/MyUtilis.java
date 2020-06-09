@@ -36,6 +36,40 @@ public class MyUtilis {
         });
     }
 
+    public static String parseDateWithAmPm(String startTime) {
+// Get date from string
+
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = null;
+        try {
+            date = dateFormatter.parse(startTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+// Get time from date
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("yyyy-MM-dd h:mm a");
+        String displayValue = timeFormatter.format(date);
+        return displayValue;
+    }
+
+    public static String parseDate(String startTime) {
+// Get date from string
+
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = null;
+        try {
+            date = dateFormatter.parse(startTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+// Get time from date
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        String displayValue = timeFormatter.format(date);
+        return displayValue;
+    }
+
     public static String formateDate(String name) {
         String formattedDate = "";
         //2020-03-15T21:00:00.000Z

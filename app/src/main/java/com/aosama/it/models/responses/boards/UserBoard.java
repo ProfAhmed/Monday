@@ -1,15 +1,22 @@
 package com.aosama.it.models.responses.boards;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.aosama.it.R;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.linkedin.android.spyglass.mentions.Mentionable;
+import com.tylersuehr.chips.Chip;
 
-public class UserBoard implements Mentionable {
+public class UserBoard extends Chip implements Mentionable {
 
 
     @SerializedName("_id")
@@ -45,6 +52,31 @@ public class UserBoard implements Mentionable {
     public String getId() {
         return id;
     }
+
+    @NonNull
+    @Override
+    public String getTitle() {
+        return fullName;
+    }
+
+    @Nullable
+    @Override
+    public String getSubtitle() {
+        return shortName;
+    }
+
+    @Nullable
+    @Override
+    public Uri getAvatarUri() {
+        return Uri.parse(userImage);
+    }
+
+    @Nullable
+    @Override
+    public Drawable getAvatarDrawable() {
+        return null;
+    }
+
 
     public void setId(String id) {
         this.id = id;

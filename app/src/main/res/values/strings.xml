@@ -33,7 +33,7 @@
   <string name="new_password">New Password</string>
   <string name="confirm_password">Confirm Password</string>
   <string name="confirm_password_msg">confirm your password</string>
-  <string name="valid_input_msg">enter all fields</string>
+  <string name="valid_input_msg">enter all required fields</string>
   <string name="sign_out">Log Out</string>
   <string name="arabaic">Arabic</string>
   <string name="type_message">Type Message Here</string>
@@ -70,4 +70,5 @@
   <string name="to">To</string>
   <string name="subject">Subject</string>
   <string name="write_message">Write your Message</string>
+  <string name="enter_receiver_names">Enter Receiver\'s name</string>
 </resources>
