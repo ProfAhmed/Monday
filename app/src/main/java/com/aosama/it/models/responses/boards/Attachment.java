@@ -16,6 +16,15 @@ public class Attachment {
     private String byShortName;
     private String byUserImage;
     private String byFullName;
+    private String addDate;
+
+    public String getAddDate() {
+        return addDate;
+    }
+
+    public void setAddDate(String addDate) {
+        this.addDate = addDate;
+    }
 
     public boolean isPrivate() {
         return isPrivate;

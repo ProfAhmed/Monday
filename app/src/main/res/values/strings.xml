@@ -71,4 +71,6 @@
   <string name="subject">Subject</string>
   <string name="write_message">Write your Message</string>
   <string name="enter_receiver_names">Enter Receiver\'s name</string>
+  <string name="send_btn">Send</string>
+  <string name="flow_title">Flow Title</string>
 </resources>

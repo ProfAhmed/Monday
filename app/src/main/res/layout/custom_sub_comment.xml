@@ -36,15 +36,28 @@
       android:layout_gravity="center"
       android:layout_weight="1" />
 
-    <ImageView
-      android:id="@+id/ivAttachment"
+    <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:background="?attr/selectableItemBackground"
-      android:padding="8dp"
-      android:src="@drawable/ic_attachment_black_24dp"
-      android:visibility="gone" />
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="11-02-2020 12:02 pm" />
+
+      <ImageView
+        android:id="@+id/ivAttachment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="?attr/selectableItemBackground"
+        android:padding="8dp"
+        android:src="@drawable/ic_attachment_black_24dp"
+        android:visibility="gone" />
+    </LinearLayout>
+
   </LinearLayout>
 
   <TextView
@@ -59,8 +72,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="12dp"
-    android:visibility="gone"
-    android:text="test test test" />
+    android:text="test test test"
+    android:visibility="gone" />
 
   <View
     android:layout_width="match_parent"

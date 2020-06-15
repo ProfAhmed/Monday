@@ -87,6 +87,7 @@ public class AddCommentActivity extends AppCompatActivity implements QueryTokenR
     BasicResponsePostViewModel viewModel;
     private NestedBoard nestedBoard;
     private String attachName, attachKey;
+    private UserBoard.PersonLoader people;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +197,8 @@ public class AddCommentActivity extends AppCompatActivity implements QueryTokenR
                     btnUpdate.setEnabled(false);
             }
         });
+        if (MyConfig.userBoards != null)
+            people = new UserBoard.PersonLoader(MyConfig.userBoards);
 
     }
 
@@ -288,9 +291,10 @@ public class AddCommentActivity extends AppCompatActivity implements QueryTokenR
     @Override
     public List<String> onQueryReceived(@NonNull QueryToken queryToken) {
         List<String> buckets = Collections.singletonList(BUCKET);
+        List<UserBoard> suggestions = people.getSuggestions(queryToken);
 
-        SuggestionsResult result = new SuggestionsResult(queryToken,MyConfig.userBoards);
-        // Have suggestions, now call the listener (which is this activity)
+        SuggestionsResult result = new SuggestionsResult(queryToken, suggestions);
+        //      Have suggestions, now call the listener (which is this activity)
         onReceiveSuggestionsResult(result, BUCKET);
         return buckets;
     }

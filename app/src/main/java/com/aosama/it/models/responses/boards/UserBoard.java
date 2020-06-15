@@ -1,20 +1,30 @@
 package com.aosama.it.models.responses.boards;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.aosama.it.R;
+import com.aosama.it.utiles.MentionsLoader;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.linkedin.android.spyglass.mentions.Mentionable;
+import com.linkedin.android.spyglass.tokenization.QueryToken;
 import com.tylersuehr.chips.Chip;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserBoard extends Chip implements Mentionable {
 
@@ -181,4 +191,45 @@ public class UserBoard extends Chip implements Mentionable {
             return new Assignee[size];
         }
     };
+
+    public static class PersonLoader extends MentionsLoader<UserBoard> {
+        private static final String TAG = PersonLoader.class.getSimpleName();
+        List<UserBoard> res;
+
+        public PersonLoader(List<UserBoard> res) {
+            super(res);
+            this.res = res;
+        }
+
+        @Override
+        public List<UserBoard> loadData(List<UserBoard> arr) {
+
+            return res;
+        }
+
+        // Modified to return suggestions based on both first and last name
+        @Override
+        public List<UserBoard> getSuggestions(QueryToken queryToken) {
+            String[] namePrefixes = queryToken.getKeywords().toLowerCase().split(" ");
+            List<UserBoard> suggestions = new ArrayList<>();
+            if (mData != null) {
+                for (UserBoard suggestion : mData) {
+//                    String firstName = suggestion.getName().toLowerCase();
+                    String lastName = suggestion.getUserName().toLowerCase();
+                    if (namePrefixes.length == 2) {
+//                        if (firstName.startsWith(namePrefixes[0]) && lastName.startsWith(namePrefixes[1])) {
+                        if (lastName.startsWith(namePrefixes[1])) {
+                            suggestions.add(suggestion);
+                        }
+                    } else {
+//                        if (firstName.startsWith(namePrefixes[0]) || lastName.startsWith(namePrefixes[0])) {
+                        if (lastName.startsWith(namePrefixes[0])) {
+                            suggestions.add(suggestion);
+                        }
+                    }
+                }
+            }
+            return suggestions;
+        }
+    }
 }

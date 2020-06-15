@@ -18,6 +18,7 @@ import androidx.core.app.NotificationCompat;
 import com.aosama.it.R;
 import com.aosama.it.constants.Constants;
 import com.aosama.it.ui.activities.HomeActivity;
+import com.aosama.it.ui.activities.TasksActivity;
 import com.aosama.it.utiles.MyConfig;
 import com.aosama.it.utiles.PreferenceProcessor;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -51,9 +52,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+        Intent intent = new Intent(getApplicationContext(), TasksActivity.class);
 
-        intent.putExtra("id", data.get("boardId"));
+        intent.putExtra(Constants.SELECTED_BORAD, data.get("boardId"));
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), new Random().nextInt(), intent, 0);

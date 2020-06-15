@@ -83,7 +83,8 @@
               android:layout_height="wrap_content"
               android:text="@string/task_name"
               android:textColor="#BFBEBE"
-              android:textStyle="bold" />
+              android:textStyle="bold"
+              android:visibility="gone" />
 
             <TextView
               android:id="@+id/tvTaskName"
@@ -174,7 +175,7 @@
               android:layout_weight="1" />
 
             <ImageView
-              android:id="@+id/ivDueDate"
+              android:id="@+id/ivFlowTitle"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/ic_due_date" />
@@ -272,7 +273,7 @@
           android:layout_gravity="center"
           android:padding="8dp"
 
-          android:src="@drawable/ic_attach_file_24px" />
+          android:src="@drawable/ic_attach_gray_24px" />
 
         <Space
           android:layout_width="6dp"

@@ -176,7 +176,13 @@ public class TasksActivity extends AppCompatActivity implements
         View view = getLayoutInflater().inflate(R.layout.dialog_people, null);
 
         ListView lv = view.findViewById(R.id.custom_list);
-
+        ImageView ivClose = view.findViewById(R.id.ivClose);
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
         // Change MyActivity.this and myListOfItems to your own values
         CustomListAdapterUsersDialog clad = new CustomListAdapterUsersDialog(this, assigneeList);
 
@@ -200,10 +206,25 @@ public class TasksActivity extends AppCompatActivity implements
                             switch (basicResponseStateData.getStatus()) {
                                 case SUCCESS:
                                     if (basicResponseStateData.getData() != null) {
+                                        if (basicResponseStateData.getData().getData().getBoardData().getNestedBoards() == null) {
+                                            Intent intent = new Intent(this, HomeActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                                            startActivity(intent);
+                                            return;
+                                        }
+
+                                        if (basicResponseStateData.getData().getData().getBoardData().getNestedBoards() != null &&
+                                                basicResponseStateData.getData().getData().getBoardData().getNestedBoards().size() == 0) {
+                                            Intent intent = new Intent(this, HomeActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                                            startActivity(intent);
+                                            return;
+                                        }
                                         fillViewWithData(basicResponseStateData.getData());
                                         fillTable(basicResponseStateData.getData().getData().getBoardData().getNestedBoards().get(0));
                                         nestedBoard = basicResponseStateData.getData().getData().getBoardData().getNestedBoards().get(0);
                                         boardId = nestedBoard.getId();
+                                        tvName.setText(basicResponseStateData.getData().getData().getBoardData().getNestedBoards().get(0).getName());
                                     }
                                     Log.e(TAG, "fetchingData: success");
                                     break;
@@ -274,7 +295,12 @@ public class TasksActivity extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            taskES.addAll(nestedBoard.getTasksGroup().get(j).getTasks());
+//            taskES.addAll(nestedBoard.getTasksGroup().get(j).getTasks());
+            for (TaskE t :
+                    nestedBoard.getTasksGroup().get(j).getTasks()) {
+                if (!t.isDelete())
+                    taskES.add(t);
+            }
             adapter.setTasksGroups(taskES);
         }
 
@@ -330,6 +356,13 @@ public class TasksActivity extends AppCompatActivity implements
         View view = getLayoutInflater().inflate(R.layout.dialog_people, null);
 
         ListView lv = view.findViewById(R.id.custom_list);
+        ImageView ivClose = view.findViewById(R.id.ivClose);
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
 
         // Change MyActivity.this and myListOfItems to your own values
         CustomListAdapterAssigneeDialog clad = new CustomListAdapterAssigneeDialog(this, assigneeList);
@@ -355,7 +388,7 @@ public class TasksActivity extends AppCompatActivity implements
 
             case R.id.ivPeople:
                 showDialogPeople((ArrayList<Assignee>) taskE.getAssignee());
-
+                break;
             case R.id.tvTaskName:
                 showDialogDates(taskE);
         }

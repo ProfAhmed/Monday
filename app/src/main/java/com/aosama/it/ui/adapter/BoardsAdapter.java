@@ -1,7 +1,9 @@
 package com.aosama.it.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,7 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
     private ArrayList<String> tableName;
     OnItemClick onItemClicklistener;
     Context mcContext;
+    boolean isMeetinLin = false;
 
     private static final CircularProgressIndicator.ProgressTextAdapter TIME_TEXT_ADAPTER = currentProgress -> (int) currentProgress + " " + "%";
 
@@ -98,7 +101,7 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
 
         holder.circular_progress.setMaxProgress(100);
         holder.circular_progress.setCurrentProgress(taskE.getProgressValue());
-        holder.circular_progress.setProgressColor(Color.parseColor(taskE.getStatus().getColor()));
+        holder.circular_progress.setProgressColor(Color.parseColor(taskE.getProgressColor()));
         holder.circular_progress.setProgressTextAdapter(TIME_TEXT_ADAPTER);
         String add_date = MyUtilis.formateDate(taskE.getAddDate().substring(0, taskE.getDueDate().indexOf("T")));
         holder.tvInfo.setText(mcContext.getString(R.string.start_date) + ":  ");
@@ -108,6 +111,7 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
         holder.ivAddDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isMeetinLin = false;
                 try {
                     holder.tvInfo.setText(mcContext.getString(R.string.add_date) + ":  ");
                     holder.tvInfoValue.setText(MyUtilis.parseDate(taskE.getAddDate()));
@@ -121,12 +125,13 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
         });
         String due_date = MyUtilis.formateDate(taskE.getDueDate().substring(0, taskE.getDueDate().indexOf("T")));
 
-        holder.ivDueDate.setOnClickListener(new View.OnClickListener() {
+        holder.ivFlowTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isMeetinLin = false;
                 try {
-                    holder.tvInfo.setText(mcContext.getString(R.string.due_date) + ":  ");
-                    holder.tvInfoValue.setText(MyUtilis.parseDate(taskE.getDueDate()));
+                    holder.tvInfo.setText(mcContext.getString(R.string.flow_title) + ":  ");
+                    holder.tvInfoValue.setText(taskE.getFlowTitle());
                     holder.tvInfoValue.setTextColor(Color.BLACK);
 
                 } catch (NullPointerException e) {
@@ -140,6 +145,7 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
         holder.ivStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isMeetinLin = false;
                 try {
                     holder.tvInfo.setText(mcContext.getString(R.string.start_date) + ":  ");
                     holder.tvInfoValue.setText(MyUtilis.parseDate(taskE.getStartDate()));
@@ -155,9 +161,10 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
         holder.ivMeetingTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isMeetinLin = false;
                 try {
                     holder.tvInfo.setText(mcContext.getString(R.string.meeting_time) + ":  ");
-                    holder.tvInfoValue.setText(MyUtilis.parseDate(taskE.getMeetingTime()));
+                    holder.tvInfoValue.setText(MyUtilis.parseDateWithAmPm(taskE.getMeetingTime()));
                     holder.tvInfoValue.setTextColor(Color.BLACK);
 
                 } catch (NullPointerException e) {
@@ -169,6 +176,7 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
         holder.ivMeetingLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isMeetinLin = true;
                 try {
                     holder.tvInfo.setText(mcContext.getString(R.string.meeting_link) + ":  ");
                     holder.tvInfoValue.setText(taskE.getMeetingUrl());
@@ -177,6 +185,20 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
                 } catch (NullPointerException e) {
                     holder.tvInfoValue.setText(" ");
 
+                }
+            }
+        });
+
+        holder.tvInfoValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    if (isMeetinLin) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(taskE.getMeetingUrl()));
+                        mcContext.startActivity(intent);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -214,8 +236,8 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
         ImageView ivMeetingTime;
         @BindView(R.id.ivAddDate)
         ImageView ivAddDate;
-        @BindView(R.id.ivDueDate)
-        ImageView ivDueDate;
+        @BindView(R.id.ivFlowTitle)
+        ImageView ivFlowTitle;
         @BindView(R.id.ivMeetingLink)
         ImageView ivMeetingLink;
         @BindView(R.id.ivStartDate)

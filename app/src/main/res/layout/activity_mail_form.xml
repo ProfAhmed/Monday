@@ -35,12 +35,17 @@
       android:id="@+id/chips_input"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_gravity="center"
       android:layout_marginTop="16dp"
       android:background="@drawable/rounded"
-      android:hint="@string/to "
+      android:hint="@string/to"
+      android:paddingStart="@dimen/_8sdp"
+      android:paddingEnd="@dimen/_8sdp"
       android:textColor="#212121"
       android:textColorHint="#757575"
-      app:chip_showDetails="true" />
+      android:textDirection="locale"
+      app:chip_showDetails="true"
+      app:hideKeyboardOnChipClick="false" />
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/mentions_grid"
@@ -83,7 +88,7 @@
       android:layout_marginBottom="@dimen/_36sdp"
       android:paddingStart="@dimen/_36sdp"
       android:paddingEnd="@dimen/_36sdp"
-      android:text="@string/send"
+      android:text="@string/send_btn"
       android:textAllCaps="false"
       app:icon="@drawable/ic_send_white"
       app:iconGravity="end" />

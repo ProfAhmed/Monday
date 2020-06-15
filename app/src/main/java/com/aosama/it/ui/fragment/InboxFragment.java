@@ -52,11 +52,11 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
     @BindView(R.id.ivSend)
     ImageView ivSend;
     private InboxAdapter adapter;
+    String type = "inbox";
 
     public InboxFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,6 +85,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tvInbox:
+                type = "inbox";
                 tvInbox.setTextColor(Color.WHITE);
                 tvInbox.setBackground(getActivity().getDrawable(R.drawable.layout_bg_green));
                 tvSend.setTextColor(Color.BLACK);
@@ -92,7 +93,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
                 getInbox(MyConfig.MAILS, false);
                 break;
             case R.id.tvSend:
-
+                type = "send";
                 tvSend.setTextColor(Color.WHITE);
                 tvSend.setBackground(getActivity().getDrawable(R.drawable.layout_bg_green));
                 tvInbox.setTextColor(Color.BLACK);
@@ -133,7 +134,20 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
     public void onInboxItemClicked(DataMail dataMail) {
         Intent intent = new Intent(getActivity(), InboxDetailsActivity.class);
         intent.putExtra("image", dataMail.getFromUser().getUserImage());
-        intent.putExtra("name", dataMail.getFromUser().getName());
+        StringBuilder usersStringBuilder = new StringBuilder();
+        if (dataMail.getToUsers() != null) {
+
+            for (int i = 0; i < dataMail.getToUsers().size(); i++) {
+                usersStringBuilder.append(dataMail.getToUsers().get(i).getName());
+                if (i != dataMail.getToUsers().size() - 1)
+                    usersStringBuilder.append(", ");
+            }
+        }
+        if (type.equals("inbox"))
+            intent.putExtra("name", dataMail.getFromUser().getName());
+        else
+            intent.putExtra("name", usersStringBuilder.toString());
+
         intent.putExtra("short_name", dataMail.getFromUser().getShortName());
         intent.putExtra("body", dataMail.getBody());
 

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aosama.it.R;
 import com.aosama.it.models.responses.boards.Attachment;
 import com.aosama.it.models.responses.boards.UserBoard;
+import com.aosama.it.utiles.MyUtilis;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -47,6 +48,10 @@ public class AttachmentAdapter extends RecyclerView.Adapter<AttachmentAdapter.At
         holder.tvAttachmentName
                 .setText(WordUtils.capitalize(attachment.getAttachName()));
 
+        holder.tvUserName.setText(attachment.getByFullName());
+        if (attachment.getAddDate() != null && attachment.getAddDate().length() > 0)
+            holder.tvDate.setText(MyUtilis.parseDateWithAmPm(attachment.getAddDate()));
+
         holder.ivFileDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +60,6 @@ public class AttachmentAdapter extends RecyclerView.Adapter<AttachmentAdapter.At
                 }
             }
         });
-
     }
 
     @NonNull
@@ -83,6 +87,10 @@ public class AttachmentAdapter extends RecyclerView.Adapter<AttachmentAdapter.At
         ImageView ivFileDownload;
         @BindView(R.id.tvAttachmentName)
         TextView tvAttachmentName;
+        @BindView(R.id.tvDate)
+        TextView tvDate;
+        @BindView(R.id.tvUserName)
+        TextView tvUserName;
 
 
         AttachmentVH(@NonNull View itemView) {

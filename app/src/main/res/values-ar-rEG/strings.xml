@@ -69,4 +69,13 @@
   <string name="date">التاريخ</string>
   <string name="info">المعلومات</string>
   <string name="no_users_here">لا يوجد مستخدمين هنا</string>
+
+  <string name="inbox">الوارد</string>
+  <string name="send">المرسل</string>
+  <string name="to">أرسل إلى</string>
+  <string name="subject">العنوان</string>
+  <string name="write_message">اكتب رسالتك هنا</string>
+  <string name="enter_receiver_names">أدخل أسماء المرسل إليهم</string>
+  <string name="send_btn">أرسل</string>
+
 </resources>

@@ -85,6 +85,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -95,6 +96,8 @@ import es.dmoral.toasty.Toasty;
 
 public class SubCommentsActivity extends AppCompatActivity implements CommentAdapter.OnAttachClicked, SubCommentsAdapter.OnAttachClicked, UploadAttachmentViewModel.UploadImageHandler,
         QueryTokenReceiver, SuggestionsResultListener, UserAdapter.OnUserClicked, SuggestionsVisibilityManager {
+    @BindView(R.id.tvDate)
+    TextView tvDate;
     @BindView(R.id.tvUserName)
     TextView tvUserName;
     @BindView(R.id.tvCommentData)
@@ -137,6 +140,7 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
     PowerMenu powerMenu;
     private String commentData;
     private boolean isUpdateComment = false;
+    private UserBoard.PersonLoader people;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,6 +264,10 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
                 }
             }
         });
+
+        if (MyConfig.userBoards != null)
+            people = new UserBoard.PersonLoader(MyConfig.userBoards);
+
     }
 
     private void getSubComments(String commentId) {
@@ -285,6 +293,8 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
                             commentGroups.add(nestedComment);
                     }
                     commentData = commentGroup.getCommentData();
+                    tvUserName.setText(commentGroup.getByFullName());
+                    tvDate.setText(MyUtilis.parseDateWithAmPm(commentGroup.getAddDate()));
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         tvCommentData.setText(Html.fromHtml(commentGroup.getCommentData(), Html.FROM_HTML_MODE_COMPACT));
                     } else {
@@ -343,13 +353,16 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
         int fonsSize =
                 (int) getResources()
                         .getDimension(R.dimen._20ssp);
-        return TextDrawable.builder()
-                .beginConfig()
+        return TextDrawable.builder().beginConfig().
+                textColor(Color.BLUE)
+//                .beginConfig()
                 .fontSize(fonsSize)
+                .bold()
                 .width(dimWH)  // width in px
                 .height(dimWH) // height in px
                 .endConfig()
-                .buildRect(firstChar, Color.RED);
+                .buildRect(firstChar, Color.parseColor("#41C5C3C3"));
+
     }
 
     public void back(View view) {
@@ -501,7 +514,9 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
     public List<String> onQueryReceived(@NonNull QueryToken queryToken) {
         List<String> buckets = Collections.singletonList(BUCKET);
 
-        SuggestionsResult result = new SuggestionsResult(queryToken, MyConfig.userBoards);
+        List<UserBoard> suggestions = people.getSuggestions(queryToken);
+
+        SuggestionsResult result = new SuggestionsResult(queryToken, suggestions);
         // Have suggestions, now call the listener (which is this activity)
         onReceiveSuggestionsResult(result, BUCKET);
         return buckets;

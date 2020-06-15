@@ -19,6 +19,7 @@ import com.aosama.it.R;
 import com.aosama.it.models.responses.boards.Attachment;
 import com.aosama.it.models.responses.boards.CommentGroup;
 import com.aosama.it.models.responses.boards.NestedComment;
+import com.aosama.it.utiles.MyUtilis;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -55,6 +56,7 @@ public class SubCommentsAdapter extends RecyclerView.Adapter<SubCommentsAdapter.
     public void onBindViewHolder(@NonNull SubCommentsAdapter.CommentVH holder, int position) {
         NestedComment commentGroup = commentGroups.get(position);
         holder.tvUserName.setText(commentGroup.getByUserName());
+        holder.tvDate.setText(MyUtilis.parseDateWithAmPm(commentGroup.getAddDate()));
         holder.ivAttachment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,6 +130,8 @@ public class SubCommentsAdapter extends RecyclerView.Adapter<SubCommentsAdapter.
         TextView tvUserName;
         @BindView(R.id.tvCommentData)
         TextView tvCommentData;
+        @BindView(R.id.tvDate)
+        TextView tvDate;
         @BindView(R.id.ivUserImagePhoto)
         ImageView userPhoto;
         @BindView(R.id.ivAttachment)

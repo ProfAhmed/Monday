@@ -59,8 +59,30 @@ public class TaskE {
     @SerializedName("meetingUrl")
     @Expose
     private String meetingUrl;
+    @SerializedName("flowTitle")
+    @Expose
+    private String flowTitle;
+    @SerializedName("progressColor")
+    @Expose
+    private String progressColor;
 
     private String tableName;
+
+    public String getProgressColor() {
+        return progressColor;
+    }
+
+    public void setProgressColor(String progressColor) {
+        this.progressColor = progressColor;
+    }
+
+    public String getFlowTitle() {
+        return flowTitle;
+    }
+
+    public void setFlowTitle(String flowTitle) {
+        this.flowTitle = flowTitle;
+    }
 
     public List<Attachment> getAttachments() {
         return attachments;

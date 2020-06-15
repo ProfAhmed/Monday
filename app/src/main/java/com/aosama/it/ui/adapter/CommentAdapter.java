@@ -28,6 +28,7 @@ import com.aosama.it.R;
 import com.aosama.it.models.responses.boards.Attachment;
 import com.aosama.it.models.responses.boards.CommentGroup;
 import com.aosama.it.utiles.MyConfig;
+import com.aosama.it.utiles.MyUtilis;
 import com.aosama.it.utiles.PreferenceProcessor;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -75,6 +76,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 //            holder.ivSelection.setVisibility(View.GONE);
 //        }
         holder.tvUserName.setText(commentGroup.getByUserName());
+        holder.tvDate.setText(MyUtilis.parseDateWithAmPm(commentGroup.getAddDate()));
         holder.ivAttachment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -157,6 +159,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         TextView tvCommentData;
         @BindView(R.id.tvReply)
         TextView tvReply;
+        @BindView(R.id.tvDate)
+        TextView tvDate;
         @BindView(R.id.ivUserImagePhoto)
         ImageView userPhoto;
         @BindView(R.id.ivAttachment)
