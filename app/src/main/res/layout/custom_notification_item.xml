@@ -7,11 +7,12 @@
   android:paddingStart="26dp"
   android:paddingEnd="26dp">
 
-  <ImageView
+  <de.hdodenhof.circleimageview.CircleImageView
+    android:id="@+id/ivIcon"
     android:layout_width="40dp"
     android:layout_height="40dp"
     android:layout_gravity="center"
-    android:src="@drawable/monday_logo" />
+    android:src="@drawable/susf_logo" />
 
   <LinearLayout
     android:layout_width="match_parent"
@@ -35,6 +36,6 @@
       android:drawableStart="@drawable/ic_date"
       android:drawablePadding="8dp"
       android:text="25 Dec,2019"
-      android:textSize="10sp"/>
+      android:textSize="10sp" />
   </LinearLayout>
 </LinearLayout>

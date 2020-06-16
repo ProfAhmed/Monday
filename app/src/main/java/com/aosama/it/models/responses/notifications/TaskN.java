@@ -19,6 +19,17 @@ public class TaskN {
     @SerializedName("dueDate")
     @Expose
     private String dueDate;
+    @SerializedName("nType")
+    @Expose
+    private String nType;
+
+    public String getnType() {
+        return nType;
+    }
+
+    public void setnType(String nType) {
+        this.nType = nType;
+    }
 
     public String getId() {
         return id;

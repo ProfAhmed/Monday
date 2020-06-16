@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskView> {
 
@@ -48,7 +50,24 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskView> {
         String dateRes = daynum + monthName + year;
 
         holder.tvDate.setText(MyUtilis.parseDateWithAmPm(taskN.getDueDate()));
-
+//        switch (taskN.getnType()) {
+//            case "b":
+//                holder.ivIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_noti1));
+//                break;
+//            case "m":
+//                holder.ivIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_noti2));
+//
+//                break;
+//            case "c":
+//                holder.ivIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_noti3));
+//                break;
+//            case "t":
+//                holder.ivIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_noti4));
+//                break;
+//            case "meeting":
+//                holder.ivIcon.setImageDrawable(mContext.getDrawable(R.drawable.susf_logo));
+//                break;
+//        }
         holder.itemView.setOnClickListener(view -> {
             if (onUserClicked != null)
                 onUserClicked.onUserClicked(view, position, taskN);
@@ -81,6 +100,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskView> {
         TextView tvTaskName;
         @BindView(R.id.tvDate)
         TextView tvDate;
+        @BindView(R.id.ivIcon)
+        CircleImageView ivIcon;
 
 
         TaskView(@NonNull View itemView) {

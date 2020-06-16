@@ -21,6 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationView> {
 
@@ -51,6 +52,24 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         String dateRes = daynum + monthName + year;
 
         holder.tvDate.setText(MyUtilis.parseDateWithAmPm(notificationModel.getTime()));
+        switch (notificationModel.getnType()) {
+            case "b":
+                holder.ivIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_noti1));
+                break;
+            case "m":
+                holder.ivIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_noti2));
+
+                break;
+            case "c":
+                holder.ivIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_noti3));
+                break;
+            case "t":
+                holder.ivIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_noti4));
+                break;
+            case "meeting":
+                holder.ivIcon.setImageDrawable(mContext.getDrawable(R.drawable.susf_logo));
+                break;
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,26 +77,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     onUserClicked.onUserClicked(view, position, notificationModel);
             }
         });
-    }
-
-    private TextDrawable createTextDrawable(String firstChar) {
-//        TextDrawable drawable1 = TextDrawable.builder()
-//                .buildRoundRect(firstChar, Color.RED, 10);
-        int dimWH = (int) mContext.getResources()
-                .getDimension(R.dimen._60sdp);
-        int fonsSize =
-                (int) mContext.getResources()
-                        .getDimension(R.dimen._20ssp);
-        return TextDrawable.builder().beginConfig().
-                textColor(Color.BLUE)
-//                .beginConfig()
-                .fontSize(fonsSize)
-                .bold()
-                .width(dimWH)  // width in px
-                .height(dimWH) // height in px
-                .endConfig()
-                .buildRect(firstChar, Color.parseColor("#41C5C3C3"));
-
     }
 
     @NonNull
@@ -105,6 +104,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         TextView tvNotification;
         @BindView(R.id.tvDate)
         TextView tvDate;
+        @BindView(R.id.ivIcon)
+        CircleImageView ivIcon;
 
 
         NotificationView(@NonNull View itemView) {
