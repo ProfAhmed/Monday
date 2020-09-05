@@ -321,6 +321,13 @@ public class TasksActivity extends AppCompatActivity implements
 //                boardDataList = gson.fromJson(
 //                        getArguments().getString(Constants.SELECTED_BORAD), BoardDataList.class);
             id = getIntent().getStringExtra(Constants.SELECTED_BORAD);
+            if(id==null){
+                Bundle bundle = getIntent().getExtras();
+                if (bundle != null) {
+                    //bundle must contain all info sent in "data" field of the notification
+                    id = bundle.getString("boardId");
+                }
+            }
             tvName.setText(getIntent().getStringExtra("name"));
             if (getIntent().getBooleanExtra("is_private", false))
                 ivLock.setVisibility(View.VISIBLE);

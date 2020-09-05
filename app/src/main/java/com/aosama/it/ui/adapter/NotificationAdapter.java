@@ -44,14 +44,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         NotificationModel notificationModel = notificationModelList.get(position);
         holder.tvNotification.setText(notificationModel.getMsg());
-        String date = notificationModel.getTime().substring(0, notificationModel.getTime().indexOf("T"));
-        MyUtilis.parsDateYYMMDD(date);
-        String daynum = MyUtilis.ParseDate.day + " ";
-        String monthName = MyUtilis.ParseDate.monthString + " ";
-        String year = MyUtilis.ParseDate.year;
-        String dateRes = daynum + monthName + year;
+//        String date = notificationModel.getTime().substring(0, notificationModel.getTime().indexOf("T"));
+//        MyUtilis.parsDateYYMMDD(date);
+//        String daynum = MyUtilis.ParseDate.day + " ";
+//        String monthName = MyUtilis.ParseDate.monthString + " ";
+//        String year = MyUtilis.ParseDate.year;
+//        String dateRes = daynum + monthName + year;
 
-        holder.tvDate.setText(MyUtilis.parseDateWithAmPm(notificationModel.getTime()));
+        holder.tvDate.setText(MyUtilis.parseDateWithAmPm(notificationModel.getTime(), notificationModel.getTimeTime()));
         switch (notificationModel.getnType()) {
             case "b":
                 holder.ivIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_noti1));

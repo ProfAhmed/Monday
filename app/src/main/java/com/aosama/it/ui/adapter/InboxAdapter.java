@@ -90,14 +90,14 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxVH> {
             holder.tvUserName.setText(usersStringBuilder.toString());
 
         holder.tvContent.setText(Html.fromHtml(mail.getTitle()));
-        String date = mail.getCreatedAt().substring(0, mail.getCreatedAt().indexOf("T"));
+        String date = mail.getCreatedAt();
         MyUtilis.parsDateYYMMDD(date);
         String daynum = MyUtilis.ParseDate.day + " ";
         String monthName = MyUtilis.ParseDate.monthString + " ";
         String year = MyUtilis.ParseDate.year;
         String dateRes = daynum + monthName + year;
         try {
-            holder.tvDate.setText(MyUtilis.parseDateWithAmPm(mail.getCreatedAt()));
+            holder.tvDate.setText(MyUtilis.parseDateWithAmPm(mail.getCreatedAt(), mail.getCreatedAtTime()));
 
         } catch (NullPointerException s) {
             s.printStackTrace();

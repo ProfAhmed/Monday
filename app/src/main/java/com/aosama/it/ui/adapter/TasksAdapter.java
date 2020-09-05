@@ -42,14 +42,14 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskView> {
 
         TaskN taskN = taskNList.get(position);
         holder.tvTaskName.setText(taskN.getName());
-        String date = taskN.getDueDate().substring(0, taskN.getDueDate().indexOf("T"));
-        MyUtilis.parsDateYYMMDD(date);
-        String daynum = MyUtilis.ParseDate.day + " ";
-        String monthName = MyUtilis.ParseDate.monthString + " ";
-        String year = MyUtilis.ParseDate.year;
-        String dateRes = daynum + monthName + year;
+//        String date = taskN.getDueDate().substring(0, taskN.getDueDate().indexOf("T"));
+//        MyUtilis.parsDateYYMMDD(date);
+//        String daynum = MyUtilis.ParseDate.day + " ";
+//        String monthName = MyUtilis.ParseDate.monthString + " ";
+//        String year = MyUtilis.ParseDate.year;
+//        String dateRes = daynum + monthName + year;
 
-        holder.tvDate.setText(MyUtilis.parseDateWithAmPm(taskN.getDueDate()));
+        holder.tvDate.setText(MyUtilis.parseDateWithAmPm(taskN.getDueDate(),taskN.getDueDateTime()));
 //        switch (taskN.getnType()) {
 //            case "b":
 //                holder.ivIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_noti1));

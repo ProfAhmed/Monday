@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class MyConfig {
-    public static final String BASE_URL = "http://wayak.org/";
-    //    public static final String BASE_URL = "https://tmms2020.herokuapp.com/";
+    //        public static final String BASE_URL = "http://wayak.org/"; // Demo
+    public static final String BASE_URL = "https://mobile.susftask.com/"; //Live
     public static final String SIGNIN_URL = BASE_URL + "user/signin";
-    public static final String CHANGE_PASSWORD_URL = BASE_URL +
-            "user/change-password";
+    public static final String CHANGE_PASSWORD_URL = BASE_URL + "user/change-password";
     public static final String BOARDS = BASE_URL + "board";
 
     public static final String NESTED = BASE_URL + "board/nested";

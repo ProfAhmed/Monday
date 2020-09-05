@@ -103,7 +103,7 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
         holder.circular_progress.setCurrentProgress(taskE.getProgressValue());
         holder.circular_progress.setProgressColor(Color.parseColor(taskE.getProgressColor()));
         holder.circular_progress.setProgressTextAdapter(TIME_TEXT_ADAPTER);
-        String add_date = MyUtilis.formateDate(taskE.getAddDate().substring(0, taskE.getDueDate().indexOf("T")));
+//        String add_date = MyUtilis.formateDate(taskE.getAddDate().substring(0, taskE.getDueDate().indexOf("T")));
         holder.tvInfo.setText(mcContext.getString(R.string.start_date) + ":  ");
         holder.tvInfoValue.setText(MyUtilis.parseDate(taskE.getStartDate()));
         holder.tvInfoValue.setTextColor(Color.BLACK);
@@ -123,7 +123,7 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
                 }
             }
         });
-        String due_date = MyUtilis.formateDate(taskE.getDueDate().substring(0, taskE.getDueDate().indexOf("T")));
+//        String due_date = MyUtilis.formateDate(taskE.getDueDate().substring(0, taskE.getDueDate().indexOf("T")));
 
         holder.ivFlowTitle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +140,6 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
                 }
             }
         });
-        String start_date = MyUtilis.formateDate(taskE.getStartDate().substring(0, taskE.getDueDate().indexOf("T")));
 
         holder.ivStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,7 +163,8 @@ public class BoardsAdapter extends RecyclerView.Adapter<BoardsAdapter.BoardVH> {
                 isMeetinLin = false;
                 try {
                     holder.tvInfo.setText(mcContext.getString(R.string.meeting_time) + ":  ");
-                    holder.tvInfoValue.setText(MyUtilis.parseDateWithAmPm(taskE.getMeetingTime()));
+                    holder.tvInfoValue.setText(MyUtilis.parseDateWithAmPm(taskE.getMeetingTime(),
+                            taskE.getMeetingTimeTime()));
                     holder.tvInfoValue.setTextColor(Color.BLACK);
 
                 } catch (NullPointerException e) {

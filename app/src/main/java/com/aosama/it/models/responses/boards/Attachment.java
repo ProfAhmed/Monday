@@ -17,6 +17,11 @@ public class Attachment {
     private String byUserImage;
     private String byFullName;
     private String addDate;
+    private String addDateTime;
+
+    public String getAddDateTime() {
+        return addDateTime;
+    }
 
     public String getAddDate() {
         return addDate;

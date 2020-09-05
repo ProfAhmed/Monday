@@ -46,6 +46,14 @@ public class NestedBoard {
     @Expose
     private Team team = null;
 
+    @SerializedName("nestedBoard")
+    @Expose
+    private List<NestedBoard> nestedBoard = null;
+
+    public List<NestedBoard> getNestedBoard() {
+        return nestedBoard;
+    }
+
     public Team getTeam() {
         return team;
     }

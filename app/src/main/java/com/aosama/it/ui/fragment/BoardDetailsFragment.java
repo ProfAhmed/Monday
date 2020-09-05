@@ -453,7 +453,7 @@ public class BoardDetailsFragment extends Fragment implements
 
         tvMeetingLink.setText(taskE.getMeetingUrl());
         try {
-            tvMeetingTime.setText(MyUtilis.formateDateTime(taskE.getMeetingTime()));
+//            tvMeetingTime.setText(MyUtilis.formateDateTime(taskE.getMeetingTime()));
         } catch (Exception e) {
             e.printStackTrace();
         }

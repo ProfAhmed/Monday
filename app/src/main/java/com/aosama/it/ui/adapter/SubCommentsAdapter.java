@@ -56,7 +56,7 @@ public class SubCommentsAdapter extends RecyclerView.Adapter<SubCommentsAdapter.
     public void onBindViewHolder(@NonNull SubCommentsAdapter.CommentVH holder, int position) {
         NestedComment commentGroup = commentGroups.get(position);
         holder.tvUserName.setText(commentGroup.getByUserName());
-        holder.tvDate.setText(MyUtilis.parseDateWithAmPm(commentGroup.getAddDate()));
+        holder.tvDate.setText(MyUtilis.parseDateWithAmPm(commentGroup.getAddDate(),commentGroup.getAddDateTime()));
         holder.ivAttachment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

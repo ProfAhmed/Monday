@@ -294,7 +294,7 @@ public class SubCommentsActivity extends AppCompatActivity implements CommentAda
                     }
                     commentData = commentGroup.getCommentData();
                     tvUserName.setText(commentGroup.getByFullName());
-                    tvDate.setText(MyUtilis.parseDateWithAmPm(commentGroup.getAddDate()));
+                    tvDate.setText(MyUtilis.parseDateWithAmPm(commentGroup.getAddDate(),commentGroup.getAddDateTime()));
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         tvCommentData.setText(Html.fromHtml(commentGroup.getCommentData(), Html.FROM_HTML_MODE_COMPACT));
                     } else {

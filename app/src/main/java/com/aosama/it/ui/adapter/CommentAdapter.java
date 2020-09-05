@@ -76,7 +76,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 //            holder.ivSelection.setVisibility(View.GONE);
 //        }
         holder.tvUserName.setText(commentGroup.getByUserName());
-        holder.tvDate.setText(MyUtilis.parseDateWithAmPm(commentGroup.getAddDate()));
+        holder.tvDate.setText(MyUtilis.parseDateWithAmPm(commentGroup.getAddDate(),commentGroup.getAddDateTime()));
         holder.ivAttachment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">susftask</string>
+  <string name="app_name" translatable="false">MyTask</string>
   <string name="english">English</string>
   <string name="create_new_account">Create new account</string>
   <string name="login">Login</string>

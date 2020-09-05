@@ -50,7 +50,7 @@ public class AttachmentAdapter extends RecyclerView.Adapter<AttachmentAdapter.At
 
         holder.tvUserName.setText(attachment.getByFullName());
         if (attachment.getAddDate() != null && attachment.getAddDate().length() > 0)
-            holder.tvDate.setText(MyUtilis.parseDateWithAmPm(attachment.getAddDate()));
+            holder.tvDate.setText(MyUtilis.parseDateWithAmPm(attachment.getAddDate(),attachment.getAddDateTime()));
 
         holder.ivFileDownload.setOnClickListener(new View.OnClickListener() {
             @Override

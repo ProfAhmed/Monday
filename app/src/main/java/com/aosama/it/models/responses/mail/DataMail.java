@@ -27,10 +27,20 @@ public class DataMail {
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+    @SerializedName("createdAtTime")
+    @Expose
+    private String createdAtTime;
     @SerializedName("id")
     @Expose
     private String id;
 
+    public String getCreatedAtTime() {
+        return createdAtTime;
+    }
+
+    public void setCreatedAtTime(String createdAtTime) {
+        this.createdAtTime = createdAtTime;
+    }
 
     public boolean isSeen() {
         return isSeen;

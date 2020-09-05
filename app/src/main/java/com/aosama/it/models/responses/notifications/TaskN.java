@@ -19,9 +19,20 @@ public class TaskN {
     @SerializedName("dueDate")
     @Expose
     private String dueDate;
+    @SerializedName("dueDateTime")
+    @Expose
+    private String dueDateTime;
     @SerializedName("nType")
     @Expose
     private String nType;
+
+    public String getDueDateTime() {
+        return dueDateTime;
+    }
+
+    public void setDueDateTime(String dueDateTime) {
+        this.dueDateTime = dueDateTime;
+    }
 
     public String getnType() {
         return nType;

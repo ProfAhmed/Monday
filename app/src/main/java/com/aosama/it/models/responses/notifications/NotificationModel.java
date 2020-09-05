@@ -26,7 +26,17 @@ public class NotificationModel {
     private List<String> paramStr = null;
     @SerializedName("time")
     @Expose
-    private String time;
+    private String time;   @SerializedName("timeTime")
+    @Expose
+    private String timeTime;
+
+    public String getTimeTime() {
+        return timeTime;
+    }
+
+    public void setTimeTime(String timeTime) {
+        this.timeTime = timeTime;
+    }
 
     public boolean isSeen() {
         return isSeen;

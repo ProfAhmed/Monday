@@ -23,7 +23,12 @@
     <activity
       android:name=".ui.activities.MailFormActivity"
       android:windowSoftInputMode="stateVisible|adjustResize" />
-    <activity android:name=".ui.activities.TasksActivity" />
+    <activity android:name=".ui.activities.TasksActivity" >
+      <intent-filter>
+        <action android:name=".TasksActivity" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </activity>
     <activity android:name=".ui.activities.SubCommentsActivity" />
     <activity android:name=".ui.activities.AddCommentActivity" />
     <activity android:name=".ui.activities.CommentsActivity" />

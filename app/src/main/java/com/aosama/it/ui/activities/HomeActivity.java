@@ -65,7 +65,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 
-public class HomeActivity extends AppCompatActivity implements UploadAttachmentViewModel.UploadImageHandler {
+public class HomeActivity extends AppCompatActivity {
 
     @BindView(R.id.navList)
     ListView navlist;
@@ -75,19 +75,19 @@ public class HomeActivity extends AppCompatActivity implements UploadAttachmentV
     TextView tvProfileName;
     private String type;
 
-    private void fireBoardItemDetails(String id) {
-
-        BoardDetailsFragment boardDetailsFragment = new BoardDetailsFragment();
-        Bundle b = new Bundle();
-        b.putString(Constants.SELECTED_BORAD, id);
-        boardDetailsFragment.setArguments(b);
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .addToBackStack(BoardDetailsFragment.class.getSimpleName())
-                .replace(R.id.nav_host_fragment, boardDetailsFragment).commit();
-
-    }
+////    private void fireBoardItemDetails(String id) {
+//
+//        BoardDetailsFragment boardDetailsFragment = new BoardDetailsFragment();
+//        Bundle b = new Bundle();
+//        b.putString(Constants.SELECTED_BORAD, id);
+//        boardDetailsFragment.setArguments(b);
+//
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .addToBackStack(BoardDetailsFragment.class.getSimpleName())
+//                .replace(R.id.nav_host_fragment, boardDetailsFragment).commit();
+//
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,7 +160,7 @@ public class HomeActivity extends AppCompatActivity implements UploadAttachmentV
         }
 
         if (id != null) {
-            fireBoardItemDetails(id);
+//            fireBoardItemDetails(id);
         }
 //        setLocale(PreferenceProcessor.getInstance(this).getStr(MyConfig.MyPrefs.LOCAL_LANG, "en"));
     }
@@ -257,105 +257,105 @@ public class HomeActivity extends AppCompatActivity implements UploadAttachmentV
         return filename;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (requestCode) {
-            case BoardDetailsFragment.PICKFILE_RESULT_CODE_BOARD:
-                if (resultCode == RESULT_OK) {
-                    // Get the Uri of the selected file
-                    Uri uri = data.getData();
-
-                    File file = new File(this.getCacheDir(), getFileName(uri));
-
-                    int maxBufferSize = 1 * 1024 * 1024;
-
-                    try {
-                        InputStream inputStream = getContentResolver().openInputStream(uri);
-                        Log.e("InputStream Size", "Size " + inputStream);
-                        int bytesAvailable = inputStream.available();
-                        int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                        final byte[] buffers = new byte[bufferSize];
-                        BoardDetailsFragment.tvAttachment.setText(getFileName(uri));
-                        FileOutputStream outputStream = new FileOutputStream(file);
-                        int read = 0;
-                        while ((read = inputStream.read(buffers)) != -1) {
-                            outputStream.write(buffers, 0, read);
-                        }
-                        Log.e("File Size", "Size " + file.length());
-                        inputStream.close();
-                        outputStream.close();
-
-                        Log.e("File Path", "Path " + file.getPath());
-                        Log.e("File Size", "Size " + file.length());
-
-                        if (file.length() > 0) {
-                            UploadAttachmentViewModel uploadAttachmentViewModel = new UploadAttachmentViewModel(this, this);
-                            uploadAttachmentViewModel.doUploadAttachment(file);
-                            type = "b";
-                        }
-
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (OutOfMemoryError e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    Toast.makeText(this, "cannot open file picker", Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case BoardDetailsFragment.PICKFILE_RESULT_CODE_TASK:
-                if (resultCode == RESULT_OK) {
-                    // Get the Uri of the selected file
-                    Uri uri = data.getData();
-
-                    File file = new File(this.getCacheDir(), getFileName(uri));
-
-                    int maxBufferSize = 1 * 1024 * 1024;
-
-                    try {
-                        InputStream inputStream = getContentResolver().openInputStream(uri);
-                        Log.e("InputStream Size", "Size " + inputStream);
-                        int bytesAvailable = inputStream.available();
-                        int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                        final byte[] buffers = new byte[bufferSize];
-                        BoardDetailsFragment.tvAttachment.setText(getFileName(uri));
-                        FileOutputStream outputStream = new FileOutputStream(file);
-                        int read = 0;
-                        while ((read = inputStream.read(buffers)) != -1) {
-                            outputStream.write(buffers, 0, read);
-                        }
-                        Log.e("File Size", "Size " + file.length());
-                        inputStream.close();
-                        outputStream.close();
-
-                        Log.e("File Path", "Path " + file.getPath());
-                        Log.e("File Size", "Size " + file.length());
-
-                        if (file.length() > 0) {
-                            UploadAttachmentViewModel uploadAttachmentViewModel = new UploadAttachmentViewModel(this, this);
-                            uploadAttachmentViewModel.doUploadAttachment(file);
-                            type = "t";
-                        }
-
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (OutOfMemoryError e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    Toast.makeText(this, "cannot open file picker", Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        switch (requestCode) {
+//            case BoardDetailsFragment.PICKFILE_RESULT_CODE_BOARD:
+//                if (resultCode == RESULT_OK) {
+//                    // Get the Uri of the selected file
+//                    Uri uri = data.getData();
+//
+//                    File file = new File(this.getCacheDir(), getFileName(uri));
+//
+//                    int maxBufferSize = 1 * 1024 * 1024;
+//
+//                    try {
+//                        InputStream inputStream = getContentResolver().openInputStream(uri);
+//                        Log.e("InputStream Size", "Size " + inputStream);
+//                        int bytesAvailable = inputStream.available();
+//                        int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+//                        final byte[] buffers = new byte[bufferSize];
+//                        BoardDetailsFragment.tvAttachment.setText(getFileName(uri));
+//                        FileOutputStream outputStream = new FileOutputStream(file);
+//                        int read = 0;
+//                        while ((read = inputStream.read(buffers)) != -1) {
+//                            outputStream.write(buffers, 0, read);
+//                        }
+//                        Log.e("File Size", "Size " + file.length());
+//                        inputStream.close();
+//                        outputStream.close();
+//
+//                        Log.e("File Path", "Path " + file.getPath());
+//                        Log.e("File Size", "Size " + file.length());
+//
+//                        if (file.length() > 0) {
+//                            UploadAttachmentViewModel uploadAttachmentViewModel = new UploadAttachmentViewModel(this, this);
+//                            uploadAttachmentViewModel.doUploadAttachment(file);
+//                            type = "b";
+//                        }
+//
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    } catch (OutOfMemoryError e) {
+//                        e.printStackTrace();
+//                    }
+//                } else {
+//                    Toast.makeText(this, "cannot open file picker", Toast.LENGTH_SHORT).show();
+//                }
+//                break;
+//
+//            case BoardDetailsFragment.PICKFILE_RESULT_CODE_TASK:
+//                if (resultCode == RESULT_OK) {
+//                    // Get the Uri of the selected file
+//                    Uri uri = data.getData();
+//
+//                    File file = new File(this.getCacheDir(), getFileName(uri));
+//
+//                    int maxBufferSize = 1 * 1024 * 1024;
+//
+//                    try {
+//                        InputStream inputStream = getContentResolver().openInputStream(uri);
+//                        Log.e("InputStream Size", "Size " + inputStream);
+//                        int bytesAvailable = inputStream.available();
+//                        int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+//                        final byte[] buffers = new byte[bufferSize];
+//                        BoardDetailsFragment.tvAttachment.setText(getFileName(uri));
+//                        FileOutputStream outputStream = new FileOutputStream(file);
+//                        int read = 0;
+//                        while ((read = inputStream.read(buffers)) != -1) {
+//                            outputStream.write(buffers, 0, read);
+//                        }
+//                        Log.e("File Size", "Size " + file.length());
+//                        inputStream.close();
+//                        outputStream.close();
+//
+//                        Log.e("File Path", "Path " + file.getPath());
+//                        Log.e("File Size", "Size " + file.length());
+//
+//                        if (file.length() > 0) {
+//                            UploadAttachmentViewModel uploadAttachmentViewModel = new UploadAttachmentViewModel(this, this);
+//                            uploadAttachmentViewModel.doUploadAttachment(file);
+//                            type = "t";
+//                        }
+//
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    } catch (OutOfMemoryError e) {
+//                        e.printStackTrace();
+//                    }
+//                } else {
+//                    Toast.makeText(this, "cannot open file picker", Toast.LENGTH_SHORT).show();
+//                }
+//                break;
+//
+//        }
+//
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 
     @Override
     public void onBackPressed() {
@@ -369,74 +369,74 @@ public class HomeActivity extends AppCompatActivity implements UploadAttachmentV
         }
 
     }
-
-    @Override
-    public void onProgressUpdate(int percentage) {
-        BoardDetailsFragment.mProgressDialog.show();
-        BoardDetailsFragment.mProgressDialog.setProgress(percentage);
-    }
-
-    @Override
-    public void onError() {
-        BoardDetailsFragment.mProgressDialog.dismiss();
-        Toasty.error(this, getString(R.string.ef_error_create_image_file)).show();
-
-    }
-
-    @Override
-    public void onFinish(BasicResponse<FileResponse> imageResponse) {
-        BoardDetailsFragment.mProgressDialog.setProgress(100);
-        BoardDetailsFragment.mProgressDialog.dismiss();
-        Toasty.success(this, getString(R.string.success)).show();
-        BoardDetailsFragment.attachName = imageResponse.getData().getAttachName();
-        BoardDetailsFragment.attachKey = imageResponse.getData().getAttachKey();
-        JSONObject jsonBody = new JSONObject();
-        try {
-            jsonBody.put("attachName", BoardDetailsFragment.attachName);
-            jsonBody.put("attachKey", BoardDetailsFragment.attachKey);
-            jsonBody.put("isPrivate", false);
-            jsonBody.put("type", type);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        AlertDialog dialog = MyUtilis.myDialog(this);
-        dialog.show();
-        CommentsViewModel viewModel = ViewModelProviders.of(this).get(CommentsViewModel.class);
-        String id = null;
-        if (type.equals("b"))
-            id = BoardDetailsFragment.boardId;
-        else if (type.equals("t"))
-            id = BoardDetailsFragment.taskId;
-        viewModel.putComment(MyConfig.ADD_ATTACH_GENERAL + id, jsonBody).observe(this, basicResponseStateData -> {
-            dialog.dismiss();
-            switch (basicResponseStateData.getStatus()) {
-                case SUCCESS:
-                    if (basicResponseStateData.getData() != null) {
-                        if (type.equals("t"))
-                            BoardDetailsFragment.alert.dismiss();
-                        else if (type.equals("b"))
-                            BoardDetailsFragment.alertBoard.dismiss();
-
-                        Toast.makeText(this, basicResponseStateData.getData().getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-                    break;
-                case FAIL:
-                    Toast.makeText(this, basicResponseStateData.getErrorsMessages() != null ? basicResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
-                    break;
-                case ERROR:
-                    if (basicResponseStateData.getError() != null) {
-                        Toast.makeText(this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
-                        Log.v("Statues", "Error" + basicResponseStateData.getError().getMessage());
-                    }
-                    break;
-                case CATCH:
-                    Toast.makeText(this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
-                    break;
-            }
-        });
-
-    }
+//
+//    @Override
+//    public void onProgressUpdate(int percentage) {
+////        BoardDetailsFragment.mProgressDialog.show();
+////        BoardDetailsFragment.mProgressDialog.setProgress(percentage);
+//    }
+//
+//    @Override
+//    public void onError() {
+////        BoardDetailsFragment.mProgressDialog.dismiss();
+//        Toasty.error(this, getString(R.string.ef_error_create_image_file)).show();
+//
+//    }
+//
+//    @Override
+//    public void onFinish(BasicResponse<FileResponse> imageResponse) {
+//        BoardDetailsFragment.mProgressDialog.setProgress(100);
+//        BoardDetailsFragment.mProgressDialog.dismiss();
+//        Toasty.success(this, getString(R.string.success)).show();
+//        BoardDetailsFragment.attachName = imageResponse.getData().getAttachName();
+//        BoardDetailsFragment.attachKey = imageResponse.getData().getAttachKey();
+//        JSONObject jsonBody = new JSONObject();
+//        try {
+//            jsonBody.put("attachName", BoardDetailsFragment.attachName);
+//            jsonBody.put("attachKey", BoardDetailsFragment.attachKey);
+//            jsonBody.put("isPrivate", false);
+//            jsonBody.put("type", type);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        AlertDialog dialog = MyUtilis.myDialog(this);
+//        dialog.show();
+//        CommentsViewModel viewModel = ViewModelProviders.of(this).get(CommentsViewModel.class);
+//        String id = null;
+//        if (type.equals("b"))
+//            id = BoardDetailsFragment.boardId;
+//        else if (type.equals("t"))
+//            id = BoardDetailsFragment.taskId;
+//        viewModel.putComment(MyConfig.ADD_ATTACH_GENERAL + id, jsonBody).observe(this, basicResponseStateData -> {
+//            dialog.dismiss();
+//            switch (basicResponseStateData.getStatus()) {
+//                case SUCCESS:
+//                    if (basicResponseStateData.getData() != null) {
+//                        if (type.equals("t"))
+//                            BoardDetailsFragment.alert.dismiss();
+//                        else if (type.equals("b"))
+//                            BoardDetailsFragment.alertBoard.dismiss();
+//
+//                        Toast.makeText(this, basicResponseStateData.getData().getMessage(), Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                    break;
+//                case FAIL:
+//                    Toast.makeText(this, basicResponseStateData.getErrorsMessages() != null ? basicResponseStateData.getErrorsMessages().getErrorMessages().get(0) : null, Toast.LENGTH_SHORT).show();
+//                    break;
+//                case ERROR:
+//                    if (basicResponseStateData.getError() != null) {
+//                        Toast.makeText(this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+//                        Log.v("Statues", "Error" + basicResponseStateData.getError().getMessage());
+//                    }
+//                    break;
+//                case CATCH:
+//                    Toast.makeText(this, getString(R.string.no_connection_msg), Toast.LENGTH_LONG).show();
+//                    break;
+//            }
+//        });
+//
+//    }
 }

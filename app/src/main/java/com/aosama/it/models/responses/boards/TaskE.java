@@ -14,6 +14,9 @@ public class TaskE {
     @SerializedName("addDate")
     @Expose
     private String addDate;
+    @SerializedName("addDateTime")
+    @Expose
+    private String addDateTime;
     @SerializedName("progressValue")
     @Expose
     private int progressValue;
@@ -38,6 +41,12 @@ public class TaskE {
     @SerializedName("dueDate")
     @Expose
     private String dueDate;
+    @SerializedName("startDateTime")
+    @Expose
+    private String startDateTime;
+    @SerializedName("dueDateTime")
+    @Expose
+    private String dueDateTime;
     @SerializedName("ownerId")
     @Expose
     private String ownerId;
@@ -56,6 +65,9 @@ public class TaskE {
     @SerializedName("meetingTime")
     @Expose
     private String meetingTime;
+    @SerializedName("meetingTimeTime")
+    @Expose
+    private String meetingTimeTime;
     @SerializedName("meetingUrl")
     @Expose
     private String meetingUrl;
@@ -67,6 +79,38 @@ public class TaskE {
     private String progressColor;
 
     private String tableName;
+
+    public String getAddDateTime() {
+        return addDateTime;
+    }
+
+    public void setAddDateTime(String addDateTime) {
+        this.addDateTime = addDateTime;
+    }
+
+    public String getStartDateTime() {
+        return startDateTime;
+    }
+
+    public void setStartDateTime(String startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+    public String getDueDateTime() {
+        return dueDateTime;
+    }
+
+    public void setDueDateTime(String dueDateTime) {
+        this.dueDateTime = dueDateTime;
+    }
+
+    public String getMeetingTimeTime() {
+        return meetingTimeTime;
+    }
+
+    public void setMeetingTimeTime(String meetingTimeTime) {
+        this.meetingTimeTime = meetingTimeTime;
+    }
 
     public String getProgressColor() {
         return progressColor;

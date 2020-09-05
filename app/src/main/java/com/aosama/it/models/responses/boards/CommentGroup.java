@@ -9,9 +9,16 @@ public class CommentGroup {
     @SerializedName("addDate")
     @Expose
     private String addDate;
+   @SerializedName("addDateTime")
+    @Expose
+    private String addDateTime;
     @SerializedName("updateDate")
     @Expose
     private String updateDate;
+
+    @SerializedName("updateDateTime")
+    @Expose
+    private String updateDateTime;
     @SerializedName("isDelete")
     @Expose
     private boolean isDelete;
@@ -45,6 +52,22 @@ public class CommentGroup {
     @SerializedName("nestedComments")
     @Expose
     private List<NestedComment> nestedComments = null;
+
+    public String getAddDateTime() {
+        return addDateTime;
+    }
+
+    public void setAddDateTime(String addDateTime) {
+        this.addDateTime = addDateTime;
+    }
+
+    public String getUpdateDateTime() {
+        return updateDateTime;
+    }
+
+    public void setUpdateDateTime(String updateDateTime) {
+        this.updateDateTime = updateDateTime;
+    }
 
     public String getAddDate() {
         return addDate;

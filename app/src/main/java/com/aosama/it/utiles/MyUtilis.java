@@ -36,61 +36,61 @@ public class MyUtilis {
         });
     }
 
-    public static String parseDateWithAmPm(String startTime) {
+    public static String parseDateWithAmPm(String fDate, String time) {
 // Get date from string
 
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss");
         Date date = null;
         try {
-            date = dateFormatter.parse(startTime);
+            date = dateFormatter.parse(time);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
 // Get time from date
-        SimpleDateFormat timeFormatter = new SimpleDateFormat("yyyy-MM-dd h:mm a");
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mm a");
         String displayValue = timeFormatter.format(date);
-        return displayValue;
+        return fDate + " " + displayValue;
     }
 
-    public static String parseDate(String startTime) {
+    public static String parseDate(String fDate) {
 // Get date from string
 
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = null;
-        try {
-            date = dateFormatter.parse(startTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-// Get time from date
-        SimpleDateFormat timeFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        String displayValue = timeFormatter.format(date);
-        return displayValue;
+//        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//        Date date = null;
+//        try {
+//            date = dateFormatter.parse(fDate);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//// Get time from date
+//        SimpleDateFormat timeFormatter = new SimpleDateFormat("yyyy-MM-dd");
+//        String displayValue = timeFormatter.format(date);
+        return fDate;
     }
 
     public static String formateDate(String name) {
-        String formattedDate = "";
-        //2020-03-15T21:00:00.000Z
-        formattedDate = StringUtils.substringBefore(name, "T");
-        return formattedDate;
+//        String formattedDate = "";
+//        //2020-03-15T21:00:00.000Z
+//        formattedDate = StringUtils.substringBefore(name, "T");
+        return name;
 //        return name;
     }
 
-    public static String formateDateTime(String name) {
-        String formattedDate = "";
-        String time = name.substring(name.indexOf('T') + 1);
-        String[] times = time.split(":");
-        String formattedTime = times[0] + ":" + times[1];
-        //2020-03-15T21:00:00.000Z
-        formattedDate = StringUtils.substringBefore(name, "T");
-
-        return formattedDate + "  " + formattedTime;
-    }
+//    public static String formateDateTime(String name) {
+//        String formattedDate = "";
+//        String time = name.substring(name.indexOf('T') + 1);
+//        String[] times = time.split(":");
+//        String formattedTime = times[0] + ":" + times[1];
+//        //2020-03-15T21:00:00.000Z
+//        formattedDate = StringUtils.substringBefore(name, "T");
+//
+//        return formattedDate + "  " + formattedTime;
+//    }
 
     public static void parsDateYYMMDD(String input) {
-        SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat inFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         Date date = null;
         try {
             date = inFormat.parse(input);
